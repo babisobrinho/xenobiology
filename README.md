@@ -1,20 +1,23 @@
-# Documentação do Site Xenobiology
+# 🧬 Xenobiology
 
-## Visão Geral
+## 🌌 Visão Geral
 
-O site Xenobiology é um simulador de laboratório genético que permite aos usuários explorar a genética de bactérias alienígenas. O objetivo é descobrir como os genes R, K e W interagem, entender suas hierarquias de dominância e criar colônias resistentes a bacteriófagos mutantes.
+Xenobiology é um simulador de laboratório genético que permite a exploração da genética de bactérias alienígenas. Os usuários investigam a interação entre os genes R, K e W, descobrem hierarquias de dominância e criam colônias resistentes a bacteriófagos mutantes.
 
-## Estrutura do Projeto
+## 🧾 Estrutura do Projeto
 
-O projeto está organizado da seguinte forma:
+```
+📁 xenobiology/
+├── index.html          Página principal
+├── css/
+│   └── styles.css      Estilos visuais
+└── js/
+    └── script.js       Lógica e mecânicas do jogo
+```
 
-- `index.html` - Arquivo principal HTML com a estrutura da página
-- `css/styles.css` - Estilos CSS para a interface do laboratório
-- `js/script.js` - Código JavaScript com toda a lógica do jogo
+## ⚙️ Funcionalidades Implementadas
 
-## Funcionalidades Implementadas
-
-### Interface do Laboratório
+### 🔬 Interface do Laboratório
 
 1. **Painel de Controle Principal**
    - Criar Bactéria: Abre o Editor Genético para criar bactérias com genes específicos
@@ -38,7 +41,7 @@ O projeto está organizado da seguinte forma:
    - Análise Populacional: Estatísticas e gráficos da colônia
    - Isolar Amostra: Seleção aleatória para estudo
 
-### Mecânicas de Jogo
+### 🎮 Mecânicas de Jogo
 
 1. **Sistema Genético**
    - Três genes (R, K, W) com diferentes propriedades
@@ -79,7 +82,7 @@ O projeto está organizado da seguinte forma:
    - Caos Controlado: Sobreviver a evento aleatório
    - Publicação Revolucionária: Completar todas as descobertas
 
-## Comandos do Terminal
+## 💻 Comandos do Terminal
 
 - `ajuda` - Mostra lista de comandos disponíveis
 - `iniciar` - Começa um novo experimento
@@ -98,19 +101,9 @@ O projeto está organizado da seguinte forma:
 1. Descompacte o arquivo `xenobiology_completo.zip`
 2. Faça upload de todos os arquivos e pastas para seu repositório GitHub
 3. Ative o GitHub Pages nas configurações do repositório
-4. O site estará disponível em `https://[seu-usuario].github.io/[nome-do-repositorio]`
+4. O site estará disponível em `https://babisobrinho.github.io/xenobiology`
 
-## Conformidade com a Descrição Original
-
-Este site implementa fielmente todas as mecânicas descritas nas Fichas de Recuperação e no arquivo xenobiology.txt, incluindo:
-
-- Hierarquia de dominância genética (R > K > W)
-- Porcentagens exatas de resistência ao bacteriófago (95% para WWW, 55% para combinações com dois W, 30% para um W, e 7% para combinações sem W)
-- Sistema de reprodução e cruzamento genético completo
-- Eventos aleatórios e mecânicas de progressão
-- Interface laboratorial intuitiva e responsiva
-
-## Recursos Adicionais
+## ✅    Recursos Adicionais
 
 - Interface responsiva para dispositivos móveis e desktop
 - Animações e efeitos visuais para feedback imediato
@@ -118,15 +111,15 @@ Este site implementa fielmente todas as mecânicas descritas nas Fichas de Recup
 - Gráficos e visualizações para análise de dados
 - Tutorial interativo para novos usuários
 
-## Equipa de Desenvolvimento
+## 👩‍💻 Equipa de Desenvolvimento
 
-- [Juliana Abreu](https://github.com/JulyDuds)
 - [Babi Sobrinho](https://github.com/babisobrinho)
+- [Juliana Abreu](https://github.com/JulyDuds)
 - [Lenice Soares](https://github.com/lenicesoaares)
 - [Rebeca Santos](https://github.com/RebecaSantosb)
 - [Thalyson Santos](https://github.com/taysoic)
 
-## Licença
+## 📜 Licença
 
 Este projeto é de caráter educativo e pode ser utilizado para fins não-comerciais.
 Sinta-se livre para explorar, aprender e adaptar!
