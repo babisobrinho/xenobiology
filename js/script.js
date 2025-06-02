@@ -1,5 +1,3 @@
-// Xenobiology - Script Principal (Versão Completa)
-
 // Variáveis globais
 let colonia = [];
 let descobertas = {
@@ -51,6 +49,7 @@ let eficienciaSobrevivencia = 0;
 let jogoIniciado = false;
 let ultimoEvento = 0; // Timestamp do último evento aleatório
 const INTERVALO_EVENTO = 60000; // 1 minuto entre eventos aleatórios
+const GAME_STORAGE_KEY = 'xenobiology_save';
 
 // Inicialização
 document.addEventListener("DOMContentLoaded", function() {
@@ -69,12 +68,58 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("perfil-btn").addEventListener("click", abrirPerfilCientista);
     document.getElementById("clear-log-btn").addEventListener("click", limparTerminal);
     document.getElementById("export-log-btn").addEventListener("click", exportarLog);
+    document.getElementById("stop-btn").addEventListener("click", pararExperimento);
+    document.getElementById("restart-btn").addEventListener("click", reiniciarExperimento);
+    document.getElementById("criar-bacteria-confirm").addEventListener("click", criarBacteria);
+    document.getElementById('isolar-amostra-btn').addEventListener("click", isolarAmostraAleatoria);
+
     document.getElementById("terminal-input").addEventListener("keypress", function(e) {
         if (e.key === "Enter") {
             processarComandoTerminal();
         }
     });
-    document.getElementById("criar-bacteria-confirm").addEventListener("click", criarBacteria);
+
+    document.getElementById("examinar-bacteria-btn").addEventListener("click", () => {
+        if (colonia.length === 0) {
+            adicionarLog("ERRO", "Nenhuma bactéria disponível para examinar.");
+            return;
+        }
+
+        const indiceAleatorio = Math.floor(Math.random() * colonia.length);
+        const bacteria = colonia[indiceAleatorio];
+
+        analisarBacteria(bacteria.id);
+    });
+
+    document.getElementById("sequenciar-genoma-btn").addEventListener("click", () => {
+        if (colonia.length === 0) {
+            adicionarLog("ERRO", "Nenhuma bactéria para sequenciar.");
+            return;
+        }
+
+        const indiceAleatorio = Math.floor(Math.random() * colonia.length);
+        const bacteria = colonia[indiceAleatorio];
+
+        adicionarLog("LABORATÓRIO", `Genoma da bactéria #${bacteria.id} sequenciado: ${bacteria.genes.join("")}.`);
+    });
+
+    document.getElementById("analise-populacional-btn").addEventListener("click", () => {
+        if (colonia.length === 0) {
+            adicionarLog("ERRO", "Nenhuma colônia para analisar.");
+            return;
+        }
+
+        abrirAnalisePopulacional();
+    });
+
+    // Verificar se há jogo salvo
+    const savedGame = localStorage.getItem(GAME_STORAGE_KEY);
+    if (savedGame) {
+        document.getElementById('laboratorio').classList.add('active');
+        document.getElementById('start-btn').classList.add('d-none');
+        document.getElementById('experiment-controls').classList.remove('d-none');
+        document.getElementById('experiment-controls').classList.add('d-flex');
+    }
 
     // Alternar entre tipos de criação
     document.querySelectorAll('input[name="tipo-criacao"]').forEach(radio => {
@@ -91,9 +136,7 @@ document.addEventListener("DOMContentLoaded", function() {
     configurarEditorGenetico();
 
     // Adicionar log inicial
-    adicionarLog("SISTEMA", "Bem-vindo ao Laboratório de Xenobiology. Você é um cientista recém-chegado, encarregado de estudar uma colônia de bactérias alienígenas.");
-    adicionarLog("SISTEMA", "Seu objetivo é descobrir como os genes R, K e W interagem, entender suas hierarquias de dominância e criar uma colônia resistente a bacteriófagos mutantes.");
-    adicionarLog("SISTEMA", "Digite \'ajuda\' no terminal para ver os comandos disponíveis.");
+    adicionarLog("SISTEMA", "Clique no botão \'Iniciar Experimento\' para começar a jogar.");
 
     // Iniciar loop de eventos aleatórios
     setInterval(verificarEventoAleatorio, 10000); // Verifica a cada 10 segundos
@@ -141,8 +184,86 @@ function criarModal(title, content, footer, size = '') {
 // --- Funções Principais do Jogo ---
 
 function iniciarExperimento() {
-    adicionarLog("SISTEMA", "Iniciando novo experimento...");
+    // Mostrar controles do experimento
+    document.getElementById('start-btn').classList.add('d-none');
+    document.getElementById('experiment-controls').classList.remove('d-none');
+    document.getElementById('experiment-controls').classList.add('d-flex');
+    
+    // Ativar área do jogo
+    document.getElementById('laboratorio').classList.add('active');
+    
+    // Carregar do localStorage se existir
+    const savedGame = localStorage.getItem(GAME_STORAGE_KEY);
+    if (savedGame) {
+        try {
+            const gameData = JSON.parse(savedGame);
+            colonia = gameData.colonia || [];
+            bacteriaCounter = gameData.bacteriaCounter || 0;
+            nivelOnda = gameData.nivelOnda || 1;
+            pontosPesquisa = gameData.pontosPesquisa || 0;
+            eficienciaSobrevivencia = gameData.eficienciaSobrevivencia || 0;
+            descobertas = gameData.descobertas || {
+                dominancia: { "R>K": false, "K>W": false, "R>W": false },
+                resistencia: { "WWW": false, "RWW/KWW": false, "RRW/KKW/RKW": false, "RRR/RRK/KKK/KKR": false },
+                conhecimentoResistencia: { "WWW": false, "RWW/KWW": false, "RRW/KKW/RKW": false, "RRR/RRK/KKK/KKR": false }
+            };
+            conquistas = gameData.conquistas || {
+                "primeira_bacteria": false,
+                "dominancia_rk": false,
+                "dominancia_kw": false,
+                "resistencia_www": false,
+                "colonia_diversa": false,
+                "resistencia_improvavel": false,
+                "engenheiro_genetico": false,
+                "caos_controlado": false,
+                "publicacao_revolucionaria": false
+            };
+            
+            // Reconstruir a câmara de cultivo
+            const chamberViewport = document.getElementById("chamber-viewport");
+            chamberViewport.innerHTML = '';
+            colonia.forEach(bacteria => {
+                adicionarBacteriaNaCamara(bacteria);
+            });
+            
+            if (colonia.length === 0) {
+                chamberViewport.innerHTML = `
+                    <div class="empty-chamber text-center py-5">
+                        <i class="fas fa-vial fa-4x text-muted mb-3"></i>
+                        <p class="text-muted">Câmara de cultivo vazia. Crie uma bactéria para iniciar.</p>
+                    </div>
+                `;
+            }
+            
+            adicionarLog("SISTEMA", "Experimento carregado com sucesso.");
+        } catch (e) {
+            adicionarLog("ERRO", "Falha ao carregar o experimento. Iniciando novo...");
+            resetarExperimento();
+        }
+    } else {
+        resetarExperimento();
+        limparTerminal();
+        adicionarLog("SISTEMA", "Bem-vindo ao Laboratório de Xenobiology. Você é um cientista recém-chegado, encarregado de estudar uma colônia de bactérias alienígenas.");
+        adicionarLog("SISTEMA", "Seu objetivo é descobrir como os genes R, K e W interagem, entender suas hierarquias de dominância e criar uma colônia resistente a bacteriófagos mutantes.");
+        adicionarLog("SISTEMA", "Digite \'ajuda\' no terminal para ver os comandos disponíveis.");
+    }
+    
     jogoIniciado = true;
+    atualizarStatusColonia();
+    atualizarProgressoDescoberta();
+    
+    // Habilitar botões de ferramentas de análise
+    document.querySelectorAll(".tool-buttons button").forEach(btn => {
+        btn.disabled = false;
+    });
+    
+    // Salvar estado inicial
+    salvarJogo();
+}
+
+// Adicione esta nova função para resetar o experimento:
+function resetarExperimento() {
+    adicionarLog("SISTEMA", "Iniciando novo experimento...");
     
     // Resetar estado do jogo
     colonia = [];
@@ -153,24 +274,31 @@ function iniciarExperimento() {
     ultimoEvento = Date.now();
     
     // Resetar descobertas e conquistas
-    descobertas.dominancia = { "R>K": false, "K>W": false, "R>W": false };
-    descobertas.conhecimentoResistencia = { "WWW": false, "RWW/KWW": false, "RRW/KKW/RKW": false, "RRR/RRK/KKK/KKR": false };
-    conquistas = { "primeira_bacteria": false, "dominancia_rk": false, "dominancia_kw": false, "resistencia_www": false, "colonia_diversa": false, "resistencia_improvavel": false, "engenheiro_genetico": false, "caos_controlado": false, "publicacao_revolucionaria": false };
-    publicacoes = { "resistencia": false, "dominancia": false };
-
-    // Atualizar interface
-    atualizarStatusColonia();
-    atualizarProgressoDescoberta();
+    descobertas = {
+        dominancia: { "R>K": false, "K>W": false, "R>W": false },
+        resistencia: { "WWW": false, "RWW/KWW": false, "RRW/KKW/RKW": false, "RRR/RRK/KKK/KKR": false },
+        valores: {
+        "WWW": 95,
+        "RWW/KWW": 55,
+        "RRW/KKW/RKW": 30,
+        "RRR/RRK/KKK/KKR": 7
+    },
+        conhecimentoResistencia: { "WWW": false, "RWW/KWW": false, "RRW/KKW/RKW": false, "RRR/RRK/KKK/KKR": false }
+    };
     
-    // Habilitar botões de ferramentas de análise
-    document.querySelectorAll(".tool-buttons button").forEach(btn => {
-        btn.disabled = false;
-        // Adicionar listeners aos botões de ferramentas
-        if (btn.id === "examinar-bacteria-btn") btn.addEventListener("click", () => adicionarLog("SISTEMA", "Clique em uma bactéria na câmara para examiná-la."));
-        if (btn.id === "sequenciar-genoma-btn") btn.addEventListener("click", () => adicionarLog("SISTEMA", "Clique em uma bactéria e use o botão \'Sequenciar Genoma\' na janela de análise."));
-        if (btn.id === "analise-populacional-btn") btn.addEventListener("click", abrirAnalisePopulacional);
-        if (btn.id === "isolar-amostra-btn") btn.addEventListener("click", isolarAmostraAleatoria);
-    });
+    conquistas = {
+        "primeira_bacteria": false,
+        "dominancia_rk": false,
+        "dominancia_kw": false,
+        "resistencia_www": false,
+        "colonia_diversa": false,
+        "resistencia_improvavel": false,
+        "engenheiro_genetico": false,
+        "caos_controlado": false,
+        "publicacao_revolucionaria": false
+    };
+
+    atualizarStatusColonia();
     
     // Limpar câmara de cultivo
     const chamberViewport = document.getElementById("chamber-viewport");
@@ -179,11 +307,60 @@ function iniciarExperimento() {
             <i class="fas fa-vial fa-4x text-muted mb-3"></i>
             <p class="text-muted">Câmara de cultivo vazia. Crie uma bactéria para iniciar.</p>
         </div>`;
-    chamberViewport.classList.add("active");
     
-    // Adicionar mensagem de início
-    adicionarLog("SISTEMA", "Experimento iniciado. Crie sua primeira bactéria usando o Editor Genético ou o comando \'criar\'.");
-    adicionarLog("DICA", "Use o comando \'criar RKW\' para criar uma bactéria com genes específicos, ou \'criar\' para genes aleatórios.");
+    adicionarLog("SISTEMA", "Experimento iniciado. Crie sua primeira bactéria usando o Editor Genético ou o comando 'criar'.");
+}
+
+// Adicione esta função para salvar o jogo:
+function salvarJogo() {
+    const gameData = {
+        colonia,
+        bacteriaCounter,
+        nivelOnda,
+        pontosPesquisa,
+        eficienciaSobrevivencia,
+        descobertas,
+        conquistas,
+        ultimoEvento
+    };
+    
+    localStorage.setItem(GAME_STORAGE_KEY, JSON.stringify(gameData));
+}
+
+// Adicione esta função para parar o experimento:
+function pararExperimento() {
+    // Limpar localStorage
+    localStorage.removeItem(GAME_STORAGE_KEY);
+    
+    // Resetar controles
+    document.getElementById('start-btn').classList.remove('d-none');
+    document.getElementById('experiment-controls').classList.add('d-none');
+    document.getElementById('experiment-controls').classList.remove('d-flex');
+    
+    // Desativar área do jogo
+    document.getElementById('laboratorio').classList.remove('active');
+    
+    // Resetar estado do jogo
+    jogoIniciado = false;
+    resetarExperimento();
+    
+    limparTerminal();
+    adicionarLog("SISTEMA", "Experimento parado. Todos os dados foram removidos.");
+}
+
+// Adicione esta função para reiniciar o experimento:
+function reiniciarExperimento() {
+    // Limpar localStorage
+    localStorage.removeItem(GAME_STORAGE_KEY);
+    
+    // Manter área do jogo ativa
+    document.getElementById('laboratorio').classList.add('active');
+    
+    // Resetar estado do jogo
+    resetarExperimento();
+    
+    limparTerminal();
+    adicionarLog("SISTEMA", "Experimento reiniciado. Todos os dados foram resetados.");
 }
 
 // --- Editor Genético ---
@@ -236,7 +413,7 @@ function atualizarSlotsGeneticos() {
             slot.classList.add(`gene-${gene}`);
         }
         if (slotSelecionado === index + 1) {
-             slot.classList.add("selected");
+            slot.classList.add("selected");
         }
     });
 }
@@ -398,6 +575,8 @@ function criarBacteria() {
         adicionarLog("CONQUISTA", "Engenheiro Genético: Você criou uma linhagem 100% resistente (WWW)!");
         pontosPesquisa += 100;
     }
+
+    salvarJogo();
 }
 
 function adicionarBacteriaNaCamara(bacteria) {
@@ -445,45 +624,44 @@ function adicionarBacteriaNaCamara(bacteria) {
 }
 
 function atualizarStatusColonia() {
+    // Usa a função analisarPopulacao para obter dados consolidados
+    const analise = analisarPopulacao(colonia);
+    
+    // Atualiza os elementos da interface
     document.getElementById("populacao-total").textContent = colonia.length;
-    let resistenciaTotal = 0;
-    colonia.forEach(bacteria => {
-        resistenciaTotal += bacteria.resistencia;
-    });
-    const resistenciaMedia = colonia.length > 0 ? Math.round(resistenciaTotal / colonia.length) : 0;
+    
+    // Calcula resistência média
+    const resistenciaMedia = colonia.length > 0 ? Math.round(analise.resistenciaMedia) : 0;
     document.getElementById("resistencia-media").textContent = `${resistenciaMedia}%`;
-
-    const combinacoesUnicas = new Set();
-    colonia.forEach(bacteria => {
-        combinacoesUnicas.add(bacteria.genes.sort().join("")); // Ordena para contar combinações únicas
-    });
+    
+    // Determina diversidade genética
+    const numCombinacoes = new Set(colonia.map(b => b.genes.sort().join(""))).size;
     let diversidade = "Baixa";
-    const numCombinacoes = combinacoesUnicas.size;
     if (numCombinacoes >= 5) diversidade = "Muito Alta";
     else if (numCombinacoes >= 3) diversidade = "Alta";
     else if (numCombinacoes >= 2) diversidade = "Média";
     document.getElementById("diversidade-genetica").textContent = diversidade;
 
-    // Conquista: Colônia Diversa
-    if (diversidade === "Alta" && !conquistas["colonia_diversa"]) {
-        conquistas["colonia_diversa"] = true;
-        adicionarLog("CONQUISTA", "Diversidade Genética: Sua colônia possui alta diversidade genética!");
-        pontosPesquisa += 50;
-    }
-
-    // Atualizar barras de progresso
-    document.querySelector("#laboratorio .progress-bar.bg-success").style.width = `${Math.min(colonia.length, 100)}%`; // Limita a 100
+    // Atualiza barras de progresso
+    document.querySelector("#laboratorio .progress-bar.bg-success").style.width = `${Math.min(colonia.length, 100)}%`;
     document.querySelector("#laboratorio .progress-bar.bg-warning").style.width = `${resistenciaMedia}%`;
     const porcentagemDiversidade = Math.min(numCombinacoes * 20, 100); // 5 combinações = 100%
     document.querySelector("#laboratorio .progress-bar.bg-info").style.width = `${porcentagemDiversidade}%`;
 
-    // Atualizar alerta
+    // Atualiza alerta de status
     const alertDiv = document.querySelector("#laboratorio .alert");
     if (colonia.length > 0) {
         alertDiv.style.display = "none";
     } else {
         alertDiv.style.display = "block";
         alertDiv.innerHTML = `<small>${jogoIniciado ? "Colônia vazia. Crie novas bactérias." : "Nenhuma colônia ativa. Inicie um experimento."}</small>`;
+    }
+
+    // Verifica conquista de diversidade
+    if (diversidade === "Alta" && !conquistas["colonia_diversa"]) {
+        conquistas["colonia_diversa"] = true;
+        adicionarLog("CONQUISTA", "Diversidade Genética: Sua colônia possui alta diversidade genética!");
+        pontosPesquisa += 50;
     }
 }
 
@@ -549,6 +727,8 @@ function criarBacteriasEmMassa() {
         adicionarLog("CONQUISTA", "Engenheiro Genético: Você criou uma linhagem 100% resistente (WWW)!");
         pontosPesquisa += 100;
     }
+
+    salvarJogo();
 }
 
 function gerarGenesAleatorios() {
@@ -612,13 +792,10 @@ function criarBacteriasEmMassaPorComando(partes) {
 
 function iniciarModoInfeccao() {
     if (!jogoIniciado || colonia.length === 0) {
-        // Mensagens de erro já existentes
+        adicionarLog("ERRO", "Nenhuma colônia ativa para testar.");
         return;
     }
 
-    adicionarLog("LABORATÓRIO", `Iniciando teste de infecção (Onda ${nivelOnda})...`);
-
-    // Cria o elemento do modal
     const modalDiv = document.createElement('div');
     modalDiv.className = 'modal fade';
     modalDiv.tabIndex = '-1';
@@ -629,52 +806,63 @@ function iniciarModoInfeccao() {
                     <h5 class="modal-title">
                         <i class="fas fa-virus text-danger me-2"></i>Modo Infecção - Onda ${nivelOnda}
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
-                    <p>Expondo colônia a bacteriófagos...</p>
-                    <div class="progress mb-4">
+                    <p id="invasion-message">Iniciando exposição aos bacteriófagos...</p>
+                    <div class="progress my-3">
                         <div id="infecaoProgress" class="progress-bar progress-bar-striped progress-bar-animated bg-danger" style="width: 0%"></div>
                     </div>
-                    <div class="infection-animation">
-                        <i class="fas fa-virus fa-3x text-danger mb-3 pulse-animation"></i>
+                    <div class="infection-animation mb-3">
+                        <i class="fas fa-virus fa-3x text-danger pulse-animation"></i>
                     </div>
-                    <p class="mt-3">Aguarde enquanto o teste é realizado.</p>
+                </div>
+                <div class="modal-footer border-top-0">
+                    <button id="fechar-invasao" class="btn btn-outline-danger d-none mt-2" data-bs-dismiss="modal">Fechar</button>
                 </div>
             </div>
         </div>
     `;
-
-    // Adiciona ao DOM
     document.body.appendChild(modalDiv);
 
-    // Inicializa o modal
-    const modal = new bootstrap.Modal(modalDiv);
+    const modal = new bootstrap.Modal(modalDiv, { backdrop: 'static', keyboard: false });
     modal.show();
 
-    // Configura a animação de progresso
     const progressBar = modalDiv.querySelector("#infecaoProgress");
-    let progresso = 0;
-    
-    const intervalo = setInterval(() => {
-        progresso += 10;
-        progressBar.style.width = `${progresso}%`;
-        
-        if (progresso >= 100) {
-            clearInterval(intervalo);
-            processarResultadosInfeccao();
-            
-            // Fecha o modal após 1.5 segundos
-            setTimeout(() => modal.hide(), 1500);
-        }
-    }, 300);
+    const mensagem = modalDiv.querySelector("#invasion-message");
+    const fecharBtn = modalDiv.querySelector("#fechar-invasao");
 
-    // Limpeza quando o modal for fechado
+    const duracaoTotal = 12000; // duração total da invasão em ms
+    const intervalos = [
+        { tempo: 1000, texto: "Analisando padrões de defesa bacteriana..." },
+        { tempo: 2500, texto: "Mutação detectada nos genes de resistência!" },
+        { tempo: 4000, texto: "Avaliação da taxa de sobrevivência..." }
+    ];
+
+    // Atualizar barra de progresso com precisão
+    let inicio = Date.now();
+    const atualizar = setInterval(() => {
+        let progresso = Math.min(((Date.now() - inicio) / duracaoTotal) * 100, 100);
+        progressBar.style.width = `${progresso}%`;
+    }, 100);
+
+    // Exibir mensagens ao longo do tempo
+    intervalos.forEach(({ tempo, texto }) => {
+        setTimeout(() => {
+            mensagem.textContent = texto;
+        }, tempo);
+    });
+
+    // Após a duração total, mostrar resultados e liberar o botão
+    setTimeout(() => {
+        clearInterval(atualizar);
+        mensagem.textContent = "Análise completa. Exibindo resultados...";
+        processarResultadosInfeccao(); // chamada original
+        fecharBtn.classList.remove("d-none");
+    }, duracaoTotal);
+
+    // Limpeza do modal
     modalDiv.addEventListener('hidden.bs.modal', () => {
-        clearInterval(intervalo);
-        if (modalDiv.parentNode) {
-            modalDiv.parentNode.removeChild(modalDiv);
-        }
+        modalDiv.remove();
     });
 }
 
@@ -775,6 +963,8 @@ function processarResultadosInfeccao() {
         nivelOnda++; // Avança para a próxima onda
         adicionarLog("SISTEMA", `Preparando para a Onda ${nivelOnda}. A dificuldade aumentará.`);
     }
+
+    salvarJogo();
 }
 
 function verificarConquistasPosInfeccao(sobreviventeResistenciaImprovavel) {
@@ -802,7 +992,7 @@ function gerarHipotese(resultados) {
             const hipoteseHTML = `
                 <h6>Hipótese: Resistência do Gene W</h6>
                 <p>Bactérias com três genes W (WWW) apresentam resistência significativamente maior comparadas a bactérias sem genes W.</p>
-                <div class="small text-muted">Baseado em ${resultados.porGene["WWW"].total + resultados.porGene["RRR/RRK/KKK/KKR"].total} amostras</div>
+                <div class="small text-white">Baseado em ${resultados.porGene["WWW"].total + resultados.porGene["RRR/RRK/KKK/KKR"].total} amostras</div>
             `;
             novasHipoteses.push(hipoteseHTML);
             adicionarLog("HIPÓTESE", "Bactérias com três genes W (WWW) parecem ser mais resistentes que aquelas sem genes W.");
@@ -821,7 +1011,7 @@ function gerarHipotese(resultados) {
             const hipoteseHTML = `
                 <h6>Hipótese: Escala de Resistência</h6>
                 <p>A resistência parece escalar com o número de genes W: WWW > XWW > XXW > XXX.</p>
-                <div class="small text-muted">Baseado em análise completa de ${resultados.total} bactérias</div>
+                <div class="small text-white">Baseado em análise completa de ${resultados.total} bactérias</div>
             `;
             novasHipoteses.push(hipoteseHTML);
             adicionarLog("HIPÓTESE", "A resistência parece escalar com o número de genes W: quanto mais W, maior a resistência.");
@@ -845,7 +1035,9 @@ function gerarHipotese(resultados) {
 }
 
 function verificarPublicacaoResistencia() {
-    // Publica sobre resistência se todas as categorias foram observadas
+    const container = document.querySelector(".publications-list");
+    if (!container) return;
+
     if (!publicacoes["resistencia"] && 
         descobertas.conhecimentoResistencia["WWW"] && 
         descobertas.conhecimentoResistencia["RWW/KWW"] && 
@@ -853,19 +1045,19 @@ function verificarPublicacaoResistencia() {
         descobertas.conhecimentoResistencia["RRR/RRK/KKK/KKR"]) {
         
         publicacoes["resistencia"] = true;
-        const publicacoesContainer = document.getElementById("publicacoes");
         const publicacaoHTML = `
-            <div class="publicacao-item publicacao-resistencia mb-3">
-                <h6>Publicação: Resistência Genética em Bactérias Alienígenas</h6>
-                <p>Nossa pesquisa demonstra uma correlação direta entre a presença do gene W e a resistência a bacteriófagos. A resistência escala com o número de genes W (WWW: ${descobertas.valores["WWW"]}%, XWW: ${descobertas.valores["RWW/KWW"]}%, XXW: ${descobertas.valores["RRW/KKW/RKW"]}%, XXX: ${descobertas.valores["RRR/RRK/KKK/KKR"]}%)</p>
-                <div class="small text-muted">Publicado no Jornal de Xenobiologia</div>
+            <div class="publication-item mb-2 small">
+                <div class="publication-title">Resistência Genética em Bactérias Alienígenas</div>
+                <div class="publication-journal text-white" style="font-size: 0.8em;">Jornal de Xenobiologia</div>
             </div>
         `;
-        if (publicacoesContainer.innerHTML.includes("Nenhuma publicação")) {
-            publicacoesContainer.innerHTML = publicacaoHTML;
+        
+        if (container.innerHTML.includes("Nenhuma publicação")) {
+            container.innerHTML = publicacaoHTML;
         } else {
-            publicacoesContainer.innerHTML += publicacaoHTML;
+            container.innerHTML += publicacaoHTML;
         }
+
         adicionarLog("PUBLICAÇÃO", "Sua descoberta sobre a escala de resistência genética foi publicada!");
         pontosPesquisa += 150;
         verificarConquistaPublicacaoRevolucionaria();
@@ -885,7 +1077,7 @@ function verificarPublicacaoDominancia() {
             <div class="publicacao-item publicacao-dominancia mb-3">
                 <h6>Publicação: Hierarquia de Dominância em Genes Alienígenas</h6>
                 <p>Confirmamos a hierarquia de dominância completa entre os genes R, K e W: R domina K, e K domina W (R > K > W).</p>
-                <div class="small text-muted">Publicado na Revista de Genética Extraterrestre</div>
+                <div class="small text-white">Publicado na Revista de Genética Extraterrestre</div>
             </div>
         `;
          if (publicacoesContainer.innerHTML.includes("Nenhuma publicação")) {
@@ -979,7 +1171,7 @@ function abrirBancoDados() {
                                         <div>0%</div><div>50%</div><div>100%</div>
                                     </div>
                                 </div>
-                                <div class="text-muted small mt-2 text-center">X = R ou K</div>
+                                <div class="text-white small mt-2 text-center">X = R ou K</div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="estatisticas-content" role="tabpanel">
@@ -1053,7 +1245,7 @@ function abrirBancoDados() {
 
 function gerarConteudoDominancia() {
     if (!descobertas.dominancia["R>K"] && !descobertas.dominancia["K>W"] && !descobertas.dominancia["R>W"]) {
-        return `<p class="text-muted small">Nenhuma relação de dominância descoberta. Cruze bactérias com genes diferentes.</p>`;
+        return `<p class="text-white small">Nenhuma relação de dominância descoberta. Cruze bactérias com genes diferentes.</p>`;
     }
     let html = 
         `<div class="dominance-diagram p-3 bg-black rounded text-center">
@@ -1114,33 +1306,28 @@ function gerarGraficoResistencia() {
 }
 
 function gerarGraficoDistribuicao() {
-    if (colonia.length === 0) {
-        return `<p class="text-center text-muted small">Nenhuma bactéria na colônia</p>`;
-    }
-    const contagem = { "WWW": 0, "RWW/KWW": 0, "RRW/KKW/RKW": 0, "RRR/RRK/KKK/KKR": 0 };
-    colonia.forEach(bacteria => {
-        const contagemW = bacteria.genes.filter(g => g === "W").length;
-        if (contagemW === 3) contagem["WWW"]++;
-        else if (contagemW === 2) contagem["RWW/KWW"]++;
-        else if (contagemW === 1) contagem["RRW/KKW/RKW"]++;
-        else contagem["RRR/RRK/KKK/KKR"]++;
+    // Exemplo de dados (substitua pela sua lógica)
+    const contagem = { "WWW": 5, "RWW/KWW": 10, "RRW/KKW/RKW": 7, "RRR/RRK/KKK/KKR": 2 };
+
+    const ctx = document.getElementById('graficoDistribuicao').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(contagem),
+            datasets: [{
+                label: 'Distribuição de Genótipos',
+                data: Object.values(contagem),
+                backgroundColor: ['#4e79a7', '#f28e2b', '#e15759', '#76b7b2'],
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                title: { display: true, text: 'Distribuição de Genótipos' }
+            }
+        }
     });
-    let html = `<div class="distribution-bars d-flex align-items-end justify-content-around h-100">`;
-    for (const [tipo, quantidade] of Object.entries(contagem)) {
-        const altura = quantidade > 0 ? (quantidade / colonia.length) * 100 : 0;
-        let label = tipo, color = "bg-secondary";
-        if (tipo === "WWW") { label = "WWW"; color = "bg-success"; }
-        else if (tipo === "RWW/KWW") { label = "XWW"; color = "bg-info"; }
-        else if (tipo === "RRW/KKW/RKW") { label = "XXW"; color = "bg-primary"; }
-        else { label = "XXX"; color = "bg-danger"; }
-        html += 
-            `<div class="dist-bar-container text-center small">
-                <div class="dist-bar ${color}" style="height: ${altura}%; width: 25px;" title="${quantidade} (${Math.round(altura)}%)"></div>
-                <div class="mt-1">${label}</div>
-            </div>`;
-    }
-    html += `</div>`;
-    return html;
 }
 
 function abrirPerfilCientista() {
@@ -1168,7 +1355,7 @@ function abrirPerfilCientista() {
                             <i class="fas fa-user-circle fa-5x text-warning"></i>
                         </div>
                         <h5>Cientista Xenobiólogo</h5>
-                        <p class="text-muted small">Laboratório de Evolução Alienígena</p>
+                        <p class="text-white small">Laboratório de Evolução Alienígena</p>
                     </div>
                     <h6 class="border-start border-warning ps-2 mb-3">
                         Conquistas (${Object.values(conquistas).filter(c => c).length}/${Object.keys(conquistas).length})
@@ -1254,16 +1441,16 @@ function gerarListaConquistas() {
                 <div class="achievement-icon me-2"><i class="fas ${info.icone} text-${info.cor}"></i></div>
                 <div class="achievement-info flex-grow-1">
                     <div class="achievement-title">${info.titulo}</div>
-                    <div class="achievement-desc text-muted" style="font-size: 0.8em;">${info.desc}</div>
+                    <div class="achievement-desc text-white" style="font-size: 0.8em;">${info.desc}</div>
                 </div>
                 <div class="achievement-status ms-auto">
-                    ${obtida ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-lock text-muted"></i>'}
+                    ${obtida ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-lock text-white"></i>'}
                 </div>
             </div>
         `;
     }
     if (Object.values(conquistas).filter(c => c).length === 0) {
-        html = `<p class="text-muted small">Nenhuma conquista desbloqueada.</p>`;
+        html = `<p class="text-white small">Nenhuma conquista desbloqueada.</p>`;
     }
     return html;
 }
@@ -1274,7 +1461,7 @@ function gerarListaPublicacoes() {
         html += `
             <div class="publication-item mb-2 small">
                 <div class="publication-title">Resistência Genética em Bactérias Alienígenas</div>
-                <div class="publication-journal text-muted" style="font-size: 0.8em;">Jornal de Xenobiologia</div>
+                <div class="publication-journal text-white" style="font-size: 0.8em;">Jornal de Xenobiologia</div>
             </div>
         `;
     }
@@ -1282,12 +1469,12 @@ function gerarListaPublicacoes() {
         html += `
             <div class="publication-item mb-2 small">
                 <div class="publication-title">Hierarquia de Dominância em Genes Alienígenas</div>
-                <div class="publication-journal text-muted" style="font-size: 0.8em;">Revista de Genética Extraterrestre</div>
+                <div class="publication-journal text-white" style="font-size: 0.8em;">Revista de Genética Extraterrestre</div>
             </div>
         `;
     }
     if (html === "") {
-        html = `<p class="text-muted small">Nenhuma publicação científica ainda.</p>`;
+        html = `<p class="text-white small">Nenhuma publicação científica ainda.</p>`;
     }
     return html;
 }
@@ -1349,7 +1536,7 @@ function analisarBacteria(id) {
                                 <li>Saúde: ${bacteria.saude}%</li>
                             </ul>
                             <h6 class="mt-3 mb-2">Observações</h6>
-                            <p class="small text-muted">${gerarObservacoesBacteria(bacteria)}</p>
+                            <p class="small text-white">${gerarObservacoesBacteria(bacteria)}</p>
                         </div>
                     </div>
                 </div>
@@ -1422,6 +1609,14 @@ function abrirAnalisePopulacional() {
         return;
     }
 
+    colonia.forEach(b => {
+        if (b.resistencia === undefined) {
+            b.resistencia = calcularResistenciaBacteria(b.genes);
+        }
+    });
+
+    const analise = analisarPopulacao(colonia);
+
     // Cria o elemento do modal
     const modalDiv = document.createElement('div');
     modalDiv.className = 'modal fade';
@@ -1440,13 +1635,13 @@ function abrirAnalisePopulacional() {
                         <div class="col-md-6">
                             <h6 class="text-center mb-3">Distribuição Genética</h6>
                             <div class="distribution-chart bg-black p-2 rounded" style="height: 200px;">
-                                ${gerarGraficoDistribuicao()}
+                                <canvas id="graficoDistribuicao"></canvas>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <h6 class="text-center mb-3">Distribuição de Resistência</h6>
                             <div class="resistance-distribution-chart bg-black p-2 rounded" style="height: 200px;">
-                                ${gerarGraficoDistribuicaoResistencia()}
+                                <canvas id="graficoDistribuicaoResistencia"></canvas>
                             </div>
                         </div>
                     </div>
@@ -1455,8 +1650,8 @@ function abrirAnalisePopulacional() {
                     <div class="table-responsive">
                         <table class="table table-dark table-bordered table-sm small">
                             <tbody>
-                                <tr><td>População Total</td><td>${colonia.length}</td></tr>
-                                <tr><td>Resistência Média</td><td>${document.getElementById("resistencia-media").textContent}</td></tr>
+                                <tr><td>População Total</td><td>${analise.total}</td></tr>
+                                <tr><td>Resistência Média</td><td>${analise.resistenciaMedia.toFixed(1)}%</td></tr>
                                 <tr><td>Diversidade Genética</td><td>${document.getElementById("diversidade-genetica").textContent} (${new Set(colonia.map(b => b.genes.sort().join(""))).size} tipos)</td></tr>
                                 <tr><td>Bactéria Mais Resistente</td><td>${Math.max(...colonia.map(b => b.resistencia))}%</td></tr>
                                 <tr><td>Bactéria Menos Resistente</td><td>${Math.min(...colonia.map(b => b.resistencia))}%</td></tr>
@@ -1479,14 +1674,10 @@ function abrirAnalisePopulacional() {
     modal.show();
 
     // Configura animações para os gráficos
-    const graficos = modalDiv.querySelectorAll('.distribution-chart, .resistance-distribution-chart');
-    graficos.forEach(grafico => {
-        grafico.style.opacity = '0';
-        setTimeout(() => {
-            grafico.style.transition = 'opacity 0.5s ease';
-            grafico.style.opacity = '1';
-        }, 100);
-    });
+    setTimeout(() => {
+        gerarGraficoDistribuicao();
+        gerarGraficoDistribuicaoResistencia();
+    }, 200); // Pequeno delay para garantir que o canvas foi renderizado
 
     // Limpeza quando o modal for fechado
     modalDiv.addEventListener('hidden.bs.modal', () => {
@@ -1501,36 +1692,69 @@ function abrirAnalisePopulacional() {
     });
 
     adicionarLog("LABORATÓRIO", "Realizando análise populacional da colônia.");
+    adicionarLog("LABORATÓRIO", `Total: ${analise.total} bactérias`);
+    adicionarLog("LABORATÓRIO", `Genótipos encontrados: ${analise.genotipos}`);
+    adicionarLog("LABORATÓRIO", `Frequência de genes - R: ${analise.freq.R}, K: ${analise.freq.K}, W: ${analise.freq.W}`);
+    adicionarLog("LABORATÓRIO", `Resistência média: ${analise.resistenciaMedia.toFixed(1)}%`);
+}
+
+function analisarPopulacao(colonia) {
+    const genotipoContagem = {};
+    const geneFrequencia = { R: 0, K: 0, W: 0 };
+    let somaResistencia = 0;
+
+    colonia.forEach(bacteria => {
+        const genes = bacteria.genes.join("");
+        genotipoContagem[genes] = (genotipoContagem[genes] || 0) + 1;
+
+        bacteria.genes.forEach(gene => {
+            if (geneFrequencia[gene] !== undefined) {
+                geneFrequencia[gene]++;
+            }
+        });
+
+        if (bacteria.resistencia === undefined) {
+            bacteria.resistencia = calcularResistenciaBacteria(bacteria.genes);
+        }
+
+        somaResistencia += bacteria.resistencia;
+    });
+
+    const total = colonia.length;
+    const genotipos = Object.entries(genotipoContagem)
+        .map(([g, n]) => `${g} (${n})`)
+        .join(", ");
+
+    return {
+        total,
+        genotipos,
+        freq: geneFrequencia,
+        resistenciaMedia: somaResistencia / total
+    };
 }
 
 function gerarGraficoDistribuicaoResistencia() {
-    if (colonia.length === 0) return `<p class="text-center text-muted small">Nenhuma bactéria</p>`;
-    const contagemResistencia = {
-        "0-10%": 0,
-        "11-40%": 0,
-        "41-70%": 0,
-        "71-100%": 0
-    };
-    colonia.forEach(b => {
-        if (b.resistencia <= 10) contagemResistencia["0-10%"]++;
-        else if (b.resistencia <= 40) contagemResistencia["11-40%"]++;
-        else if (b.resistencia <= 70) contagemResistencia["41-70%"]++;
-        else contagemResistencia["71-100%"]++;
+    // Exemplo de dados (substitua pela sua lógica)
+    const contagemResistencia = { "0-10%": 3, "11-40%": 8, "41-70%": 6, "71-100%": 4 };
+
+    const ctx = document.getElementById('graficoDistribuicaoResistencia').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: Object.keys(contagemResistencia),
+            datasets: [{
+                label: 'Faixas de Resistência',
+                data: Object.values(contagemResistencia),
+                backgroundColor: ['#59a14f', '#edc949', '#af7aa1', '#ff9da7'],
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: { display: true, text: 'Distribuição por Faixa de Resistência' }
+            }
+        }
     });
-    let html = `<div class="distribution-bars d-flex align-items-end justify-content-around h-100">`;
-    const cores = ["bg-danger", "bg-warning", "bg-info", "bg-success"];
-    let i = 0;
-    for (const [faixa, quantidade] of Object.entries(contagemResistencia)) {
-        const altura = quantidade > 0 ? (quantidade / colonia.length) * 100 : 0;
-        html += 
-            `<div class="dist-bar-container text-center small">
-                <div class="dist-bar ${cores[i]}" style="height: ${altura}%; width: 30px;" title="${quantidade} (${Math.round(altura)}%)"></div>
-                <div class="mt-1">${faixa}</div>
-            </div>`;
-        i++;
-    }
-    html += `</div>`;
-    return html;
 }
 
 function isolarAmostraAleatoria() {
@@ -1550,7 +1774,7 @@ function processarComandoTerminal() {
     const input = document.getElementById("terminal-input");
     const comando = input.value.trim();
     if (comando === "") return;
-    adicionarLog("USUÁRIO", comando);
+    adicionarLog("UTILIZADOR", comando);
     input.value = ""; // Limpa antes de processar
 
     if (!jogoIniciado && comando.toLowerCase() !== "iniciar" && comando.toLowerCase() !== "ajuda") {
@@ -1851,6 +2075,8 @@ function dispararEventoAleatorio(forcar = false) {
         adicionarLog("CONQUISTA", "Caos Controlado: Você sobreviveu a um evento aleatório sem perder a colônia!");
         pontosPesquisa += 80;
     }
+
+    salvarJogo();
 }
 
 // Função auxiliar para evento de falha na quarentena
@@ -1907,12 +2133,12 @@ function adicionarLog(tipo, mensagem) {
         case "LABORATÓRIO": corTipo = "text-success"; icone = "<i class='fas fa-flask me-1'></i>"; break;
         case "ERRO": corTipo = "text-danger"; icone = "<i class='fas fa-exclamation-triangle me-1'></i>"; break;
         case "ALERTA": corTipo = "text-warning"; icone = "<i class='fas fa-exclamation-circle me-1'></i>"; break;
-        case "USUÁRIO": corTipo = "text-light"; icone = "<i class='fas fa-user me-1'></i>"; break;
+        case "UTILIZADOR": corTipo = "text-light"; icone = "<i class='fas fa-user me-1'></i>"; break;
         case "DESCOBERTA": corTipo = "text-warning"; icone = "<i class='fas fa-lightbulb me-1'></i>"; break;
         case "HIPÓTESE": corTipo = "text-primary"; icone = "<i class='fas fa-brain me-1'></i>"; break;
         case "PUBLICAÇÃO": corTipo = "text-success"; icone = "<i class='fas fa-scroll me-1'></i>"; break;
         case "DADOS": corTipo = "text-info"; icone = "<i class='fas fa-database me-1'></i>"; break;
-        case "AJUDA": corTipo = "text-muted"; icone = "<i class='fas fa-question-circle me-1'></i>"; break;
+        case "AJUDA": corTipo = "text-info"; icone = "<i class='fas fa-question-circle me-1'></i>"; break;
         case "DICA": corTipo = "text-warning"; icone = "<i class='fas fa-star me-1'></i>"; break;
         case "CONQUISTA": corTipo = "text-warning"; icone = "<i class='fas fa-trophy me-1'></i>"; break;
         case "EVENTO": corTipo = "text-danger"; icone = "<i class='fas fa-biohazard me-1'></i>"; break;
@@ -1931,7 +2157,6 @@ function adicionarLog(tipo, mensagem) {
 
 function limparTerminal() {
     document.getElementById("terminal-output").innerHTML = "";
-    adicionarLog("SISTEMA", "Terminal limpo.");
 }
 
 function exportarLog() {
@@ -1958,5 +2183,3 @@ function exportarLog() {
 
     adicionarLog("SISTEMA", "Log de eventos exportado como arquivo de texto.");
 }
-
-// --- Fim do Script ---

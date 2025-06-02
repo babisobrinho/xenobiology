@@ -1,5 +1,3 @@
-/* Xenobiology - Estilos Personalizados (Versão Completa) */
-
 /* Variáveis de cores */
 :root {
     --primary-dark: #0d1117;
@@ -97,6 +95,21 @@ body {
     z-index: -1;
 }
 
+/* Opacidade do jogo */
+.game-area {
+    opacity: 0.2;
+    transition: opacity 0.3s ease;
+}
+
+.game-area.active {
+    opacity: 1;
+}
+
+/* Controles de experimento */
+#experiment-controls {
+    display: flex;
+}
+
 /* Laboratório Section */
 .lab-container {
     background-color: var(--secondary-dark);
@@ -187,12 +200,14 @@ body {
     border-bottom: 1px solid var(--border-dark);
     border-radius: 0;
     padding: 5px 0;
+    color: white;
     font-family: 'Courier New', monospace;
 }
 
 .terminal-input:focus {
     box-shadow: none;
     border-color: var(--accent-green);
+    color: white;
 }
 
 .info-panel {
