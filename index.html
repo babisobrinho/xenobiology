@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xenobiology - Laboratório de Genética Alienígena</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-dna text-success me-2"></i>Xenobiology
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Laboratório</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="tutorial.html">Tutorial</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">Sobre</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fs-2 fw-bold mb-4">Laboratório de Xenobiologia</h1>
+                    <div class="d-flex gap-3">
+                        <button id="start-btn" class="btn btn-success btn-sm">
+                            <i class="fas fa-play me-2"></i>Iniciar Experimento
+                        </button>
+                        <a href="tutorial.html" class="btn btn-outline-light btn-sm">
+                            <i class="fas fa-book-open me-2"></i>Tutorial
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block">
+                    <div class="text-center">
+                        <div class="position-relative">
+                            <i class="fas fa-flask fa-5x text-success opacity-25"></i>
+                            <div class="position-absolute top-50 start-50 translate-middle">
+                                <div class="bacteria bacteria-W" style="width: 30px; height: 30px; position: absolute; top: -40px; left: 10px;"></div>
+                                <div class="bacteria bacteria-R" style="width: 20px; height: 20px; position: absolute; top: 20px; left: -30px;"></div>
+                                <div class="bacteria bacteria-K" style="width: 25px; height: 25px; position: absolute; top: 10px; left: 30px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Laboratório Section -->
+    <section id="laboratorio" class="py-4">
+        <div class="container">
+            <!-- Painel de Controle Principal -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card bg-black text-light border border-secondary">
+                        <div class="card-body">
+                            <div class="row g-4">
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="h-100 text-center">
+                                        <i class="fas fa-microscope fa-3x text-success mb-3"></i>
+                                        <h5>Criar Bactéria</h5>
+                                        <div class="d-flex gap-2">
+                                            <button id="criar-bacteria-btn" class="btn btn-sm btn-success w-100">
+                                                <i class="fas fa-plus"></i> Individual
+                                            </button>
+                                            <button id="criar-massa-btn" class="btn btn-sm btn-success w-100">
+                                                <i class="fas fa-layer-group"></i> Múltiplas
+                                            </button>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="h-100 text-center">
+                                        <i class="fas fa-virus fa-3x text-danger mb-3"></i>
+                                        <h5>Modo Infecção</h5>
+                                        <button id="modo-infeccao-btn" class="btn btn-sm btn-danger w-100">
+                                            <i class="fas fa-biohazard me-1"></i>Iniciar
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="h-100 text-center">
+                                        <i class="fas fa-database fa-3x text-info mb-3"></i>
+                                        <h5>Banco de Dados</h5>
+                                        <button id="banco-dados-btn" class="btn btn-sm btn-info text-white w-100">
+                                            <i class="fas fa-search me-1"></i>Consultar
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="h-100 text-center">
+                                        <i class="fas fa-user fa-3x text-warning mb-3"></i>
+                                        <h5>Perfil do Cientista</h5>
+                                        <button id="perfil-btn" class="btn btn-sm btn-warning text-white w-100">
+                                            <i class="fas fa-id-card me-1"></i>Ver Perfil
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Área de Trabalho do Laboratório -->
+            <div class="row g-4">
+                <!-- Coluna Esquerda: Câmara de Cultivo e Ferramentas -->
+                <div class="col-lg-8">
+                    <div class="row g-4">
+                        <!-- Terminal de Experimentação -->
+                        <div class="col-12">
+                            <div class="terminal-container p-3 rounded">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-terminal text-light me-2"></i>Terminal de Experimentação
+                                    </h5>
+                                    <div>
+                                        <button id="clear-log-btn" class="btn btn-sm btn-outline-secondary me-1" title="Limpar Terminal">
+                                            <i class="fas fa-eraser"></i>
+                                        </button>
+                                        <button id="export-log-btn" class="btn btn-sm btn-outline-info" title="Exportar Log">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="terminal-output" class="terminal-output mb-3"></div>
+                                <div class="terminal-input-container d-flex">
+                                    <span class="terminal-prompt me-2">&gt;</span>
+                                    <input type="text" id="terminal-input" class="form-control terminal-input" placeholder="Digite um comando (ajuda para ver opções)">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Câmara de Cultivo -->
+                        <div class="col-12">
+                            <div class="lab-container p-3 rounded">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-vial text-success me-2"></i>Câmara de Cultivo
+                                    </h5>
+                                    <div>
+                                        <span class="marker-dot bg-success me-1" title="Ambiente Estável"></span>
+                                        <span class="marker-dot bg-info me-1" title="Temperatura Controlada"></span>
+                                        <span class="marker-dot bg-warning" title="Nutrientes"></span>
+                                    </div>
+                                </div>
+                                <div class="culture-chamber p-2 rounded">
+                                    <div id="chamber-viewport" class="chamber-viewport">
+                                        <div class="empty-chamber text-center py-5">
+                                            <i class="fas fa-vial fa-4x text-muted mb-3"></i>
+                                            <p class="text-muted">Câmara de cultivo vazia. Inicie um experimento para começar.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Coluna Direita: Status e Ferramentas -->
+                <div class="col-lg-4">
+                    <div class="row g-4">
+                        <!-- Status da Colônia -->
+                        <div class="col-12">
+                            <div class="status-panel p-3 rounded">
+                                <h5 class="mb-3">
+                                    <i class="fas fa-chart-line text-info me-2"></i>Status da Colônia
+                                </h5>
+                                <div class="alert alert-secondary py-2 small">
+                                    <small>Nenhuma colônia ativa. Inicie um experimento.</small>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span class="small">População</span>
+                                        <span class="small" id="populacao-total">0</span>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-success" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span class="small">Resistência Média</span>
+                                        <span class="small" id="resistencia-media">0%</span>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-warning" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span class="small">Diversidade Genética</span>
+                                        <span class="small" id="diversidade-genetica">Baixa</span>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-info" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ferramentas de Análise -->
+                        <div class="col-12">
+                            <div class="tools-panel p-3 rounded">
+                                <h5 class="mb-3">
+                                    <i class="fas fa-tools text-warning me-2"></i>Ferramentas de Análise
+                                </h5>
+                                <div class="tool-buttons d-grid gap-2">
+                                    <button id="examinar-bacteria-btn" class="btn btn-sm btn-outline-light" disabled>
+                                        <i class="fas fa-microscope me-1"></i>Examinar Bactéria
+                                    </button>
+                                    <button id="sequenciar-genoma-btn" class="btn btn-sm btn-outline-light" disabled>
+                                        <i class="fas fa-dna me-1"></i>Sequenciar Genoma
+                                    </button>
+                                    <button id="analise-populacional-btn" class="btn btn-sm btn-outline-light" disabled>
+                                        <i class="fas fa-chart-bar me-1"></i>Análise Populacional
+                                    </button>
+                                    <button id="isolar-amostra-btn" class="btn btn-sm btn-outline-light" disabled>
+                                        <i class="fas fa-vial me-1"></i>Isolar Amostra
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Informações Genéticas -->
+                        <div class="col-12">
+                            <div class="info-panel p-3 rounded">
+                                <h5 class="mb-3">
+                                    <i class="fas fa-info-circle text-primary me-2"></i>Informações Genéticas
+                                </h5>
+                                <ul class="nav nav-tabs" id="infoTabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="genes-tab" data-bs-toggle="tab" data-bs-target="#genes-tab-pane" type="button" role="tab">Genes</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="hipoteses-tab" data-bs-toggle="tab" data-bs-target="#hipoteses-tab-pane" type="button" role="tab">Hipóteses</button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content p-3" id="infoTabsContent">
+                                    <div class="tab-pane fade show active" id="genes-tab-pane" role="tabpanel" aria-labelledby="genes-tab" tabindex="0">
+                                        <div class="row mb-3">
+                                            <div class="col-4 text-center">
+                                                <div class="marker-dot bg-danger mx-auto mb-1" style="width: 15px; height: 15px;"></div>
+                                                <div class="gene-label">Gene R</div>
+                                                <div class="small text-muted" id="gene-r-progress">0%</div>
+                                                <div class="progress mt-1" style="height: 5px;">
+                                                    <div class="progress-bar bg-danger" style="width: 0%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-4 text-center">
+                                                <div class="marker-dot bg-primary mx-auto mb-1" style="width: 15px; height: 15px;"></div>
+                                                <div class="gene-label">Gene K</div>
+                                                <div class="small text-muted" id="gene-k-progress">0%</div>
+                                                <div class="progress mt-1" style="height: 5px;">
+                                                    <div class="progress-bar bg-primary" style="width: 0%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-4 text-center">
+                                                <div class="marker-dot bg-success mx-auto mb-1" style="width: 15px; height: 15px;"></div>
+                                                <div class="gene-label">Gene W</div>
+                                                <div class="small text-muted" id="gene-w-progress">0%</div>
+                                                <div class="progress mt-1" style="height: 5px;">
+                                                    <div class="progress-bar bg-success" style="width: 0%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="gene-info small">
+                                            <p><strong>Gene R:</strong> Dominância genética. Tende a prevalecer em cruzamentos.</p>
+                                            <p><strong>Gene K:</strong> Reprodução rápida. Aumenta a taxa de crescimento da colônia.</p>
+                                            <p><strong>Gene W:</strong> Resistência a bacteriófagos. Aumenta a chance de sobrevivência durante infecções.</p>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="hipoteses-tab-pane" role="tabpanel" aria-labelledby="hipoteses-tab" tabindex="0">
+                                        <div id="hipoteses" class="small">
+                                            <p class="text-muted">Nenhuma hipótese formulada ainda. Realize experimentos para gerar hipóteses.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4 bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="small text-white mb-0">&copy; 2025 Xenobiology - Laboratório de Genética Alienígena. Todos os direitos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Editor Genético Modal -->
+    <div class="modal fade" id="editorGeneticoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-light border border-success">
+                <div class="modal-header border-bottom border-success">
+                    <h5 class="modal-title">
+                        <i class="fas fa-dna text-success me-2"></i>Editor Genético
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6 class="text-center mb-3">Selecione os Genes</h6>
+                            <div class="d-flex justify-content-center gap-3 mb-3">
+                                <div class="gene-slot" data-slot="1" data-gene="?">?</div>
+                                <div class="gene-slot" data-slot="2" data-gene="?">?</div>
+                                <div class="gene-slot" data-slot="3" data-gene="?">?</div>
+                            </div>
+                            <div class="d-flex justify-content-center gap-2 mt-3">
+                                <button class="btn btn-danger gene-btn" data-gene="R">R</button>
+                                <button class="btn btn-primary gene-btn" data-gene="K">K</button>
+                                <button class="btn btn-success gene-btn" data-gene="W">W</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-center mb-3">Visualização</h6>
+                            <div class="preview-container mb-3"></div>
+                            <p class="gene-description text-center small text-muted">Selecione os genes para ver informações.</p>
+                        </div>
+                    </div>
+                    <div class="gene-info-content p-3 rounded">
+                        <h6 class="mb-3">Informações Genéticas</h6>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-2">
+                                    <div class="small text-muted">Resistência Estimada</div>
+                                    <div id="resistencia-estimada">Desconhecida</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-2">
+                                    <div class="small text-muted">Dominância</div>
+                                    <div id="dominancia">Desconhecida</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-2">
+                                    <div class="small text-muted">Raridade</div>
+                                    <div id="raridade">Desconhecida</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-top border-success">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success" id="criar-bacteria-confirm">Criar Bactéria</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Criação em Massa -->
+    <div class="modal fade" id="criacaoMassaModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-light border border-info">
+                <div class="modal-header border-bottom border-info">
+                    <h5 class="modal-title">
+                        <i class="fas fa-clone text-info me-2"></i>Criação em Massa
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="quantidade-bacterias" class="form-label">Quantidade de Bactérias</label>
+                        <input type="number" class="form-control bg-black text-light" id="quantidade-bacterias" min="1" max="100" value="10">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tipo de Criação</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo-criacao" id="aleatorio" value="aleatorio" checked>
+                            <label class="form-check-label" for="aleatorio">
+                                Genes Aleatórios
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo-criacao" id="especifico" value="especifico">
+                            <label class="form-check-label" for="especifico">
+                                Genes Específicos
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-3" id="genes-especificos-container" style="display: none;">
+                        <label for="genes-especificos" class="form-label">Genes (ex: RKW, WWW, etc.)</label>
+                        <input type="text" class="form-control bg-black text-light" id="genes-especificos" placeholder="RKW" maxlength="3">
+                        <div class="form-text small">Digite 3 letras usando R, K ou W</div>
+                    </div>
+                    <div class="alert alert-warning small">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Criar muitas bactérias pode afetar o desempenho.
+                    </div>
+                </div>
+                <div class="modal-footer border-top border-info">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-info" id="confirmar-criacao-massa">Criar Bactérias</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/script.js"></script>
+</body>
+</html>

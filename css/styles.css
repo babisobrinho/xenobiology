@@ -1,0 +1,556 @@
+/* Xenobiology - Estilos Personalizados (Versão Completa) */
+
+/* Variáveis de cores */
+:root {
+    --primary-dark: #0d1117;
+    --secondary-dark: #161b22;
+    --accent-green: #2ea043;
+    --accent-green-dark: #238636;
+    --accent-blue: #1f6feb;
+    --accent-red: #f85149;
+    --accent-yellow: #e3b341;
+    --text-light: #f0f6fc;
+    --text-muted: #8b949e;
+    --border-dark: #30363d;
+}
+
+/* Estilos Gerais */
+body {
+    background-color: var(--primary-dark);
+    color: var(--text-light);
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+}
+
+.bg-black {
+    background-color: var(--secondary-dark) !important;
+}
+
+/* Animações */
+.pulse-animation {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        opacity: 0.7;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.95);
+        opacity: 0.7;
+    }
+}
+
+.loading-bar {
+    width: 100%;
+    height: 6px;
+    background-color: var(--border-dark);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.loading-bar .progress-bar {
+    height: 100%;
+    width: 30%;
+    background-color: var(--accent-green);
+    border-radius: 3px;
+    animation: loading 2s infinite;
+}
+
+@keyframes loading {
+    0% {
+        width: 0%;
+        margin-left: 0%;
+    }
+    50% {
+        width: 30%;
+        margin-left: 70%;
+    }
+    100% {
+        width: 0%;
+        margin-left: 100%;
+    }
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, rgba(13, 17, 23, 0.95) 0%, rgba(22, 27, 34, 0.95) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="%232ea043" opacity="0.3"/></svg>');
+    background-size: 50px 50px;
+    opacity: 0.2;
+    z-index: -1;
+}
+
+/* Laboratório Section */
+.lab-container {
+    background-color: var(--secondary-dark);
+    border: 1px solid var(--border-dark);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.status-panel {
+    background-color: var(--secondary-dark);
+    border: 1px solid var(--border-dark);
+    height: 100%;
+}
+
+/* Câmara de Cultivo */
+.culture-chamber {
+    background-color: var(--secondary-dark);
+    border: 1px solid var(--border-dark);
+    min-height: 300px;
+}
+
+.chamber-viewport {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.tools-panel {
+    background-color: var(--secondary-dark);
+    border: 1px solid var(--border-dark);
+    height: 100%;
+}
+
+.marker-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* Terminal de Experimentação */
+.terminal-container {
+    background-color: var(--secondary-dark);
+    border: 1px solid var(--border-dark);
+}
+
+.terminal-output {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    padding: 10px;
+    height: 200px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+.log-entry {
+    margin-bottom: 5px;
+    line-height: 1.4;
+}
+
+.log-time {
+    color: var(--accent-yellow);
+    margin-right: 5px;
+}
+
+.log-system {
+    color: var(--accent-blue);
+    margin-right: 5px;
+}
+
+.terminal-input-container {
+    font-family: 'Courier New', monospace;
+}
+
+.terminal-prompt {
+    color: var(--accent-green);
+    font-weight: bold;
+    align-self: center;
+}
+
+.terminal-input {
+    background-color: transparent !important;
+    border: none;
+    border-bottom: 1px solid var(--border-dark);
+    border-radius: 0;
+    padding: 5px 0;
+    font-family: 'Courier New', monospace;
+}
+
+.terminal-input:focus {
+    box-shadow: none;
+    border-color: var(--accent-green);
+}
+
+.info-panel {
+    background-color: var(--secondary-dark);
+    border: 1px solid var(--border-dark);
+    height: 100%;
+}
+
+.info-panel .nav-tabs {
+    border-bottom-color: var(--border-dark);
+}
+
+.info-panel .nav-link {
+    color: var(--text-muted);
+    border: none;
+    padding: 0.5rem 1rem;
+}
+
+.info-panel .nav-link.active {
+    color: var(--accent-green);
+    background-color: transparent;
+    border-bottom: 2px solid var(--accent-green);
+}
+
+.info-panel .tab-content {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 4px 4px;
+}
+
+/* Editor Genético Modal */
+.gene-slot {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--border-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.gene-slot:hover {
+    transform: scale(1.05);
+    border-color: var(--accent-green);
+}
+
+.gene-slot.selected {
+    box-shadow: 0 0 0 3px var(--accent-green);
+    transform: scale(1.1);
+}
+
+.gene-slot[data-gene="R"] {
+    background-color: rgba(248, 81, 73, 0.2);
+    border-color: var(--accent-red);
+    color: var(--accent-red);
+}
+
+.gene-slot[data-gene="K"] {
+    background-color: rgba(31, 111, 235, 0.2);
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+}
+
+.gene-slot[data-gene="W"] {
+    background-color: rgba(46, 160, 67, 0.2);
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+}
+
+.gene-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.preview-container {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.gene-info-content {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-dark);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .gene-slot {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .gene-btn {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .preview-container {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+/* Animações de Bactérias */
+.bacteria {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.8;
+    transition: all 0.5s ease;
+    animation: float 10s infinite alternate;
+}
+
+.bacteria-R {
+    background: radial-gradient(circle, rgba(248, 81, 73, 0.7) 0%, rgba(248, 81, 73, 0.3) 70%);
+    box-shadow: 0 0 10px rgba(248, 81, 73, 0.5);
+}
+
+.bacteria-K {
+    background: radial-gradient(circle, rgba(31, 111, 235, 0.7) 0%, rgba(31, 111, 235, 0.3) 70%);
+    box-shadow: 0 0 10px rgba(31, 111, 235, 0.5);
+}
+
+.bacteria-W {
+    background: radial-gradient(circle, rgba(46, 160, 67, 0.7) 0%, rgba(46, 160, 67, 0.3) 70%);
+    box-shadow: 0 0 10px rgba(46, 160, 67, 0.5);
+}
+
+/* Efeito de brilho para bactérias com gene W */
+.bacteria.glow-w {
+    animation: float 10s infinite alternate, glow 2s infinite alternate;
+    --glow-intensity: 0.33; /* Valor padrão, será substituído pelo JS */
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 5px rgba(46, 160, 67, calc(0.3 * var(--glow-intensity)));
+    }
+    100% {
+        box-shadow: 0 0 20px rgba(46, 160, 67, calc(0.8 * var(--glow-intensity)));
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(10px, 10px) scale(1.05);
+    }
+    100% {
+        transform: translate(-10px, -5px) scale(0.95);
+    }
+}
+
+/* Efeitos de Infecção */
+.survived-infection {
+    animation: survive-pulse 1s ease;
+}
+
+@keyframes survive-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); box-shadow: 0 0 20px rgba(46, 160, 67, 0.8); }
+    100% { transform: scale(1); }
+}
+
+.dying {
+    animation: die-animation 1s ease forwards;
+}
+
+@keyframes die-animation {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(0); opacity: 0; }
+}
+
+/* Gráficos e Visualizações */
+.chart-bar, .dist-bar {
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.chart-bar:hover, .dist-bar:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Conquistas e Publicações */
+.achievement-item, .publication-item {
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+
+.achievement-item:hover, .publication-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Hipóteses */
+.hipotese-item {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-left: 3px solid var(--accent-blue);
+    padding: 10px;
+    border-radius: 0 4px 4px 0;
+    transition: all 0.3s ease;
+}
+
+.hipotese-item:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-left-color: var(--accent-green);
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--primary-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-dark);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-green-dark);
+}
+
+/* Animações para eventos aleatórios */
+.event-animation {
+    animation: event-pulse 2s ease;
+}
+
+@keyframes event-pulse {
+    0% { background-color: rgba(248, 81, 73, 0); }
+    50% { background-color: rgba(248, 81, 73, 0.2); }
+    100% { background-color: rgba(248, 81, 73, 0); }
+}
+
+/* Tooltips personalizados */
+.tooltip .tooltip-inner {
+    background-color: var(--secondary-dark);
+    border: 1px solid var(--border-dark);
+    color: var(--text-light);
+    padding: 8px 12px;
+    max-width: 250px;
+}
+
+.tooltip.bs-tooltip-top .tooltip-arrow::before {
+    border-top-color: var(--border-dark);
+}
+
+.tooltip.bs-tooltip-bottom .tooltip-arrow::before {
+    border-bottom-color: var(--border-dark);
+}
+
+.tooltip.bs-tooltip-start .tooltip-arrow::before {
+    border-left-color: var(--border-dark);
+}
+
+.tooltip.bs-tooltip-end .tooltip-arrow::before {
+    border-right-color: var(--border-dark);
+}
+
+/* Efeitos de Mutação */
+.mutating {
+    animation: mutate 1s ease;
+}
+
+@keyframes mutate {
+    0% { filter: hue-rotate(0deg); }
+    50% { filter: hue-rotate(180deg); transform: scale(1.2); }
+    100% { filter: hue-rotate(0deg); }
+}
+
+/* Estilos para Análise Populacional */
+.distribution-chart, .resistance-distribution-chart {
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+/* Estilos para Banco de Dados */
+.dominance-diagram {
+    border-radius: 4px;
+}
+
+/* Estilos para Perfil do Cientista */
+.avatar-container {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.achievements-list, .publications-list {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+}
+
+/* Página Sobre */
+.social-links a {
+    transition: all 0.3s;
+}
+
+.social-links a:hover {
+    color: #198754 !important;
+    transform: translateY(-3px);
+}
+
+/* Página Tutorial */
+.tutorial-section {
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.faq-item {
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 1.5rem;
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+}
+
+.gene-example {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 30px;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.gene-R { background-color: #dc3545; color: white; }
+.gene-K { background-color: #0d6efd; color: white; }
+.gene-W { background-color: #198754; color: white; }

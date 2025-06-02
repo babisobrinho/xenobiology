@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial - Xenobiology</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-dna text-success me-2"></i>Xenobiology
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Laboratório</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="tutorial.html">Tutorial</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">Sobre</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Tutorial Content -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-12 text-center">
+                    <h1 class="display-4 fw-bold">
+                        <i class="fas fa-book-open text-info"></i> Tutorial do Jogo
+                    </h1>
+                </div>
+            </div>
+            
+            <!-- Welcome Section -->
+            <div class="tutorial-section bg-black">
+                <h2 class="mb-4">Bem-vindo ao Laboratório de Xenobiology!</h2>
+                <p>Neste laboratório virtual, você assumirá o papel de um cientista estudando bactérias alienígenas com genética desconhecida. Prepare-se para uma jornada de descobertas científicas!</p>
+                
+                <div class="alert alert-info mt-4">
+                    <i class="fas fa-lightbulb me-2"></i> <strong>Dica:</strong> Este tutorial contém informações que seu cientista ainda não conhece no jogo. Use sabiamente para orientar sua pesquisa!
+                </div>
+            </div>
+            
+            <!-- Objective Section -->
+            <div class="tutorial-section bg-black">
+                <h2 class="mb-4">Objetivo do Jogo</h2>
+                <p>Seu objetivo principal é:</p>
+                <ul>
+                    <li>Descobrir como os genes <span class="gene-example gene-R">R</span>, <span class="gene-example gene-K">K</span> e <span class="gene-example gene-W">W</span> interagem</li>
+                    <li>Entender suas hierarquias de dominância</li>
+                    <li>Criar uma colônia resistente a bacteriófagos mutantes</li>
+                    <li>Publicar descobertas científicas baseadas em seus experimentos</li>
+                </ul>
+                <p>Você começará sem conhecer as regras genéticas - elas serão reveladas através de experimentação cuidadosa.</p>
+            </div>
+            
+            <!-- How to Play Section -->
+            <div class="p-0">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card h-100 border-info bg-black">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="mb-0"><i class="fas fa-flask me-2"></i>Passo 1: Criar Bactérias</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Use o Editor Genético (botão "Criar Bactéria") ou o comando no terminal:</p>
+                                <code class="p-2 text-white bg-dark">criar RKW</code>
+                                <p class="mt-4">Você pode especificar os genes ou deixar aleatório.</p>
+                                <p>Exemplos válidos:</p>
+                                <code class="p-2 text-white bg-dark">criar RRR</code>
+                                <code class="p-2 text-white bg-dark">criar WWW</code>
+                                <code class="p-2 text-white bg-dark">criar RKW</code>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100 border-warning bg-black">
+                            <div class="card-header bg-warning text-white">
+                                <h5 class="mb-0"><i class="fas fa-exchange-alt me-2"></i>Passo 2: Experimentar</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Use o comando de cruzamento:</p>
+                                <code class="p-2 text-white bg-dark">cruzar 1 2 2 1</code>
+                                <p class="mt-4">Onde:</p>
+                                <ul>
+                                    <li><strong>1 2</strong> = IDs das bactérias</li>
+                                    <li><strong>2 1</strong> = número de genes a doar (opcional)</li>
+                                </ul>
+                                <p>Observe os resultados para entender a herança genética.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4 pb-4">
+                    <div class="col-md-6">
+                        <div class="card h-100 border-danger bg-black">
+                            <div class="card-header bg-danger text-white">
+                                <h5 class="mb-0"><i class="fas fa-virus me-2"></i>Passo 3: Testar Resistência</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Use o botão "Modo Infecção" ou o comando:</p>
+                                <code class="p-2 text-white bg-dark">infectar</code>
+                                <p class="mt-4">Isso exporá sua colônia a bacteriófagos. As bactérias sobreviventes serão aquelas com melhor resistência genética.</p>
+                                <p>Analise os padrões de sobrevivência para entender quais combinações genéticas são mais eficazes.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100 border-success bg-black">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>Passo 4: Analisar Resultados</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Use as ferramentas do laboratório:</p>
+                                <ul>
+                                    <li>Clique nas bactérias na Câmara de Cultivo</li>
+                                    <li>Use "Examinar Bactéria" para detalhes</li>
+                                    <li>"Sequenciar Genoma" para análise precisa</li>
+                                    <li>Consulte o Banco de Dados para estatísticas</li>
+                                </ul>
+                                <p>O sistema gerará hipóteses automaticamente com base nos dados coletados.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Genetic Rules Section -->
+            <div class="tutorial-section bg-black">
+                <h2 class="mb-4">Regras Genéticas</h2>
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i> <strong>Atenção:</strong> Estas são as regras que você precisará descobrir através da experimentação. Leia apenas se quiser spoilers!
+                </div>
+                
+                <h4 class="mt-4">Hierarquia de Dominância</h4>
+                <p>Os genes seguem uma hierarquia clara de dominância:</p>
+                <div class="d-flex justify-content-center mb-4">
+                    <div class="text-center mx-4">
+                        <div class="gene-example gene-R" style="width: 50px; height: 50px; line-height: 50px; font-size: 1.5rem;">R</div>
+                        <div class="mt-2">Mais dominante</div>
+                    </div>
+                    <div class="d-flex align-items-center mx-2">
+                        <i class="fas fa-arrow-right fa-2x"></i>
+                    </div>
+                    <div class="text-center mx-4">
+                        <div class="gene-example gene-K" style="width: 50px; height: 50px; line-height: 50px; font-size: 1.5rem;">K</div>
+                        <div class="mt-2">Intermediário</div>
+                    </div>
+                    <div class="d-flex align-items-center mx-2">
+                        <i class="fas fa-arrow-right fa-2x"></i>
+                    </div>
+                    <div class="text-center mx-4">
+                        <div class="gene-example gene-W" style="width: 50px; height: 50px; line-height: 50px; font-size: 1.5rem;">W</div>
+                        <div class="mt-2">Mais recessivo</div>
+                    </div>
+                </div>
+                
+                <h4 class="mt-4">Resistência a Bacteriófagos</h4>
+                <p>A resistência depende da quantidade de genes W na bactéria:</p>
+                <table class="table text-white">
+                    <thead class="">
+                        <tr>
+                            <th>Combinação Genética</th>
+                            <th>Exemplo</th>
+                            <th>Chance de Sobrevivência</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>3 genes W</td>
+                            <td><span class="gene-example gene-W">W</span><span class="gene-example gene-W">W</span><span class="gene-example gene-W">W</span></td>
+                            <td>95%</td>
+                        </tr>
+                        <tr>
+                            <td>2 genes W</td>
+                            <td><span class="gene-example gene-R">R</span><span class="gene-example gene-W">W</span><span class="gene-example gene-W">W</span></td>
+                            <td>55%</td>
+                        </tr>
+                        <tr>
+                            <td>1 gene W</td>
+                            <td><span class="gene-example gene-R">R</span><span class="gene-example gene-K">K</span><span class="gene-example gene-W">W</span></td>
+                            <td>30%</td>
+                        </tr>
+                        <tr>
+                            <td>0 genes W</td>
+                            <td><span class="gene-example gene-R">R</span><span class="gene-example gene-R">R</span><span class="gene-example gene-K">K</span></td>
+                            <td>7%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- FAQ Section -->
+            <div class="tutorial-section bg-black">
+                <h2 class="mb-4">Perguntas Frequentes (FAQ)</h2>
+                
+                <div class="faq-item">
+                    <h4><i class="fas fa-question-circle text-primary me-2"></i>Como faço para começar um novo experimento?</h4>
+                    <p>Use o botão "Iniciar Experimento" na página inicial ou o comando <code>iniciar</code> no terminal. Isso limpará a câmara de cultivo e permitirá que você comece do zero.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4><i class="fas fa-question-circle text-primary me-2"></i>Por que minhas bactérias estão morrendo durante a infecção?</h4>
+                    <p>A resistência à infecção depende dos genes W. Tente criar bactérias com mais genes W (como WWW) para aumentar as chances de sobrevivência.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4><i class="fas fa-question-circle text-primary me-2"></i>Como posso ver quais genes uma bactéria específica possui?</h4>
+                    <p>Clique na bactéria na Câmara de Cultivo ou use o comando <code>analisar [id]</code> no terminal, substituindo [id] pelo número da bactéria.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4><i class="fas fa-question-circle text-primary me-2"></i>O que são os eventos aleatórios?</h4>
+                    <p>Eventos aleatórios são desafios que podem ocorrer durante seu experimento, como vazamentos de mutagênico ou falhas no sistema de quarentena. Eles adicionam imprevisibilidade ao seu trabalho.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4><i class="fas fa-question-circle text-primary me-2"></i>Como desbloqueio conquistas?</h4>
+                    <p>Conquistas são desbloqueadas ao realizar descobertas importantes ou completar objetivos específicos, como descobrir a hierarquia de dominância ou criar uma colônia totalmente resistente.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4><i class="fas fa-question-circle text-primary me-2"></i>Posso salvar meu progresso?</h4>
+                    <p>Sim! Use o comando <code>exportar</code> no terminal para baixar um arquivo com seu progresso atual. Você pode importá-lo depois com o comando <code>importar</code>.</p>
+                </div>
+            </div>
+            
+            <!-- Final CTA -->
+            <div class="text-center mt-5">
+                <a href="index.html#laboratorio" class="btn btn-success btn-lg px-5 py-3">
+                    <i class="fas fa-flask me-2"></i>Começar a Experimentar
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4 bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="small text-white mb-0">&copy; 2025 Xenobiology - Laboratório de Genética Alienígena. Todos os direitos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
