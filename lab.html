@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="pt-br" x-data="{ currentPage: 'laboratorio', sidebarOpen: false }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xenobiologia - Laboratório Genético</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .font-display { font-family: 'Orbitron', sans-serif; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        .hero-gradient { background: linear-gradient(135deg, rgba(16,24,39,0.9) 0%, rgba(6,78,118,0.7) 100%); }
+        .dna-pattern { background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%233b82f6' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E"); }
+        .feature-card { transition: all 0.3s ease; border: 1px solid #334155; }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); border-color: #3b82f6; }
+        .btn-primary { background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); transition: all 0.3s ease; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4); }
+        .btn-secondary { background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%); transition: all 0.3s ease; }
+        .btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4); }
+        .section-divider { border-top: 1px solid #1e293b; }
+        .nav-link { position: relative; }
+        .nav-link:after { content: ''; position: absolute; width: 0; height: 2px; bottom: -2px; left: 0; background-color: #3b82f6; transition: width 0.3s ease; }
+        .nav-link:hover:after { width: 100%; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        .terminal-output { font-family: monospace; height: 200px; overflow-y: auto; }
+        .terminal-input { border: 1px solid #334155; color: #e2e8f0; }
+        .marker-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
+        #resultados-section { transition: opacity 0.3s ease, height 0.3s ease; }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-900" style="background-image: url('data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' viewBox=\'0 0 100 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z\' fill=\'%233b82f6\' fill-opacity=\'0.1\' fill-rule=\'evenodd\'/%3E%3C/svg%3E');">
+    <!-- Navbar -->
+    <nav class="bg-slate-900 border-b border-slate-700 sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="font-['Orbitron'] text-2xl text-cyan-400">XENOBIOLOGY</span>
+                    </div>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="lab.html" class="text-cyan-400 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-full after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300">
+                        <i class="fas fa-flask mr-2"></i>Laboratório
+                    </a>
+                    <a href="library.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-book mr-2"></i>Biblioteca
+                    </a>
+                    <a href="hypothesis.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-lightbulb mr-2"></i>Hipóteses
+                    </a>
+                    <a href="papers.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-scroll mr-2"></i>Publicações
+                    </a>
+                    <a href="progress.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-chart-line mr-2"></i>Progresso
+                    </a>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button @click="sidebarOpen = !sidebarOpen" class="text-slate-300 hover:text-white focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Sidebar -->
+        <div x-show="sidebarOpen" @click.away="sidebarOpen = false" 
+             class="md:hidden fixed inset-0 z-40 bg-slate-900 bg-opacity-90 backdrop-blur-sm">
+            <div class="flex flex-col h-full p-4">
+                <div class="flex justify-end">
+                    <button @click="sidebarOpen = false" class="text-slate-300 hover:text-white p-2">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="flex flex-col space-y-6 mt-8 items-center">
+                    <a href="lab.html" @click="sidebarOpen = false" class="text-cyan-400 text-xl font-medium">
+                        <i class="fas fa-flask mr-2"></i>Laboratório
+                    </a>
+                    <a href="library.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-book mr-2"></i>Biblioteca
+                    </a>
+                    <a href="hypothesis.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-lightbulb mr-2"></i>Hipóteses
+                    </a>
+                    <a href="papers.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-scroll mr-2"></i>Publicações
+                    </a>
+                    <a href="progress.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-chart-line mr-2"></i>Progresso
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Column (Terminal and Chamber) -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Terminal de Experimentação -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="font-['Orbitron'] text-2xl text-cyan-300 flex items-center">
+                            <i class="fas fa-terminal text-cyan-300 mr-2"></i>
+                            Terminal de Experimentação
+                        </h2>
+                        <div class="flex space-x-2">
+                            <button id="clear-log-btn" class="text-slate-400 hover:text-white p-2" title="Limpar Terminal">
+                                <i class="fas fa-eraser"></i>
+                            </button>
+                            <button id="export-log-btn" class="text-slate-400 hover:text-cyan-400 p-2" title="Exportar Log">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="terminal-output" class="bg-slate-900 p-2 rounded"></div>
+                    <div class="flex">
+                        <span class="terminal-prompt bg-slate-700 text-cyan-400 px-3 py-2 rounded-l-lg">></span>
+                        <input type="text" id="terminal-input" class="terminal-input flex-grow px-3 py-2 rounded-r-lg" placeholder="Digite comandos de análise...">
+                    </div>
+                </div>
+
+                <!-- Câmara de Cultivo -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="font-['Orbitron'] text-2xl text-cyan-300 flex items-center">
+                            <i class="fas fa-microscope text-cyan-300 mr-2"></i>
+                            Câmara de Cultivo Experimental
+                        </h2>
+                        <div class="flex">
+                            <span class="inline-flex w-6 h-6 rounded bg-emerald-400 mr-1 items-center justify-center" title="Ambiente Estável">
+                                <i class="fas fa-home text-white text-sm"></i>
+                            </span>
+                            <span class="inline-flex w-6 h-6 rounded bg-emerald-400 mr-1 items-center justify-center" title="Temperatura Controlada">
+                                <i class="fas fa-temperature-half text-white text-sm"></i>
+                            </span>
+                            <span class="inline-flex w-6 h-6 rounded bg-emerald-400 items-center justify-center" title="Nutrientes">
+                                <i class="fas fa-apple-whole text-white text-sm"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-700 p-2 rounded border border-slate-600">
+                        <div id="chamber-viewport" class="bg-black bg-opacity-30 rounded min-h-[280px] flex items-center justify-center relative">
+                            <div class="empty-chamber text-center py-5">
+                                <i class="fas fa-flask fa-4x text-slate-500 mb-3"></i>
+                                <p class="text-slate-500">Câmara de cultivo vazia.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tabs Navigation -->
+                    <div class="flex border-b border-slate-700 mb-4">
+                        <button class="tab-btn py-2 px-4 font-medium text-cyan-400 hover:text-cyan-400 border-b-2 border-cyan-400" data-tab="criacao">
+                            <i class="fas fa-plus-circle mr-2"></i>Criação
+                        </button>
+                        <button class="tab-btn py-2 px-4 font-medium text-slate-400 hover:text-cyan-400 border-b-2" data-tab="cultivo">
+                            <i class="fas fa-flask mr-2"></i>Cultivo
+                        </button>
+                        <button class="tab-btn py-2 px-4 font-medium text-slate-400 hover:text-cyan-400  border-b-2" data-tab="ferramentas">
+                            <i class="fas fa-tools mr-2"></i>Ferramentas
+                        </button>
+                    </div>
+                    
+                    <!-- Cultivo Tab -->
+                    <div class="tab-content hidden" id="cultivo-tab">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Card Simular Cruzamento -->
+                            <div class="bg-slate-800 rounded-xl p-4 border border-slate-700 hover:border-purple-500 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10 group">
+                                <div class="flex items-start space-x-4">
+                                    <div class="bg-purple-600/20 p-3 rounded-lg group-hover:bg-purple-500/30 transition-colors duration-300">
+                                        <i class="fas fa-vial text-purple-400 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium text-white">Simular Cruzamento</h3>
+                                        <p class="text-sm text-slate-400 mt-1">Teste combinações genéticas virtualmente</p>
+                                        <button onclick="document.getElementById('simulacaoModal').classList.remove('hidden')" 
+                                                class="mt-3 text-purple-400 hover:text-purple-300 text-sm flex items-center">
+                                            Abrir Simulador <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card Cruzar Bactérias -->
+                            <div class="bg-slate-800 rounded-xl p-4 border border-slate-700 hover:border-cyan-500 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10 group">
+                                <div class="flex items-start space-x-4">
+                                    <div class="bg-cyan-600/20 p-3 rounded-lg group-hover:bg-cyan-500/30 transition-colors duration-300">
+                                        <i class="fas fa-dna text-cyan-400 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium text-white">Cruzar Bactérias</h3>
+                                        <p class="text-sm text-slate-400 mt-1">Combine bactérias existentes na câmara</p>
+                                        <button onclick="abrirModalCruzamentoReal()" 
+                                                class="mt-3 text-cyan-400 hover:text-cyan-300 text-sm flex items-center">
+                                            Selecionar Bactérias <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Cultivo Tab - Seção de Resultados -->
+                        <div id="resultados-section" class="mt-6 hidden" ${breedingHistory.length === 0 ? 'style="display: none;"' : ''}>
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="text-lg font-medium text-slate-300">Resultados</h3>
+                            </div>
+                            
+                            <div id="offspring-results" class="bg-slate-900 rounded-lg p-4 min-h-32 border border-slate-700 m-auto">
+                                <!-- Conteúdo será preenchido via JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Ferramentas Tab -->
+                    <div class="tab-content hidden" id="ferramentas-tab">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Card Examinar Bactéria -->
+                            <div class="bg-slate-800 rounded-xl p-4 border border-slate-700 hover:border-cyan-500 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10 group">
+                                <div class="flex items-start space-x-4">
+                                    <div class="bg-cyan-600/20 p-3 rounded-lg group-hover:bg-cyan-500/30 transition-colors duration-300">
+                                        <i class="fas fa-microscope text-cyan-400 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium text-white">Examinar Bactéria</h3>
+                                        <p class="text-sm text-slate-400 mt-1">Analisar propriedades de uma bactéria aleatória</p>
+                                        <button onclick="examinarBacteriaAleatoria()" class="mt-3 text-cyan-400 hover:text-cyan-300 text-sm flex items-center">
+                                            Executar <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card Análise Populacional -->
+                            <div class="bg-slate-800 rounded-xl p-4 border border-slate-700 hover:border-amber-500 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/10 group">
+                                <div class="flex items-start space-x-4">
+                                    <div class="bg-amber-600/20 p-3 rounded-lg group-hover:bg-amber-500/30 transition-colors duration-300">
+                                        <i class="fas fa-chart-bar text-amber-400 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium text-white">Análise Populacional</h3>
+                                        <p class="text-sm text-slate-400 mt-1">Estatísticas da colônia atual</p>
+                                        <button onclick="gerarAnalisePopulacional()" class="mt-3 text-amber-400 hover:text-amber-300 text-sm flex items-center">
+                                            Executar <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card Isolar Amostra -->
+                            <div class="bg-slate-800 rounded-xl p-4 border border-slate-700 hover:border-rose-500 transition-all duration-300 hover:shadow-lg hover:shadow-rose-500/10 group">
+                                <div class="flex items-start space-x-4">
+                                    <div class="bg-rose-600/20 p-3 rounded-lg group-hover:bg-rose-500/30 transition-colors duration-300">
+                                        <i class="fas fa-vial text-rose-400 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium text-white">Isolar Amostra</h3>
+                                        <p class="text-sm text-slate-400 mt-1">Separar bactéria para estudo aprofundado</p>
+                                        <button onclick="isolarAmostraAleatoria()" class="mt-3 text-rose-400 hover:text-rose-300 text-sm flex items-center">
+                                            Executar <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card Extra (opcional) -->
+                            <div class="bg-slate-800 rounded-xl p-4 border border-slate-700 hover:border-violet-500 transition-all duration-300 hover:shadow-lg hover:shadow-violet-500/10 group">
+                                <div class="flex items-start space-x-4">
+                                    <div class="bg-violet-600/20 p-3 rounded-lg group-hover:bg-violet-500/30 transition-colors duration-300">
+                                        <i class="fas fa-virus-slash text-violet-400 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium text-white">Teste de Resistência</h3>
+                                        <p class="text-sm text-slate-400 mt-1">Expor bactéria a bacteriófagos</p>
+                                        <button onclick="testarResistenciaAleatoria()" class="mt-3 text-violet-400 hover:text-violet-300 text-sm flex items-center">
+                                            Executar <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Criação Tab -->
+                    <div class="tab-content" id="criacao-tab">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Card Editor Genético -->
+                            <div class="bg-slate-800 rounded-xl p-4 border border-slate-700 hover:border-indigo-500 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/10 group">
+                                <div class="flex items-start space-x-4">
+                                    <div class="bg-indigo-600/20 p-3 rounded-lg group-hover:bg-indigo-500/30 transition-colors duration-300">
+                                        <i class="fas fa-dna text-indigo-400 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium text-white">Editor Genético</h3>
+                                        <p class="text-sm text-slate-400 mt-1">Crie bactérias personalizadas gene por gene</p>
+                                        <button onclick="document.getElementById('editorGeneticoModal').classList.remove('hidden')" 
+                                                class="mt-3 text-indigo-400 hover:text-indigo-300 text-sm flex items-center">
+                                            Abrir Editor <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card Criação em Massa -->
+                            <div class="bg-slate-800 rounded-xl p-4 border border-slate-700 hover:border-blue-500 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10 group">
+                                <div class="flex items-start space-x-4">
+                                    <div class="bg-blue-600/20 p-3 rounded-lg group-hover:bg-blue-500/30 transition-colors duration-300">
+                                        <i class="fas fa-clone text-blue-400 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium text-white">Criação em Massa</h3>
+                                        <p class="text-sm text-slate-400 mt-1">Gere múltiplas bactérias de uma só vez</p>
+                                        <button onclick="document.getElementById('criacaoMassaModal').classList.remove('hidden')" 
+                                                class="mt-3 text-blue-400 hover:text-blue-300 text-sm flex items-center">
+                                            Iniciar Produção <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column (Other components) -->
+            <div class="space-y-6">
+                <!-- Estado da Colônia -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900">
+                    <h2 class="font-['Orbitron'] text-2xl text-cyan-300 mb-4 flex items-center">
+                        <i class="fas fa-chart-line text-cyan-300 mr-2"></i>
+                        Estado da Colônia
+                    </h2>
+                    <div class="bg-slate-700 rounded-lg p-3 mb-4 border border-slate-600">
+                        <p class="text-slate-400 text-sm">Nenhuma colônia ativa. Inicie um experimento.</p>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-slate-400 text-sm">População</span>
+                                <span class="text-slate-400 text-sm" id="populacao-total">0</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="bg-cyan-500 h-2 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-slate-400 text-sm">Resistência Média</span>
+                                <span class="text-slate-400 text-sm" id="resistencia-media">0%</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="bg-emerald-500 h-2 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-slate-400 text-sm">Diversidade Genética</span>
+                                <span class="text-slate-400 text-sm" id="diversidade-genetica">Baixa</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="bg-purple-500 h-2 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informações Genéticas -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900">
+                    <h2 class="font-['Orbitron'] text-2xl text-cyan-300 mb-4 flex items-center">
+                        <i class="fas fa-info-circle text-cyan-300 mr-2"></i>
+                        Informações Genéticas
+                    </h2>
+                    <div class="mb-4">
+                        <div class="flex justify-between mb-1">
+                            <span class="text-slate-400 text-sm">Gene R</span>
+                            <span class="text-slate-400 text-sm" id="gene-r-progress">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-700 rounded-full h-2">
+                            <div class="bg-rose-500 h-2 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="flex justify-between mb-1">
+                            <span class="text-slate-400 text-sm">Gene K</span>
+                            <span class="text-slate-400 text-sm" id="gene-k-progress">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-700 rounded-full h-2">
+                            <div class="bg-blue-500 h-2 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="flex justify-between mb-1">
+                            <span class="text-slate-400 text-sm">Gene W</span>
+                            <span class="text-slate-400 text-sm" id="gene-w-progress">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-700 rounded-full h-2">
+                            <div class="bg-emerald-500 h-2 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-700 rounded-lg p-3 border border-slate-600">
+                        <p class="text-slate-400 text-sm" id="gene-r-info"><strong>Gene R:</strong> Faltam dados para conclusões</p>
+                        <p class="text-slate-400 text-sm" id="gene-k-info"><strong>Gene K:</strong> Faltam dados para conclusões</p>
+                        <p class="text-slate-400 text-sm" id="gene-w-info"><strong>Gene W:</strong> Faltam dados para conclusões</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-700 py-6 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <p class="text-slate-400 text-sm">&copy; 2025 Xenobiology - Laboratório de Genética Alienígena. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Editor Genético Modal -->
+    <div id="editorGeneticoModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+        <div class="bg-slate-800 rounded-xl p-6 w-full max-w-md border border-cyan-500">
+            <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-4">
+                <h3 class="font-['Orbitron'] text-xl text-cyan-300">
+                    <i class="fas fa-dna text-cyan-300 mr-2"></i>Editor Genético
+                </h3>
+                <button onclick="document.getElementById('editorGeneticoModal').classList.add('hidden')" class="text-slate-400 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="mb-6">
+                <div class="flex justify-center space-x-4 mb-4">
+                    <div class="gene-slot bg-slate-700 w-12 h-12 rounded-full flex items-center justify-center cursor-pointer" data-slot="1">?</div>
+                    <div class="gene-slot bg-slate-700 w-12 h-12 rounded-full flex items-center justify-center cursor-pointer" data-slot="2">?</div>
+                    <div class="gene-slot bg-slate-700 w-12 h-12 rounded-full flex items-center justify-center cursor-pointer" data-slot="3">?</div>
+                </div>
+                <div class="flex justify-center space-x-2">
+                    <button class="gene-btn bg-rose-500 hover:bg-rose-600 text-white w-10 h-10 rounded-full" data-gene="R">R</button>
+                    <button class="gene-btn bg-blue-500 hover:bg-blue-600 text-white w-10 h-10 rounded-full" data-gene="K">K</button>
+                    <button class="gene-btn bg-emerald-500 hover:bg-emerald-600 text-white w-10 h-10 rounded-full" data-gene="W">W</button>
+                </div>
+            </div>
+            <div class="bg-slate-700 rounded-lg p-4 mb-4 border border-slate-600">
+                <h4 class="text-slate-300 mb-2">Informações Genéticas</h4>
+                <div class="grid grid-cols-3 gap-2 text-sm">
+                    <div>
+                        <div class="text-slate-400">Resistência</div>
+                        <div id="resistencia-estimada" class="font-medium">Desconhecida</div>
+                    </div>
+                    <div>
+                        <div class="text-slate-400">Dominância</div>
+                        <div id="dominancia" class="font-medium">Desconhecida</div>
+                    </div>
+                    <div>
+                        <div class="text-slate-400">Raridade</div>
+                        <div id="raridade" class="font-medium">Desconhecida</div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button onclick="document.getElementById('editorGeneticoModal').classList.add('hidden')" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg">
+                    Cancelar
+                </button>
+                <button id="criar-bacteria-confirm" class="bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-2 rounded-lg">
+                    Criar Bactéria
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Criação em Massa -->
+    <div id="criacaoMassaModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+        <div class="bg-slate-800 rounded-xl p-6 w-full max-w-md border border-blue-500">
+            <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-4">
+                <h3 class="font-['Orbitron'] text-xl text-blue-300">
+                    <i class="fas fa-clone text-blue-300 mr-2"></i>Criação em Massa
+                </h3>
+                <button onclick="document.getElementById('criacaoMassaModal').classList.add('hidden')" class="text-slate-400 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="mb-4">
+                <label class="block text-slate-400 mb-2">Quantidade de Bactérias</label>
+                <input type="number" id="quantidade-bacterias" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white" min="1" max="100" value="10">
+            </div>
+            <div class="mb-4">
+                <label class="block text-slate-400 mb-2">Tipo de Criação</label>
+                <div class="space-y-2">
+                    <label class="flex items-center">
+                        <input type="radio" name="tipo-criacao" value="aleatorio" class="mr-2" checked>
+                        <span class="text-slate-300">Genes Aleatórios</span>
+                    </label>
+                    <label class="flex items-center">
+                        <input type="radio" name="tipo-criacao" value="especifico" class="mr-2">
+                        <span class="text-slate-300">Genes Específicos</span>
+                    </label>
+                </div>
+            </div>
+            <div id="genes-especificos-container" class="mb-4 hidden">
+                <label class="block text-slate-400 mb-2">Genes (ex: RKW, WWW, etc.)</label>
+                <input type="text" id="genes-especificos" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white" placeholder="RKW" maxlength="3">
+                <p class="text-slate-500 text-xs mt-1">Digite 3 letras usando R, K ou W</p>
+            </div>
+            <div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 mb-4">
+                <div class="flex items-start">
+                    <i class="fas fa-exclamation-triangle text-amber-400 mt-1 mr-2"></i>
+                    <p class="text-amber-400 text-sm">Criar muitas bactérias pode afetar o desempenho.</p>
+                </div>
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button onclick="document.getElementById('criacaoMassaModal').classList.add('hidden')" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg">
+                    Cancelar
+                </button>
+                <button id="confirmar-criacao-massa" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg">
+                    Criar Bactérias
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Simulação de Cruzamento -->
+    <div id="simulacaoModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+        <div class="bg-slate-800 rounded-xl p-6 w-full max-w-2xl border border-purple-500">
+            <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-4">
+                <h3 class="font-['Orbitron'] text-xl text-purple-300">
+                    <i class="fas fa-vial mr-2"></i>Simular Cruzamento
+                </h3>
+                <button onclick="fecharModal('simulacaoModal')" class="text-slate-400 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Parent 1 -->
+                <div class="bg-slate-700 rounded-lg p-4 border border-slate-600">
+                    <h3 class="text-lg font-medium mb-3 text-slate-300">Bactéria Parental 1</h3>
+                    <div class="flex justify-center space-x-4 mb-4">
+                        <div class="bg-slate-800 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold cursor-pointer hover:scale-110 transition-all duration-300" onclick="selectGene('parent1', 0, true)">1</div>
+                        <div class="bg-slate-800 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold cursor-pointer hover:scale-110 transition-all duration-300" onclick="selectGene('parent1', 1, true)">2</div>
+                        <div class="bg-slate-800 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold cursor-pointer hover:scale-110 transition-all duration-300" onclick="selectGene('parent1', 2, true)">3</div>
+                    </div>
+                    <div class="text-center">
+                        <div id="parent1-selected-sim" class="text-2xl font-bold font-['Orbitron'] tracking-widest bg-slate-800 py-2 rounded">---</div>
+                    </div>
+                </div>
+                
+                <!-- Parent 2 -->
+                <div class="bg-slate-700 rounded-lg p-4 border border-slate-600">
+                    <h3 class="text-lg font-medium mb-3 text-slate-300">Bactéria Parental 2</h3>
+                    <div class="flex justify-center space-x-4 mb-4">
+                        <div class="bg-slate-800 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold cursor-pointer hover:scale-110 transition-all duration-300" onclick="selectGene('parent2', 0, true)">1</div>
+                        <div class="bg-slate-800 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold cursor-pointer hover:scale-110 transition-all duration-300" onclick="selectGene('parent2', 1, true)">2</div>
+                        <div class="bg-slate-800 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold cursor-pointer hover:scale-110 transition-all duration-300" onclick="selectGene('parent2', 2, true)">3</div>
+                    </div>
+                    <div class="text-center">
+                        <div id="parent2-selected-sim" class="text-2xl font-bold font-['Orbitron'] tracking-widest bg-slate-800 py-2 rounded">---</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-6">
+                <button onclick="simularCruzamento()" class="bg-purple-600 hover:bg-purple-500 text-white font-medium py-3 px-8 rounded-lg transition duration-300 flex items-center mx-auto">
+                    <i class="fas fa-play mr-2"></i>
+                    Simular Experimentação
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Cruzamento Real -->
+    <div id="cruzamentoRealModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+        <div class="bg-slate-800 rounded-xl p-6 w-full max-w-md border border-cyan-500">
+            <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-4">
+                <h3 class="font-['Orbitron'] text-xl text-cyan-300">
+                    <i class="fas fa-dna mr-2"></i>Cruzar Bactérias Reais
+                </h3>
+                <button onclick="fecharModal('cruzamentoRealModal')" class="text-slate-400 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="bg-slate-700 rounded-lg p-4 border border-slate-600">
+                    <h3 class="text-lg font-medium mb-3 text-slate-300">Bactéria Parental 1</h3>
+                    <select id="bacteria-parent1" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white">
+                        <option value="">Selecione uma bactéria</option>
+                        <!-- Opções serão preenchidas via JavaScript -->
+                    </select>
+                    <div id="parent1-genes" class="mt-3 flex justify-center space-x-2 hidden">
+                        <!-- Genes serão preenchidos via JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="bg-slate-700 rounded-lg p-4 border border-slate-600">
+                    <h3 class="text-lg font-medium mb-3 text-slate-300">Bactéria Parental 2</h3>
+                    <select id="bacteria-parent2" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white">
+                        <option value="">Selecione uma bactéria</option>
+                        <!-- Opções serão preenchidas via JavaScript -->
+                    </select>
+                    <div id="parent2-genes" class="mt-3 flex justify-center space-x-2 hidden">
+                        <!-- Genes serão preenchidos via JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-6">
+                <button onclick="realizarCruzamento()" class="bg-cyan-600 hover:bg-cyan-500 text-white font-medium py-3 px-8 rounded-lg transition duration-300 flex items-center mx-auto disabled:opacity-50" id="real-breed-btn" disabled>
+                    <i class="fas fa-dna mr-2"></i>
+                    Realizar Cruzamento
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Inicialização do terminal
+        document.addEventListener('DOMContentLoaded', function() {
+            const terminalOutput = document.getElementById('terminal-output');
+            const terminalInput = document.getElementById('terminal-input');
+            
+            // Adiciona mensagem inicial ao terminal
+            addTerminalMessage('Sistema de laboratório xenobiológico inicializado');
+            addTerminalMessage('Carregando módulos genéticos...');
+            addTerminalMessage('Pronto para experimentação', 'success');
+            
+            // Configura o input do terminal
+            terminalInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const command = terminalInput.value.trim();
+                    if (command) {
+                        addTerminalMessage(`> ${command}`, 'command');
+                        processCommand(command);
+                        terminalInput.value = '';
+                    }
+                }
+            });
+            
+            // Botão de limpar terminal
+            document.getElementById('clear-log-btn').addEventListener('click', function() {
+                terminalOutput.innerHTML = '';
+            });
+            
+            // Tab system
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    document.querySelectorAll('.tab-btn').forEach(t => {
+                        t.classList.remove('text-cyan-400', 'border-cyan-400');
+                        t.classList.add('text-slate-400');
+                    });
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('text-cyan-400', 'border-cyan-400');
+                    this.classList.remove('text-slate-400');
+                    
+                    // Hide all tab contents
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    
+                    // Show selected tab content
+                    const tabId = this.getAttribute('data-tab') + '-tab';
+                    document.getElementById(tabId).classList.remove('hidden');
+                });
+            });
+            
+            // Editor genético
+            const geneSlots = document.querySelectorAll('.gene-slot');
+            const geneBtns = document.querySelectorAll('.gene-btn');
+            
+            geneBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const gene = this.getAttribute('data-gene');
+                    const activeSlot = document.querySelector('.gene-slot.active');
+                    if (activeSlot) {
+                        activeSlot.textContent = gene;
+                        activeSlot.classList.remove('active');
+                        activeSlot.classList.add(`bg-${getGeneColorClass(gene)}`);
+                        updateGeneInfo();
+                    }
+                });
+            });
+            
+            geneSlots.forEach(slot => {
+                slot.addEventListener('click', function() {
+                    geneSlots.forEach(s => s.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Modal de criação em massa
+            document.querySelectorAll('input[name="tipo-criacao"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const genesEspecificosContainer = document.getElementById('genes-especificos-container');
+                    if (this.value === 'especifico') {
+                        genesEspecificosContainer.classList.remove('hidden');
+                    } else {
+                        genesEspecificosContainer.classList.add('hidden');
+                    }
+                });
+            });
+        });
+        
+        function addTerminalMessage(message, type = 'info') {
+            const terminalOutput = document.getElementById('terminal-output');
+            const time = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const messageElement = document.createElement('div');
+            messageElement.className = 'terminal-message mb-1';
+            
+            let prefix = '';
+            if (type === 'command') {
+                prefix = `<span class="text-cyan-400">></span> <span class="text-white">${message}</span>`;
+            } else if (type === 'success') {
+                prefix = `<span class="text-slate-500">[${time}]</span> <span class="text-emerald-400">SUCESSO:</span> <span class="text-emerald-400">${message}</span>`;
+            } else if (type === 'error') {
+                prefix = `<span class="text-slate-500">[${time}]</span> <span class="text-rose-400">ERRO:</span> <span class="text-rose-400">${message}</span>`;
+            } else if (type === 'warning') {
+                prefix = `<span class="text-slate-500">[${time}]</span> <span class="text-amber-400">AVISO:</span> <span class="text-amber-400">${message}</span>`;
+            } else {
+                prefix = `<span class="text-slate-500">[${time}]</span> <span class="text-slate-300">SISTEMA:</span> <span class="text-slate-300">${message}</span>`;
+            }
+            
+            messageElement.innerHTML = prefix;
+            terminalOutput.appendChild(messageElement);
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+        
+        function processCommand(command) {
+            // Simulação de processamento de comandos
+            if (command.toLowerCase() === 'help') {
+                addTerminalMessage('Comandos disponíveis:', 'info');
+                addTerminalMessage('- help: Mostra esta ajuda', 'info');
+                addTerminalMessage('- status: Mostra status do laboratório', 'info');
+                addTerminalMessage('- clear: Limpa o terminal', 'info');
+            } else if (command.toLowerCase() === 'status') {
+                addTerminalMessage('Status do laboratório:', 'info');
+                addTerminalMessage('- Câmara de cultivo: Pronta', 'info');
+                addTerminalMessage('- Bactérias ativas: 0', 'info');
+                addTerminalMessage('- Experimentos realizados: 0', 'info');
+            } else if (command.toLowerCase() === 'clear') {
+                document.getElementById('terminal-output').innerHTML = '';
+            } else {
+                addTerminalMessage(`Comando não reconhecido: ${command}`, 'error');
+            }
+        }
+        
+        function getGeneColorClass(gene) {
+            switch(gene) {
+                case 'R': return 'rose-500';
+                case 'K': return 'blue-500';
+                case 'W': return 'emerald-500';
+                default: return 'slate-700';
+            }
+        }
+        
+        function updateGeneInfo() {
+            const slots = document.querySelectorAll('.gene-slot');
+            let genes = [];
+            
+            slots.forEach(slot => {
+                if (slot.textContent !== '?') {
+                    genes.push(slot.textContent);
+                }
+            });
+            
+            if (genes.length === 3) {
+                // Atualiza informações genéticas
+                const wCount = genes.filter(g => g === 'W').length;
+                let resistencia = 'Baixa';
+                
+                if (wCount === 1) resistencia = 'Média';
+                else if (wCount === 2) resistencia = 'Alta';
+                else if (wCount === 3) resistencia = 'Muito Alta';
+                
+                document.getElementById('resistencia-estimada').textContent = resistencia;
+                document.getElementById('dominancia').textContent = wCount > 1 ? 'Dominante' : 'Recessivo';
+                document.getElementById('raridade').textContent = wCount === 3 ? 'Raro' : wCount === 0 ? 'Comum' : 'Incomum';
+            }
+        }
+
+        // State
+        const state = {
+            parent1: [null, null, null],
+            parent2: [null, null, null],
+            offspring: [],
+            hypotheses: [
+                {
+                    title: "Bactérias com mais genes W têm maior resistência",
+                    description: "A resistência ao bacteriófago parece estar diretamente relacionada com a quantidade de genes W no genoma bacteriano.",
+                    basis: "Observação inicial em culturas de controle",
+                    status: "Em Teste",
+                    date: "15/06/2187"
+                }
+            ],
+            colonia: [],
+            bacteriaCounter: 0,
+            experiments: 0,
+            discoveries: 0
+        };
+
+        // Estado para simulação
+        const simulationState = {
+            parent1: [null, null, null],
+            parent2: [null, null, null]
+        };
+
+        // Histórico de cruzamentos
+        const breedingHistory = [];
+
+        // DOM Elements
+        const parent1Selected = document.getElementById('parent1-selected');
+        const parent2Selected = document.getElementById('parent2-selected');
+        const breedBtn = document.getElementById('breed-btn');
+        const offspringResults = document.getElementById('offspring-results');
+        const hypothesisTitle = document.getElementById('hypothesis-title');
+        const hypothesisDescription = document.getElementById('hypothesis-description');
+        const hypothesisBasis = document.getElementById('hypothesis-basis');
+        const hypothesisList = document.getElementById('hypothesis-list');
+        const chamberViewport = document.getElementById('chamber-viewport');
+        const terminalLogs = document.getElementById('terminal-logs');
+
+        // Função unificada de seleção de genes
+function selectGene(parent, position, isSimulation = false) {
+    const genes = ['R', 'K', 'W'];
+    const currentState = isSimulation ? simulationState : state;
+    
+    if (currentState[parent][position] === null) {
+        currentState[parent][position] = 0;
+    } else {
+        currentState[parent][position] = (currentState[parent][position] + 1) % genes.length;
+    }
+    
+    // Atualizar display correto
+    const displayId = isSimulation ? `${parent}-selected-sim` : `${parent}-selected`;
+    document.getElementById(displayId).textContent = 
+        currentState[parent].map(idx => idx !== null ? genes[idx] : '-').join('');
+    
+    // Atualizar botão de cruzamento se for na aba principal
+    if (!isSimulation) {
+        checkBreedButton();
+    }
+}
+
+        function checkBreedButton() {
+            const parent1Complete = state.parent1.every(g => g !== null);
+            const parent2Complete = state.parent2.every(g => g !== null);
+            if (breedBtn) {
+                breedBtn.disabled = !(parent1Complete && parent2Complete);
+            }
+        }
+
+// Função para adicionar resultado
+function addBreedingResult(type, parent1, parent2, offspring) {
+    // Criar entrada de histórico
+    const entry = {
+        id: Date.now(),
+        type,
+        date: new Date(),
+        parent1,
+        parent2, 
+        offspring
+    };
+    
+    breedingHistory.push(entry);
+    renderBreedingResults();
+    
+    // Rolar para ver o novo resultado
+    setTimeout(() => {
+        document.getElementById('offspring-results').scrollTop = 
+            document.getElementById('offspring-results').scrollHeight;
+    }, 50);
+}
+
+// Função para renderizar resultados
+function renderBreedingResults() {
+    const container = document.getElementById('offspring-results');
+    const section = document.getElementById('resultados-section');
+    
+    if (breedingHistory.length === 0) {
+        container.innerHTML = `
+            <div id="empty-results-message" class="text-center py-4">
+                <p class="text-slate-500 italic">Nenhum cruzamento realizado ainda</p>
+            </div>
+        `;
+        if (section) section.style.display = 'none';
+        return;
+    }
+    
+    // Mostrar a seção se houver resultados
+    if (section) section.style.display = 'block';
+    
+    container.innerHTML = breedingHistory.map(entry => `
+        <div class="result-entry mb-4 pb-4 border-b border-slate-800 last:border-0" data-id="${entry.id}">
+            <div class="flex justify-between items-start mb-2">
+                <div>
+                    <span class="text-sm font-medium ${
+                        entry.type === 'simulation' ? 'text-purple-400' : 'text-cyan-400'
+                    }">${
+                        entry.type === 'simulation' ? 'Simulação' : 'Cruzamento Real'
+                    }</span>
+                    <span class="text-xs text-slate-500 ml-2">${
+                        entry.date.toLocaleString('pt-BR')
+                    }</span>
+                </div>
+                <button onclick="removeResult('${entry.id}')" class="text-slate-500 hover:text-rose-400 text-sm">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                <div class="bg-slate-800 p-3 rounded-lg">
+                    <h4 class="text-sm text-slate-400 mb-1">Parental 1</h4>
+                    <div class="flex items-center">
+                        <div class="flex space-x-2 mr-3">
+                            ${renderGenes(entry.parent1)}
+                        </div>
+                        <span class="text-sm text-slate-300">${entry.parent1.join('')}</span>
+                    </div>
+                </div>
+                
+                <div class="bg-slate-800 p-3 rounded-lg">
+                    <h4 class="text-sm text-slate-400 mb-1">Parental 2</h4>
+                    <div class="flex items-center">
+                        <div class="flex space-x-2 mr-3">
+                            ${renderGenes(entry.parent2)}
+                        </div>
+                        <span class="text-sm text-slate-300">${entry.parent2.join('')}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <h4 class="text-sm text-slate-400 mb-2">Prole Gerada (${entry.offspring.length}):</h4>
+            <div class="grid grid-cols-2 gap-2">
+                ${entry.offspring.map(offspring => `
+                    <div class="bg-slate-800 p-2 rounded flex items-center">
+                        <div class="flex space-x-1 mr-2">
+                            ${renderGenes(offspring.genes, 'xs')}
+                        </div>
+                        <span class="text-xs">Resistência: <span class="${
+                            offspring.resistance > 50 ? 'text-emerald-400' : 'text-amber-400'
+                        }">${offspring.resistance}%</span></span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `).join('');
+}
+
+// Função auxiliar para renderizar genes
+function renderGenes(genes, size = 'sm') {
+    const sizes = {
+        xs: 'w-6 h-6 text-xs',
+        sm: 'w-8 h-8 text-sm'
+    };
+    
+    return genes.map(gene => `
+        <div class="${
+            gene === 'R' ? 'bg-rose-500' : 
+            gene === 'K' ? 'bg-amber-500' : 'bg-emerald-500'
+        } text-white rounded-full flex items-center justify-center font-bold ${
+            sizes[size]
+        }">${gene}</div>
+    `).join('');
+}
+
+// Função para remover resultado específico
+function removeResult(id) {
+    const index = breedingHistory.findIndex(entry => entry.id == id);
+    if (index !== -1) {
+        breedingHistory.splice(index, 1);
+        renderBreedingResults();
+    }
+}
+
+// Função para limpar todos os resultados
+function limparResultados() {
+    breedingHistory.length = 0;
+    renderBreedingResults();
+    addTerminalMessage('Todos os resultados foram limpos', 'info');
+}
+
+        // Breeding function
+        function breedBacteria() {
+            const genes = ['R', 'K', 'W'];
+            const offspringCount = 4; // Generate 4 offspring
+            
+            state.offspring = [];
+            offspringResults.innerHTML = '';
+            
+            // Add log
+            addLog(`Iniciando experimento de cruzamento entre ${state.parent1.map(i => genes[i]).join('')} e ${state.parent2.map(i => genes[i]).join('')}`);
+            
+            for (let i = 0; i < offspringCount; i++) {
+                const offspring = [];
+                for (let j = 0; j < 3; j++) {
+                    // Randomly select gene from parent1 or parent2 for each position
+                    const parentChoice = Math.random() < 0.5 ? state.parent1[j] : state.parent2[j];
+                    offspring.push(genes[parentChoice]);
+                }
+                state.offspring.push(offspring.join(''));
+                
+                // Calculate W count for resistance
+                const wCount = offspring.filter(g => g === 'W').length;
+                const resistance = calculateResistance(wCount);
+                
+                // Create bacteria in chamber
+                const bacteriaId = ++state.bacteriaCounter;
+                const bacteria = {
+                    id: bacteriaId,
+                    genes: offspring,
+                    resistencia: resistance
+                };
+                state.colonia.push(bacteria);
+                adicionarBacteriaNaCamara(bacteria);
+                
+                // Add log
+                addLog(`Bactéria #${bacteriaId} gerada: ${offspring.join('')} (Resistência: ${resistance}%)`);
+                
+                // Create offspring card
+                const offspringCard = document.createElement('div');
+                offspringCard.className = 'bg-slate-700 rounded p-3 mb-2 border border-slate-600';
+                offspringCard.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="font-['Orbitron'] text-lg">${offspring.join('')}</span>
+                        <span class="text-xs bg-slate-600 px-2 py-1 rounded">W: ${wCount} → ${resistance}% resistência</span>
+                    </div>
+                    <div class="mt-2 flex space-x-2">
+                        ${offspring.map((gene, idx) => `
+                            <div class="${getGeneColorClass(gene)} text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">
+                                ${gene}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                offspringResults.appendChild(offspringCard);
+            }
+            
+            // Update experiment count
+            state.experiments++;
+            
+            // Add to hypotheses if this is the first breeding
+            if (state.hypotheses.length === 1) {
+                addLog("Hipótese inicial registrada automaticamente");
+            }
+        }
+
+        function getGeneColorClass(gene) {
+            switch(gene) {
+                case 'R': return 'bg-rose-500';
+                case 'K': return 'bg-amber-500';
+                case 'W': return 'bg-emerald-500';
+                default: return 'bg-slate-500';
+            }
+        }
+
+        function calculateResistance(wCount) {
+            switch(wCount) {
+                case 0: return 5;
+                case 1: return 35;
+                case 2: return 75;
+                case 3: return 95;
+                default: return 0;
+            }
+        }
+
+        // Hypothesis system
+        function addHypothesis() {
+            const title = hypothesisTitle.value.trim();
+            const description = hypothesisDescription.value.trim();
+            const basis = hypothesisBasis.value.trim();
+            
+            if (!title || !description) {
+                addLog("Erro: Título e descrição são obrigatórios para registrar uma hipótese", "error");
+                return;
+            }
+            
+            const newHypothesis = {
+                title,
+                description,
+                basis,
+                status: "Em Teste",
+                date: new Date().toLocaleDateString('pt-BR')
+            };
+            
+            state.hypotheses.push(newHypothesis);
+            renderHypotheses();
+            
+            // Clear inputs
+            hypothesisTitle.value = '';
+            hypothesisDescription.value = '';
+            hypothesisBasis.value = '';
+            
+            // Add log
+            addLog(`Nova hipótese registrada: "${title}"`);
+        }
+
+        function renderHypotheses() {
+            if (hypothesisList) {
+                hypothesisList.innerHTML = state.hypotheses.map((hyp, idx) => `
+                    <div class="bg-slate-800 p-4 rounded-lg border border-slate-600 mb-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-medium text-purple-300">${hyp.title}</h4>
+                            <div class="flex space-x-2">
+                                <button onclick="validateHypothesis(${idx})" class="text-slate-400 hover:text-green-400" title="Validar">
+                                    <i class="fas fa-check-circle"></i>
+                                </button>
+                                <button onclick="removeHypothesis(${idx})" class="text-slate-400 hover:text-red-400" title="Remover">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-400 mb-2">${hyp.description}</p>
+                        <p class="text-xs text-slate-500 mb-2"><span class="font-medium">Base:</span> ${hyp.basis || "Não especificado"}</p>
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-slate-500">Status: <span class="${getStatusColorClass(hyp.status)}">${hyp.status}</span></span>
+                            <span class="text-slate-500">Registrado em: ${hyp.date}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function getStatusColorClass(status) {
+            switch(status) {
+                case "Em Teste": return "text-amber-400";
+                case "Validada": return "text-green-400";
+                case "Refutada": return "text-red-400";
+                default: return "text-slate-400";
+            }
+        }
+
+        function validateHypothesis(index) {
+            state.hypotheses[index].status = "Validada";
+            state.discoveries++;
+            renderHypotheses();
+            addLog(`Hipótese validada: "${state.hypotheses[index].title}"`, "success");
+        }
+
+        function removeHypothesis(index) {
+            const removed = state.hypotheses.splice(index, 1);
+            renderHypotheses();
+            addLog(`Hipótese removida: "${removed[0].title}"`);
+        }
+
+        // Bacteria functions
+        function adicionarBacteriaNaCamara(bacteria) {
+            if (!chamberViewport) return;
+            
+            const emptyMessage = chamberViewport.querySelector(".empty-chamber");
+            if (emptyMessage) {
+                chamberViewport.removeChild(emptyMessage);
+            }
+            
+            const bacteriaEl = document.createElement("div");
+            bacteriaEl.className = `absolute rounded-full opacity-80 transition-all duration-500 animate-float ${getBacteriaColorClass(bacteria)}`;
+            bacteriaEl.setAttribute("data-id", bacteria.id);
+
+            const contagem = { "R": 0, "K": 0, "W": 0 };
+            bacteria.genes.forEach(g => contagem[g]++);
+            let genePredominante = "R";
+            if (contagem["K"] > contagem[genePredominante]) genePredominante = "K";
+            if (contagem["W"] > contagem[genePredominante]) genePredominante = "W";
+
+            // Add glow for W gene
+            if (contagem["W"] > 0) {
+                bacteriaEl.classList.add("shadow-lg");
+                bacteriaEl.style.boxShadow = `0 0 ${10 * contagem["W"]}px rgba(46, 160, 67, ${0.3 * contagem["W"]})`;
+            }
+
+            const tamanho = 15 + (contagem["W"] * 5) + (contagem["K"] * 2);
+            bacteriaEl.style.width = `${tamanho}px`;
+            bacteriaEl.style.height = `${tamanho}px`;
+
+            const maxX = chamberViewport.offsetWidth - tamanho;
+            const maxY = chamberViewport.offsetHeight - tamanho;
+            const posX = Math.floor(Math.random() * maxX);
+            const posY = Math.floor(Math.random() * maxY);
+            bacteriaEl.style.left = `${posX}px`;
+            bacteriaEl.style.top = `${posY}px`;
+
+            bacteriaEl.setAttribute("title", `Bactéria #${bacteria.id}: ${bacteria.genes.join("")} (Res: ${bacteria.resistencia}%)`);
+            bacteriaEl.addEventListener("click", function() {
+                analisarBacteria(bacteria.id);
+            });
+            
+            chamberViewport.appendChild(bacteriaEl);
+        }
+
+        function getBacteriaColorClass(bacteria) {
+            const wCount = bacteria.genes.filter(g => g === 'W').length;
+            const kCount = bacteria.genes.filter(g => g === 'K').length;
+            
+            if (wCount >= 2) return "bg-emerald-500/70 shadow-emerald-500/50";
+            if (kCount >= 2) return "bg-amber-500/70 shadow-amber-500/50";
+            return "bg-rose-500/70 shadow-rose-500/50";
+        }
+
+        function analisarBacteria(id) {
+            const bacteria = state.colonia.find(b => b.id === id);
+            if (!bacteria) return;
+
+            // Add log
+            addLog(`Bactéria #${id} analisada: ${bacteria.genes.join('')} (${bacteria.resistencia}% resistência)`);
+
+            // Create a simple modal for analysis
+            const modalContent = `
+                <div class="bg-slate-800 rounded-lg p-4 max-w-sm mx-auto">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-['Orbitron'] text-lg text-cyan-300">
+                            <i class="fas fa-microscope mr-2"></i>Bactéria #${bacteria.id}
+                        </h3>
+                        <button onclick="this.closest('.modal').remove()" class="text-slate-400 hover:text-white">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="${getBacteriaColorClass(bacteria)} w-20 h-20 rounded-full ${bacteria.genes.includes('W') ? 'shadow-lg shadow-emerald-500/50' : ''}"></div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 mb-4">
+                        ${bacteria.genes.map(gene => `
+                            <div class="${getGeneColorClass(gene)} text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
+                                ${gene}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div><span class="font-medium">Genes:</span> ${bacteria.genes.join('')}</div>
+                        <div><span class="font-medium">Resistência:</span> ${bacteria.resistencia}%</div>
+                        <div><span class="font-medium">Genes W:</span> ${bacteria.genes.filter(g => g === 'W').length}</div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-slate-700">
+                        <button onclick="testarResistencia(${bacteria.id})" class="w-full bg-rose-600 hover:bg-rose-500 text-white py-2 px-4 rounded text-sm">
+                            <i class="fas fa-virus mr-2"></i>Testar Resistência
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            const modal = document.createElement('div');
+            modal.className = 'modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50';
+            modal.innerHTML = modalContent;
+            document.body.appendChild(modal);
+        }
+
+        function testarResistencia(id) {
+            const bacteria = state.colonia.find(b => b.id === id);
+            if (!bacteria) return;
+
+            const random = Math.random() * 100;
+            const survives = random <= bacteria.resistencia;
+            
+            if (survives) {
+                addLog(`Bactéria #${id} sobreviveu ao teste de resistência (${bacteria.resistencia}% de chance)`, "success");
+                
+                // Find bacteria element and animate
+                const bacteriaEl = document.querySelector(`[data-id="${id}"]`);
+                if (bacteriaEl) {
+                    bacteriaEl.classList.add("animate-pulse");
+                    setTimeout(() => {
+                        bacteriaEl.classList.remove("animate-pulse");
+                    }, 1000);
+                }
+            } else {
+                addLog(`Bactéria #${id} não resistiu ao bacteriófago (${bacteria.resistencia}% de chance)`, "error");
+                
+                // Find bacteria element and animate
+                const bacteriaEl = document.querySelector(`[data-id="${id}"]`);
+                if (bacteriaEl) {
+                    bacteriaEl.classList.add("opacity-0", "scale-0", "transition-all", "duration-1000");
+                    setTimeout(() => {
+                        bacteriaEl.remove();
+                        state.colonia = state.colonia.filter(b => b.id !== id);
+                    }, 1000);
+                }
+            }
+            
+            // Close modal
+            document.querySelector('.modal')?.remove();
+        }
+
+        // Terminal functions
+        function addLog(message, type = "info") {
+            if (!terminalLogs) return;
+            
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            
+            const time = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const system = type === "error" ? "ERRO:" : type === "success" ? "SUCESSO:" : "SISTEMA:";
+            const color = type === "error" ? "text-rose-400" : type === "success" ? "text-emerald-400" : "text-slate-300";
+            
+            logEntry.innerHTML = `
+                <span class="text-slate-500">[${time}]</span>
+                <span class="${color}">${system}</span>
+                <span class="${color}">${message}</span>
+            `;
+            
+            terminalLogs.appendChild(logEntry);
+            terminalLogs.scrollTop = terminalLogs.scrollHeight;
+        }
+
+        // Initialize with some data
+        window.onload = function() {
+            addLog("Sistema de laboratório xenobiológico inicializado");
+            addLog("Carregando módulos genéticos...");
+            addLog("Pronto para experimentação", "success");
+        };
+
+// Função de simulação de cruzamento
+function simularCruzamento() {
+    const genes = ['R', 'K', 'W'];
+    const offspring = [];
+    
+    for (let i = 0; i < 4; i++) {
+        const child = [];
+        for (let j = 0; j < 3; j++) {
+            const parentChoice = Math.random() < 0.5 ? 
+                simulationState.parent1[j] : simulationState.parent2[j];
+            child.push(genes[parentChoice]);
+        }
+        
+        const wCount = child.filter(g => g === 'W').length;
+        const resistance = calculateResistance(wCount);
+        
+        offspring.push({
+            genes: child,
+            resistance
+        });
+    }
+    
+    addBreedingResult('simulation', 
+        simulationState.parent1.map(i => genes[i]),
+        simulationState.parent2.map(i => genes[i]),
+        offspring
+    );
+    
+    fecharModal('simulacaoModal');
+}
+
+// Abrir modal de cruzamento real
+function abrirModalCruzamentoReal() {
+    const parent1Select = document.getElementById('bacteria-parent1');
+    const parent2Select = document.getElementById('bacteria-parent2');
+    
+    // Limpar selects
+    parent1Select.innerHTML = '<option value="">Selecione uma bactéria</option>';
+    parent2Select.innerHTML = '<option value="">Selecione uma bactéria</option>';
+    
+    // Popular com bactérias existentes
+    state.colonia.forEach(bacteria => {
+        const option = document.createElement('option');
+        option.value = bacteria.id;
+        option.textContent = `Bactéria #${bacteria.id} (${bacteria.genes.join('')})`;
+        
+        parent1Select.appendChild(option.cloneNode(true));
+        parent2Select.appendChild(option);
+    });
+    
+    document.getElementById('cruzamentoRealModal').classList.remove('hidden');
+}
+
+// Função de cruzamento real
+function realizarCruzamento() {
+    const parent1Id = document.getElementById('bacteria-parent1').value;
+    const parent2Id = document.getElementById('bacteria-parent2').value;
+    
+    const parent1 = state.colonia.find(b => b.id == parent1Id);
+    const parent2 = state.colonia.find(b => b.id == parent2Id);
+    
+    if (!parent1 || !parent2) return;
+    
+    const genes = ['R', 'K', 'W'];
+    const offspring = [];
+    
+    for (let i = 0; i < 4; i++) {
+        const childGenes = [];
+        for (let j = 0; j < 3; j++) {
+            const parentChoice = Math.random() < 0.5 ? 
+                parent1.genes[j] : parent2.genes[j];
+            childGenes.push(parentChoice);
+        }
+        
+        const wCount = childGenes.filter(g => g === 'W').length;
+        const resistance = calculateResistance(wCount);
+        
+        // Adicionar à câmara
+        const bacteriaId = ++state.bacteriaCounter;
+        const bacteria = {
+            id: bacteriaId,
+            genes: childGenes,
+            resistencia: resistance
+        };
+        state.colonia.push(bacteria);
+        adicionarBacteriaNaCamara(bacteria);
+        
+        offspring.push({
+            genes: childGenes,
+            resistance,
+            id: bacteriaId
+        });
+    }
+    
+    addBreedingResult('real', 
+        parent1.genes,
+        parent2.genes,
+        offspring
+    );
+    
+    fecharModal('cruzamentoRealModal');
+}
+
+// Função auxiliar para fechar modais
+function fecharModal(id) {
+    document.getElementById(id).classList.add('hidden');
+}
+    </script>
+</body>
+</html>

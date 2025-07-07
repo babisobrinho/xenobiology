@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xenobiology - Acesso ao Laboratório</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .font-display { font-family: 'Orbitron', sans-serif; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        .badge-gradient { background: linear-gradient(135deg, rgba(16,24,39,0.95) 0%, rgba(6,78,118,0.85) 100%); }
+        .dna-pattern { background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%233b82f6' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E"); }
+        .badge-scan-animation { animation: scan 3s ease-in-out infinite; }
+        @keyframes scan {
+            0% { transform: translateY(-100%); opacity: 0; }
+            15% { transform: translateY(0); opacity: 1; }
+            85% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(100%); opacity: 0; }
+        }
+        .badge-holographic { 
+            position: relative;
+            overflow: hidden;
+        }
+        .badge-holographic::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(59, 130, 246, 0) 0%,
+                rgba(59, 130, 246, 0) 35%,
+                rgba(59, 130, 246, 0.3) 50%,
+                rgba(59, 130, 246, 0) 65%,
+                rgba(59, 130, 246, 0) 100%
+            );
+            transform: rotate(30deg);
+            animation: hologram 6s linear infinite;
+        }
+        @keyframes hologram {
+            0% { transform: translateX(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) rotate(30deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen dna-pattern flex items-center justify-center p-4" x-data="loginApp()">
+    <div class="max-w-md w-full">
+        <div class="text-center mb-8">
+            <div class="flex items-center justify-center space-x-2 mb-4">
+                <i class="fas fa-dna text-cyan-400 text-3xl"></i>
+                <span class="font-display text-3xl text-white">XENOBIOLOGY</span>
+            </div>
+            <h1 class="font-display text-xl text-slate-300">Sistema de Acesso ao Laboratório</h1>
+        </div>
+
+        <!-- Crachá Virtual -->
+        <div class="badge-holographic badge-gradient rounded-xl overflow-hidden border-2 border-cyan-400/30 shadow-xl mb-8 transform transition-all duration-500 hover:scale-105">
+            <div class="relative p-6 backdrop-blur-sm">
+                <!-- Efeito de varredura -->
+                <div class="badge-scan-animation absolute top-0 left-0 right-0 h-1 bg-cyan-400/50 z-10"></div>
+                
+                <!-- Cabeçalho do crachá -->
+                <div class="flex justify-between items-center mb-6 border-b border-cyan-400/30 pb-4">
+                    <div>
+                        <h2 class="font-display text-xl text-cyan-400">CRACHÁ DE ACESSO</h2>
+                        <p class="text-xs text-slate-400">Laboratório Xenobiológico Γ-7</p>
+                    </div>
+                    <div class="bg-cyan-400/10 border border-cyan-400/30 rounded-lg px-3 py-1">
+                        <span class="font-mono text-xs text-cyan-400">NÍVEL 3</span>
+                    </div>
+                </div>
+                
+                <!-- Foto e informações -->
+                <div class="flex items-start mb-6">
+                    <div class="relative mr-4">
+                        <div class="w-20 h-20 rounded-full border-2 border-cyan-400 overflow-hidden bg-slate-800/50 flex items-center justify-center">
+                            <i class="fas fa-user-astronaut text-3xl text-cyan-400"></i>
+                        </div>
+                        <div class="absolute -bottom-2 -right-2 bg-purple-500 text-white text-xs font-bold px-2 py-1 rounded-full">ATIVO</div>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white text-lg" x-text="user.name || 'VISITANTE'"></h3>
+                        <p class="text-slate-400 text-sm mb-2" x-text="user.role || 'Pesquisador Convidado'"></p>
+                        <div class="flex space-x-2">
+                            <span class="bg-slate-800/50 text-cyan-400 text-xs px-2 py-1 rounded">ID: <span x-text="user.id || 'XXXXXX'"></span></span>
+                            <span class="bg-slate-800/50 text-purple-400 text-xs px-2 py-1 rounded">SETOR: <span x-text="user.sector || 'Γ-7'"></span></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Formulário de login -->
+                <div x-show="!user.authenticated" x-transition>
+                    <div class="mb-4">
+                        <label class="block text-slate-400 text-sm mb-2">Identificação</label>
+                        <input type="text" x-model="credentials.username" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent" placeholder="ID de Pesquisador">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-slate-400 text-sm mb-2">Senha Biométrica</label>
+                        <input type="password" x-model="credentials.password" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent" placeholder="••••••••">
+                    </div>
+                    <button @click="login()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium py-3 px-6 rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center">
+                        <i class="fas fa-fingerprint mr-2"></i> AUTENTICAR
+                    </button>
+                </div>
+                
+                <!-- Acesso concedido -->
+                <div x-show="user.authenticated" x-transition class="text-center py-6">
+                    <div class="mb-4">
+                        <div class="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-check-circle text-emerald-400 text-3xl"></i>
+                        </div>
+                        <h3 class="font-display text-xl text-emerald-400 mb-2">ACESSO CONCEDIDO</h3>
+                        <p class="text-slate-400 text-sm">Bem-vindo(a) ao Laboratório Xenobiológico</p>
+                    </div>
+                    <div class="space-y-3">
+                        <p class="text-slate-300 text-sm">Redirecionando para o laboratório...</p>
+                        <div class="w-full bg-slate-800 rounded-full h-1 overflow-hidden">
+                            <div class="bg-gradient-to-r from-cyan-400 to-emerald-400 h-1 rounded-full" 
+                                 :style="`width: ${redirectProgress}%`"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Erro de autenticação -->
+                <div x-show="loginError" x-transition class="text-center py-4">
+                    <div class="bg-red-900/20 border border-red-400/30 rounded-lg p-4 mb-4">
+                        <div class="flex items-center justify-center mb-2">
+                            <i class="fas fa-exclamation-triangle text-red-400 mr-2"></i>
+                            <span class="text-red-400 font-medium">ACESSO NEGADO</span>
+                        </div>
+                        <p class="text-slate-400 text-sm">Credenciais inválidas. Verifique seu ID e senha.</p>
+                    </div>
+                    <button @click="loginError = false; credentials.username = ''; credentials.password = ''" 
+                            class="text-cyan-400 text-sm hover:underline">
+                        Tentar novamente
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Rodapé do crachá -->
+            <div class="bg-slate-900/50 px-6 py-3 border-t border-cyan-400/30 flex justify-between items-center">
+                <span class="text-xs text-slate-400">INSTITUTO INTERGALÁCTICO</span>
+                <div class="flex space-x-2">
+                    <span class="text-xs text-cyan-400">v4.2.7</span>
+                    <span class="text-xs text-slate-400" x-text="new Date().toLocaleDateString()"></span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mensagem de ajuda -->
+        <div class="text-center text-slate-500 text-sm">
+            <p>Problemas com acesso? <a href="#" class="text-cyan-400 hover:underline">Contate o Administrador do Sistema</a></p>
+        </div>
+    </div>
+
+    <script>
+        function loginApp() {
+            return {
+                credentials: {
+                    username: '',
+                    password: ''
+                },
+                user: {
+                    authenticated: false,
+                    name: '',
+                    role: '',
+                    id: '',
+                    sector: ''
+                },
+                loginError: false,
+                redirectProgress: 0,
+                
+                init() {
+                    // Verificar se já existe um usuário logado
+                    const savedUser = localStorage.getItem('xenobiology_current_user');
+                    if (savedUser) {
+                        const userData = JSON.parse(savedUser);
+                        this.user = userData;
+                        this.user.authenticated = true;
+                        this.startRedirect();
+                    }
+                },
+                
+                login() {
+                    this.loginError = false;
+                    
+                    if (!this.credentials.username || !this.credentials.password) {
+                        alert('Por favor, insira suas credenciais de acesso');
+                        return;
+                    }
+                    
+                    // Verificar credenciais no localStorage
+                    const savedUser = localStorage.getItem('xenobiology_user');
+                    
+                    if (savedUser) {
+                        const userData = JSON.parse(savedUser);
+                        
+                        if (this.credentials.username === userData.username && 
+                            this.credentials.password === userData.password) {
+                            
+                            // Login bem-sucedido
+                            this.user = {
+                                authenticated: true,
+                                name: userData.fullName,
+                                role: userData.position || 'Pesquisador',
+                                id: userData.username,
+                                sector: 'Γ-7'
+                            };
+                            
+                            // Salvar usuário atual
+                            localStorage.setItem('xenobiology_current_user', JSON.stringify(this.user));
+                            
+                            // Verificar se é primeiro login
+                            if (userData.isFirstLogin) {
+                                localStorage.setItem('xenobiology_first_login', 'true');
+                                // Marcar que não é mais primeiro login
+                                userData.isFirstLogin = false;
+                                localStorage.setItem('xenobiology_user', JSON.stringify(userData));
+                            }
+                            
+                            this.startRedirect();
+                        } else {
+                            this.loginError = true;
+                        }
+                    } else {
+                        // Credenciais padrão para demonstração
+                        if (this.credentials.username === 'DEMO1234' && this.credentials.password === 'XENOBIO') {
+                            this.user = {
+                                authenticated: true,
+                                name: 'Dr. Demo User',
+                                role: 'Pesquisador Demo',
+                                id: 'DEMO1234',
+                                sector: 'Γ-7'
+                            };
+                            
+                            localStorage.setItem('xenobiology_current_user', JSON.stringify(this.user));
+                            this.startRedirect();
+                        } else {
+                            this.loginError = true;
+                        }
+                    }
+                },
+                
+                startRedirect() {
+                    // Simular progresso de redirecionamento
+                    const progressInterval = setInterval(() => {
+                        this.redirectProgress += Math.random() * 20 + 10;
+                        if (this.redirectProgress >= 100) {
+                            this.redirectProgress = 100;
+                            clearInterval(progressInterval);
+                            
+                            // Redirecionar após completar
+                            setTimeout(() => {
+                                // Verificar se é primeiro login
+                                const isFirstLogin = localStorage.getItem('xenobiology_first_login');
+                                if (isFirstLogin === 'true') {
+                                    window.location.href = 'index.html?firstLogin=true';
+                                } else {
+                                    window.location.href = 'index.html'; // Redirecionar para o laboratório
+                                }
+                            }, 500);
+                        }
+                    }, 200);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

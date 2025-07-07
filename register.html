@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xenobiology - Candidatura Científica</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .font-display { font-family: 'Orbitron', sans-serif; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        .application-gradient { background: linear-gradient(135deg, rgba(16,24,39,0.95) 0%, rgba(6,78,118,0.85) 100%); }
+        .dna-pattern { background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%233b82f6' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E"); }
+        .form-card { transition: all 0.3s ease; border: 1px solid #334155; }
+        .form-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); border-color: #3b82f6; }
+        .btn-science { background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); transition: all 0.3s ease; }
+        .btn-science:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4); }
+        .progress-bar { animation: progress 2s ease-in-out infinite alternate; }
+        @keyframes progress {
+            0% { width: 0%; opacity: 0.5; }
+            100% { width: 100%; opacity: 1; }
+        }
+    </style>
+</head>
+<body class="min-h-screen dna-pattern" x-data="applicationApp()">
+    <div class="container mx-auto px-4 py-12 max-w-4xl">
+        <!-- Cabeçalho -->
+        <div class="text-center mb-12">
+            <div class="flex items-center justify-center space-x-3 mb-6">
+                <i class="fas fa-dna text-cyan-400 text-3xl"></i>
+                <span class="font-display text-3xl text-white">XENOBIOLOGY</span>
+            </div>
+            <h1 class="font-display text-2xl md:text-3xl text-white mb-3">Candidatura Científica</h1>
+            <p class="text-slate-400 max-w-2xl mx-auto">Preencha este formulário para se candidatar ao Instituto Intergaláctico de Xenobiologia</p>
+            
+            <!-- Progresso da aplicação -->
+            <div class="mt-8 max-w-md mx-auto">
+                <div class="flex justify-between mb-2 text-sm text-slate-400">
+                    <span>Progresso</span>
+                    <span x-text="`${Math.round((currentStep / steps.length) * 100)}%`"></span>
+                </div>
+                <div class="w-full bg-slate-800 rounded-full h-2.5">
+                    <div class="bg-gradient-to-r from-cyan-500 to-blue-600 h-2.5 rounded-full" 
+                         :style="`width: ${(currentStep / steps.length) * 100}%`"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulário de Candidatura -->
+        <div class="application-gradient form-card rounded-xl overflow-hidden shadow-xl">
+            <!-- Efeito de processamento -->
+            <div x-show="isSubmitting" class="absolute inset-0 bg-slate-900/80 flex items-center justify-center z-50">
+                <div class="text-center p-8">
+                    <div class="inline-block relative mb-6">
+                        <div class="w-16 h-16 rounded-full border-4 border-cyan-400 border-t-transparent animate-spin"></div>
+                        <i class="fas fa-dna text-cyan-400 text-xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></i>
+                    </div>
+                    <h3 class="font-display text-xl text-cyan-400 mb-2">Analisando sua Candidatura</h3>
+                    <p class="text-slate-400 mb-4">Estamos processando suas informações científicas...</p>
+                    <div class="w-full bg-slate-800 rounded-full h-1 overflow-hidden">
+                        <div class="bg-cyan-400 h-1 rounded-full progress-bar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confirmação de Envio -->
+            <div x-show="isComplete && !isApproved" x-transition class="text-center p-12">
+                <div class="mb-6">
+                    <div class="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-check-circle text-emerald-400 text-3xl"></i>
+                    </div>
+                    <h3 class="font-display text-2xl text-emerald-400 mb-2">CANDIDATURA ENVIADA!</h3>
+                    <p class="text-slate-400 mb-6">Sua aplicação para o cargo de <span x-text="formData.position" class="text-white"></span> foi recebida com sucesso.</p>
+                    <div class="bg-slate-800/50 rounded-lg p-4 max-w-md mx-auto text-left">
+                        <h4 class="font-bold text-cyan-400 mb-3">PROCESSANDO CANDIDATURA:</h4>
+                        <ul class="text-slate-400 space-y-2 text-sm">
+                            <li class="flex items-start">
+                                <i class="fas fa-dna text-cyan-400 mr-2 mt-1"></i>
+                                <span>Análise de perfil genético...</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-brain text-purple-400 mr-2 mt-1"></i>
+                                <span>Teste de aptidão científica...</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-comment-alt text-amber-400 mr-2 mt-1"></i>
+                                <span>Avaliação do Comitê Científico...</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mt-6">
+                        <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                            <div class="bg-gradient-to-r from-cyan-400 to-emerald-400 h-2 rounded-full" 
+                                 :style="`width: ${processingProgress}%`"></div>
+                        </div>
+                        <p class="text-slate-400 text-sm mt-2">Processando... <span x-text="processingProgress"></span>%</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aprovação -->
+            <div x-show="isApproved" x-transition class="text-center p-12">
+                <div class="mb-6">
+                    <div class="w-24 h-24 bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                        <i class="fas fa-user-check text-emerald-400 text-4xl"></i>
+                    </div>
+                    <h3 class="font-display text-3xl text-emerald-400 mb-2">🎉 PARABÉNS! 🎉</h3>
+                    <h4 class="font-display text-xl text-white mb-4">SUA CANDIDATURA FOI APROVADA!</h4>
+                    <p class="text-slate-300 mb-6">Bem-vindo(a) ao Instituto Intergaláctico de Xenobiologia, <span x-text="formData.fullName" class="text-cyan-400 font-bold"></span>!</p>
+                    
+                    <div class="bg-gradient-to-br from-slate-800/50 to-emerald-900/20 rounded-lg p-6 max-w-lg mx-auto mb-6 border border-emerald-400/30">
+                        <h4 class="font-bold text-emerald-400 mb-4 flex items-center justify-center">
+                            <i class="fas fa-id-card mr-2"></i> SUAS CREDENCIAIS DE ACESSO
+                        </h4>
+                        <div class="bg-slate-900/50 rounded-lg p-4 font-mono text-sm">
+                            <div class="flex justify-between mb-2">
+                                <span class="text-slate-400">ID de Usuário:</span>
+                                <span class="text-cyan-400" x-text="userCredentials.username"></span>
+                            </div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-slate-400">Senha Temporária:</span>
+                                <span class="text-emerald-400" x-text="userCredentials.password"></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Nível de Acesso:</span>
+                                <span class="text-purple-400">PESQUISADOR NÍVEL 3</span>
+                            </div>
+                        </div>
+                        <p class="text-slate-400 text-xs mt-3">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            Guarde essas credenciais com segurança. Você poderá alterá-las após o primeiro login.
+                        </p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <p class="text-slate-400">Agora você pode acessar o sistema com suas credenciais!</p>
+                        <a href="login.html" class="btn-science text-white font-medium py-3 px-8 rounded-lg inline-flex items-center">
+                            <i class="fas fa-sign-in-alt mr-2"></i> FAZER LOGIN NO SISTEMA
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulário em etapas -->
+            <div x-show="!isSubmitting && !isComplete" class="p-6 md:p-8">
+                <!-- Passo 1 - Informações Pessoais -->
+                <div x-show="currentStep === 1" x-transition>
+                    <h2 class="font-display text-xl text-cyan-400 mb-6 flex items-center">
+                        <span class="bg-cyan-400/20 text-cyan-400 rounded-full w-8 h-8 flex items-center justify-center mr-3">1</span>
+                        Informações Pessoais
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-2">Nome Completo</label>
+                            <input type="text" x-model="formData.fullName" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent" placeholder="Dr. Jane Doe">
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-2">Data de Nascimento</label>
+                            <input type="date" x-model="formData.birthDate" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-2">Planeta de Origem</label>
+                            <input type="text" x-model="formData.origin" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent" placeholder="Terra">
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-2">Especialidade Científica</label>
+                            <select x-model="formData.specialty" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent">
+                                <option value="">Selecione...</option>
+                                <option value="genetics">Genética Alienígena</option>
+                                <option value="microbiology">Microbiologia Extraterrestre</option>
+                                <option value="bioengineering">Bioengenharia Xenobiológica</option>
+                                <option value="astrobiology">Astrobiologia</option>
+                                <option value="computational">Biologia Computacional</option>
+                                <option value="other">Outra</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Passo 2 - Qualificações -->
+                <div x-show="currentStep === 2" x-transition>
+                    <h2 class="font-display text-xl text-cyan-400 mb-6 flex items-center">
+                        <span class="bg-cyan-400/20 text-cyan-400 rounded-full w-8 h-8 flex items-center justify-center mr-3">2</span>
+                        Qualificações Científicas
+                    </h2>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-2">Título Acadêmico Mais Elevado</label>
+                            <select x-model="formData.degree" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent">
+                                <option value="">Selecione...</option>
+                                <option value="phd">Doutorado</option>
+                                <option value="masters">Mestrado</option>
+                                <option value="bachelor">Bacharelado</option>
+                                <option value="other">Outro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-2">Anos de Experiência em Pesquisa</label>
+                            <input type="number" x-model="formData.experience" min="0" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent" placeholder="5">
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-2">Publicações Científicas</label>
+                            <textarea x-model="formData.publications" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent h-24" placeholder="Liste suas publicações mais relevantes..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-2">Upload de Currículo (PDF)</label>
+                            <div class="border-2 border-dashed border-slate-700 rounded-lg p-4 text-center">
+                                <i class="fas fa-file-pdf text-cyan-400 text-3xl mb-2"></i>
+                                <p class="text-slate-400 text-sm mb-2">Arraste ou clique para enviar arquivo</p>
+                                <button type="button" class="bg-slate-800/50 text-cyan-400 text-sm py-2 px-4 rounded-lg hover:bg-slate-800/70">Selecionar Arquivo</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Passo 3 - Posição Desejada -->
+                <div x-show="currentStep === 3" x-transition>
+                    <h2 class="font-display text-xl text-cyan-400 mb-6 flex items-center">
+                        <span class="bg-cyan-400/20 text-cyan-400 rounded-full w-8 h-8 flex items-center justify-center mr-3">3</span>
+                        Posição Desejada
+                    </h2>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-2">Cargo de Interesse</label>
+                            <select x-model="formData.position" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent">
+                                <option value="">Selecione...</option>
+                                <option value="researcher">Pesquisador Associado</option>
+                                <option value="senior">Pesquisador Sênior</option>
+                                <option value="lab">Técnico de Laboratório</option>
+                                <option value="bioinformatic">Bioinformata</option>
+                                <option value="field">Pesquisador de Campo</option>
+                                <option value="other">Outro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-2">Por que você quer trabalhar no Xenobiology Lab?</label>
+                            <textarea x-model="formData.motivation" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent h-32" placeholder="Descreva sua motivação..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-2">Como você descobriu sobre nós?</label>
+                            <select x-model="formData.discovery" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent">
+                                <option value="">Selecione...</option>
+                                <option value="conference">Conferência Científica</option>
+                                <option value="colleague">Colega de Trabalho</option>
+                                <option value="publication">Nossas Publicações</option>
+                                <option value="website">Site/Redes Sociais</option>
+                                <option value="other">Outro</option>
+                            </select>
+                        </div>
+                        <div class="flex items-start">
+                            <input type="checkbox" id="terms" x-model="formData.agreeTerms" class="mt-1 mr-3">
+                            <label for="terms" class="text-slate-400 text-sm">Eu concordo com os <a href="#" class="text-cyan-400 hover:underline">Termos de Candidatura</a> e confirmo que todas as informações fornecidas são verdadeiras.</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navegação entre passos -->
+                <div class="flex justify-between mt-10 pt-6 border-t border-slate-700">
+                    <button x-show="currentStep > 1" @click="prevStep()" type="button" class="bg-slate-800/50 text-white font-medium py-2 px-6 rounded-lg hover:bg-slate-800/70 flex items-center">
+                        <i class="fas fa-arrow-left mr-2"></i> VOLTAR
+                    </button>
+                    <button x-show="currentStep < steps.length" @click="nextStep()" type="button" class="ml-auto btn-science text-white font-medium py-3 px-8 rounded-lg flex items-center">
+                        PRÓXIMO <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                    <button x-show="currentStep === steps.length" @click="submitApplication()" type="button" class="ml-auto bg-gradient-to-r from-purple-500 to-pink-600 text-white font-medium py-3 px-8 rounded-lg flex items-center hover:opacity-90">
+                        <i class="fas fa-paper-plane mr-2"></i> ENVIAR CANDIDATURA
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function applicationApp() {
+            return {
+                currentStep: 1,
+                steps: [1, 2, 3],
+                isSubmitting: false,
+                isComplete: false,
+                isApproved: false,
+                processingProgress: 0,
+                userCredentials: {
+                    username: '',
+                    password: ''
+                },
+                formData: {
+                    fullName: '',
+                    birthDate: '',
+                    origin: 'Terra',
+                    specialty: '',
+                    degree: '',
+                    experience: '',
+                    publications: '',
+                    position: '',
+                    motivation: '',
+                    discovery: '',
+                    agreeTerms: false
+                },
+                nextStep() {
+                    if (this.currentStep < this.steps.length) {
+                        this.currentStep++;
+                    }
+                },
+                prevStep() {
+                    if (this.currentStep > 1) {
+                        this.currentStep--;
+                    }
+                },
+                generateCredentials() {
+                    // Gerar ID baseado no nome
+                    const nameInitials = this.formData.fullName.split(' ')
+                        .map(name => name.charAt(0).toUpperCase())
+                        .join('');
+                    const randomNum = Math.floor(Math.random() * 9000) + 1000;
+                    this.userCredentials.username = `${nameInitials}${randomNum}`;
+                    
+                    // Gerar senha temporária
+                    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                    let password = '';
+                    for (let i = 0; i < 8; i++) {
+                        password += chars.charAt(Math.floor(Math.random() * chars.length));
+                    }
+                    this.userCredentials.password = password;
+                    
+                    // Salvar credenciais no localStorage para uso no login
+                    localStorage.setItem('xenobiology_user', JSON.stringify({
+                        username: this.userCredentials.username,
+                        password: this.userCredentials.password,
+                        fullName: this.formData.fullName,
+                        position: this.formData.position,
+                        isFirstLogin: true
+                    }));
+                },
+                submitApplication() {
+                    if (!this.formData.agreeTerms) {
+                        alert("Você deve concordar com os termos para enviar sua candidatura");
+                        return;
+                    }
+                    
+                    this.isSubmitting = true;
+                    
+                    // Simulação de processamento
+                    setTimeout(() => {
+                        this.isSubmitting = false;
+                        this.isComplete = true;
+                        this.startProcessing();
+                    }, 3000);
+                },
+                startProcessing() {
+                    // Simular progresso de processamento
+                    const progressInterval = setInterval(() => {
+                        this.processingProgress += Math.random() * 15 + 5;
+                        if (this.processingProgress >= 100) {
+                            this.processingProgress = 100;
+                            clearInterval(progressInterval);
+                            
+                            // Após completar o processamento, mostrar aprovação
+                            setTimeout(() => {
+                                this.generateCredentials();
+                                this.isApproved = true;
+                            }, 1000);
+                        }
+                    }, 300);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

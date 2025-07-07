@@ -1,75 +1,429 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xenobiology - Laboratório de Genética Alienígena</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
+    <title>Xenobiology - Laboratório Interplanetário</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .font-display { font-family: 'Orbitron', sans-serif; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        .hero-gradient { background: linear-gradient(135deg, rgba(16,24,39,0.9) 0%, rgba(6,78,118,0.7) 100%); }
+        .dna-pattern { background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%233b82f6' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E"); }
+        .feature-card { transition: all 0.3s ease; border: 1px solid #334155; }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); border-color: #3b82f6; }
+        .btn-primary { background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); transition: all 0.3s ease; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4); }
+        .btn-secondary { background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%); transition: all 0.3s ease; }
+        .btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4); }
+        .section-divider { border-top: 1px solid #1e293b; }
+        .nav-link { position: relative; }
+        .nav-link:after { content: ''; position: absolute; width: 0; height: 2px; bottom: -2px; left: 0; background-color: #3b82f6; transition: width 0.3s ease; }
+        .nav-link:hover:after { width: 100%; }
+        @keyframes float { 0% { transform: translateY(0) translateX(0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100px) translateX(20px); opacity: 0; } }
+        .animate-float { animation: float 7s linear infinite; }
+    </style>
 </head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-black">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="fas fa-dna text-success me-2"></i>Xenobiology
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Laboratório</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="tutorial.html">Tutorial</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.html">Sobre</a>
-                    </li>
-                </ul>
+<body class="min-h-screen dna-pattern" x-data="appData()">
+    <nav class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 fixed w-full z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-dna text-cyan-400 text-2xl"></i>
+                    <span class="font-display text-2xl text-white">XENOBIOLOGY</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#project" class="nav-link text-slate-300 hover:text-white">Projeto</a>
+                    <a href="#features" class="nav-link text-slate-300 hover:text-white">Recursos</a>
+                    <a href="#science" class="nav-link text-slate-300 hover:text-white">Ciência</a>
+                    <a href="#team" class="nav-link text-slate-300 hover:text-white">Sobre Nós</a>
+                    <a href="lab.html"  class="bg-purple-500 text-white font-medium py-2 px-6 rounded-lg">Laboratório</a>
+                </div>
+                <button class="md:hidden text-slate-300 hover:text-white"><i class="fas fa-bars text-xl"></i></button>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero-section py-5">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h1 class="display-4 fs-2 fw-bold mb-4">Laboratório de Xenobiologia</h1>
-                    <div class="d-flex gap-3">
-                        <button id="start-btn" class="btn btn-success btn-sm">
-                            <i class="fas fa-play me-2"></i>Iniciar Experimento
-                        </button>
-                        <div id="experiment-controls" class="d-none gap-3">
-                            <button id="stop-btn" class="btn btn-danger btn-sm">
-                                <i class="fas fa-stop me-2"></i>Parar Experimento
-                            </button>
-                            <button id="restart-btn" class="btn btn-warning btn-sm">
-                                <i class="fas fa-redo me-2"></i>Reiniciar Experimento
-                            </button>
+    <section class="hero-gradient min-h-screen flex items-center pt-20 pb-16 overflow-hidden">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-12 lg:mb-0 z-10">
+                    <h1 class="font-display text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">Explore a <span class="text-cyan-400">Genética Alienígena</span> em um Laboratório Virtual</h1>
+                    <ul class="text-slate-300 space-y-3 mb-8">
+                        <li class="flex items-start"><i class="fas fa-dna text-cyan-400 mr-3 mt-1"></i><span><strong>Interaja</strong> com cromossomos em tempo real</span></li>
+                        <li class="flex items-start"><i class="fas fa-project-diagram text-cyan-400 mr-3 mt-1"></i><span><strong>Analise</strong> padrões genéticos complexos</span></li>
+                        <li class="flex items-start"><i class="fas fa-chart-line text-cyan-400 mr-3 mt-1"></i><span><strong>Preveja</strong> mutações usando probabilidade condicional</span></li>
+                        <li class="flex items-start"><i class="fas fa-microscope text-cyan-400 mr-3 mt-1"></i><span><strong>Simulação Realista</strong> baseada em princípios genéticos avançados</span></li>
+                    </ul>
+                    <div class="flex flex-wrap gap-4">
+                        <button @click="scrollToSection('science')" class="btn-primary text-white font-medium py-3 px-8 rounded-lg flex items-center"><i class="fas fa-brain mr-2"></i>Aprenda a Ciência</button>
+                        <a href="lab.html" class="btn-secondary text-white font-medium py-3 px-8 rounded-lg flex items-center"><i class="fas fa-flask mr-2"></i>Iniciar Experimento</a>
+                    </div>
+                    <div class="mt-10 flex items-center text-sm text-slate-400">
+                        <div class="flex -space-x-2 mr-3">
+                            <img class="w-8 h-8 rounded-full border-2 border-slate-800" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Pesquisadora">
+                            <img class="w-8 h-8 rounded-full border-2 border-slate-800" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Pesquisador">
+                            <img class="w-8 h-8 rounded-full border-2 border-slate-800" src="https://randomuser.me/api/portraits/women/68.jpg" alt="Pesquisadora">
                         </div>
-                        <a href="tutorial.html" class="btn btn-outline-light btn-sm">
-                            <i class="fas fa-book-open me-2"></i>Tutorial
-                        </a>
+                        <span><span class="text-white font-medium">1,247</span> cientistas já estão a ter uma experiência educacional imersiva</span>
                     </div>
                 </div>
-                <div class="col-lg-6 d-none d-lg-block">
-                    <div class="text-center">
-                        <div class="position-relative">
-                            <i class="fas fa-flask fa-5x text-success opacity-25"></i>
-                            <div class="position-absolute top-50 start-50 translate-middle">
-                                <div class="bacteria bacteria-W" style="width: 30px; height: 30px; position: absolute; top: -40px; left: 10px;"></div>
-                                <div class="bacteria bacteria-R" style="width: 20px; height: 20px; position: absolute; top: 20px; left: -30px;"></div>
-                                <div class="bacteria bacteria-K" style="width: 25px; height: 25px; position: absolute; top: 10px; left: 30px;"></div>
+                <div class="lg:w-1/2 flex justify-center relative">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="absolute w-64 h-64 bg-cyan-400 rounded-full filter blur-[100px] opacity-20 animate-pulse"></div>
+                    </div>
+                    <div class="relative z-10 w-full max-w-2xl h-[500px] flex items-center justify-center">
+                        <div class="absolute inset-0 overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-full opacity-20" style="background-image: radial-gradient(circle at center, #3b82f6 1px, transparent 1px); background-size: 20px 20px;"></div>
+                        </div>
+                        <div class="relative w-64 h-full" x-data="{ rotation: 0, hovered: false, get segments() { return Array.from({length: 12}, (_, i) => i); }, get colors() { return ['from-cyan-400', 'from-purple-400', 'from-emerald-400', 'from-amber-400']; }, get bases() { return ['W', 'K', 'R', 'X', 'Z']; } }" @mouseenter="hovered = true" @mouseleave="hovered = false" @mousemove="rotation = ($event.clientX / window.innerWidth) * 180 - 90">
+                            <div class="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-cyan-500 to-purple-500 transform -translate-x-1/2"></div>
+                            <template x-for="(segment, index) in segments" :key="index">
+                                <div class="absolute left-1/2 transform -translate-x-1/2" :style="`top: ${(index * 8) + 10}%; transition: all 0.3s ease;`" :class="{'animate-pulse': hovered}">
+                                    <div class="w-40 h-6 rounded-full" :class="`bg-gradient-to-r ${colors[index % colors.length]} to-transparent opacity-80`"></div>
+                                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-slate-800 border-2 border-cyan-400 flex items-center justify-center text-xs font-bold text-cyan-400 shadow-lg" x-text="bases[index % bases.length]"></div>
+                                </div>
+                            </template>
+                            <div class="absolute inset-0 overflow-hidden">
+                                <template x-for="(_, index) in 15" :key="'particle-'+index">
+                                    <div class="absolute rounded-full bg-cyan-400/30 animate-float" :style="`width: ${Math.random() * 6 + 2}px; height: ${Math.random() * 6 + 2}px; top: ${Math.random() * 100}%; left: ${Math.random() * 100}%; animation-delay: ${Math.random() * 5}s; animation-duration: ${Math.random() * 10 + 5}s;`"></div>
+                                </template>
+                            </div>
+                        </div>
+                        <div class="absolute right-0 bottom-0 w-64 bg-slate-800/80 backdrop-blur-sm border border-cyan-400/30 rounded-lg p-4 shadow-xl">
+                            <div class="flex items-center mb-3">
+                                <i class="fas fa-dna text-cyan-400 mr-2"></i>
+                                <h3 class="font-display text-lg text-white">Sequenciador Genético</h3>
+                            </div>
+                            <div class="text-xs font-mono text-cyan-300 mb-2">
+                                <div class="flex justify-between"><span>Espécie:</span><span class="text-white">Xeno-Bactéria Γ-7</span></div>
+                                <div class="flex justify-between"><span>Cromossomos:</span><span class="text-white">Triploides (3n)</span></div>
+                                <div class="flex justify-between"><span>Resistência:</span><span class="text-white">87.3%</span></div>
+                            </div>
+                            <div class="mt-3 h-2 bg-slate-700 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full" style="width: 87.3%"></div>
+                            </div>
+                            <div class="mt-4 grid grid-cols-3 gap-2 text-center">
+                                <button class="bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 text-xs py-1 px-2 rounded"><i class="fas fa-bolt mr-1"></i> Mutar</button>
+                                <button class="bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 text-xs py-1 px-2 rounded"><i class="fas fa-random mr-1"></i> Cruzar</button>
+                                <button class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-xs py-1 px-2 rounded"><i class="fas fa-search mr-1"></i> Analisar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute inset-0 overflow-hidden">
+                        <div class="absolute top-0 left-0 w-2 h-2 bg-cyan-400 rounded-full animate-float" style="animation-delay: 0s;"></div>
+                        <div class="absolute top-1/4 right-10 w-3 h-3 bg-purple-400 rounded-full animate-float" style="animation-delay: 2s;"></div>
+                        <div class="absolute bottom-1/3 left-20 w-4 h-4 bg-emerald-400 rounded-full animate-float" style="animation-delay: 4s;"></div>
+                        <div class="absolute top-3/4 right-1/4 w-2 h-2 bg-white rounded-full animate-float" style="animation-delay: 1s;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="project" class="py-20 bg-slate-900/50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="inline-block bg-cyan-900/30 text-cyan-400 text-sm font-medium py-1 px-4 rounded-full mb-4">SOBRE O PROJETO</span>
+                <h2 class="font-display text-4xl font-bold text-white mb-4">Revolucionando o Aprendizado Científico</h2>
+                <p class="text-xl text-slate-400 max-w-3xl mx-auto">Xenobiology foi desenvolvido por uma equipe interdisciplinar de educadores, cientistas e designers de jogos para criar uma experiência única de aprendizado.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="feature-card bg-slate-800/50 rounded-xl p-8 text-center">
+                    <div class="bg-cyan-500/10 text-cyan-400 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6"><i class="fas fa-atom text-2xl"></i></div>
+                    <h3 class="text-xl font-bold text-white mb-3">Missão Científica</h3>
+                    <p class="text-slate-400">Estudar bactérias alienígenas com genética tri-cromossomática e descobrir os segredos de sua resistência ao bacteriófago.</p>
+                </div>
+                <div class="feature-card bg-slate-800/50 rounded-xl p-8 text-center">
+                    <div class="bg-purple-500/10 text-purple-400 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6"><i class="fas fa-brain text-2xl"></i></div>
+                    <h3 class="text-xl font-bold text-white mb-3">Abordagem Educacional</h3>
+                    <p class="text-slate-400">Aprenda teoria de conjuntos, probabilidade e genética através de experimentação prática em um ambiente imersivo.</p>
+                </div>
+                <div class="feature-card bg-slate-800/50 rounded-xl p-8 text-center">
+                    <div class="bg-emerald-500/10 text-emerald-400 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6"><i class="fas fa-gamepad text-2xl"></i></div>
+                    <h3 class="text-xl font-bold text-white mb-3">Mecânicas de Jogo</h3>
+                    <p class="text-slate-400">Simulação realista do método científico com observação, hipóteses, experimentação e análise de resultados.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="py-20 bg-slate-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="inline-block bg-cyan-900/30 text-cyan-400 text-sm font-medium py-1 px-4 rounded-full mb-4">RECURSOS PRINCIPAIS</span>
+                <h2 class="font-display text-4xl font-bold text-white mb-4">Laboratório Virtual Completo</h2>
+                <p class="text-xl text-slate-400 max-w-3xl mx-auto">Todas as ferramentas necessárias para conduzir pesquisas xenobiológicas avançadas.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+                <div class="feature-card bg-slate-800/50 rounded-xl p-8 flex flex-col md:flex-row items-start">
+                    <div class="bg-blue-500/10 text-blue-400 w-14 h-14 rounded-full flex items-center justify-center md:mr-6 mb-4 md:mb-0"><i class="fas fa-flask text-xl"></i></div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-3">Câmara de Cultivo</h3>
+                        <p class="text-slate-400 mb-4">Ambiente controlado para realizar cruzamentos genéticos entre diferentes subespécies de bactérias alienígenas.</p>
+                        <ul class="text-slate-400 space-y-2">
+                            <li class="flex items-start"><i class="fas fa-check text-blue-400 mr-2 mt-1"></i><span>Seleção precisa de cromossomos</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-blue-400 mr-2 mt-1"></i><span>Simulação de descendentes com probabilidades realistas</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-blue-400 mr-2 mt-1"></i><span>Visualização gráfica dos resultados</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="feature-card bg-slate-800/50 rounded-xl p-8 flex flex-col md:flex-row items-start">
+                    <div class="bg-purple-500/10 text-purple-400 w-14 h-14 rounded-full flex items-center justify-center md:mr-6 mb-4 md:mb-0"><i class="fas fa-microscope text-xl"></i></div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-3">Ferramentas de Análise</h3>
+                        <p class="text-slate-400 mb-4">Conjunto avançado de instrumentos para investigar propriedades genéticas e calcular probabilidades.</p>
+                        <ul class="text-slate-400 space-y-2">
+                            <li class="flex items-start"><i class="fas fa-check text-purple-400 mr-2 mt-1"></i><span>Sequenciador Genético Avançado</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-purple-400 mr-2 mt-1"></i><span>Resistômetro de Precisão</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-purple-400 mr-2 mt-1"></i><span>Bayesinator Visual</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="feature-card bg-slate-800/50 rounded-xl p-8 flex flex-col md:flex-row items-start">
+                    <div class="bg-emerald-500/10 text-emerald-400 w-14 h-14 rounded-full flex items-center justify-center md:mr-6 mb-4 md:mb-0"><i class="fas fa-book text-xl"></i></div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-3">Biblioteca Xenobiológica</h3>
+                        <p class="text-slate-400 mb-4">Acervo completo de conhecimento científico sobre genética alienígena e matemática aplicada.</p>
+                        <ul class="text-slate-400 space-y-2">
+                            <li class="flex items-start"><i class="fas fa-check text-emerald-400 mr-2 mt-1"></i><span>Tutoriais interativos</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-emerald-400 mr-2 mt-1"></i><span>Artigos científicos fictícios</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-emerald-400 mr-2 mt-1"></i><span>Referências matemáticas</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="feature-card bg-slate-800/50 rounded-xl p-8 flex flex-col md:flex-row items-start">
+                    <div class="bg-amber-500/10 text-amber-400 w-14 h-14 rounded-full flex items-center justify-center md:mr-6 mb-4 md:mb-0"><i class="fas fa-user-astronaut text-xl"></i></div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-3">Progresso Científico</h3>
+                        <p class="text-slate-400 mb-4">Acompanhe sua carreira como xenobiólogo e suas descobertas importantes.</p>
+                        <ul class="text-slate-400 space-y-2">
+                            <li class="flex items-start"><i class="fas fa-check text-amber-400 mr-2 mt-1"></i><span>Publicações científicas</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-amber-400 mr-2 mt-1"></i><span>Descobertas registradas</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-amber-400 mr-2 mt-1"></i><span>Níveis acadêmicos</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="science" class="py-20 bg-gradient-to-b from-slate-900 to-slate-800 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-0 left-0 w-full h-full" style="background-image: radial-gradient(circle at center, #3b82f6 1px, transparent 1px); background-size: 30px 30px;"></div>
+        </div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <span class="inline-block bg-cyan-900/30 text-cyan-400 text-sm font-medium py-1 px-4 rounded-full mb-4">CIÊNCIA AVANÇADA</span>
+                <h2 class="font-display text-4xl font-bold text-white mb-4">Teoria da Xenogenética</h2>
+                <p class="text-xl text-slate-300 max-w-3xl mx-auto">Explore os princípios matemáticos e biológicos que regem a vida alienígena</p>
+            </div>
+            <div class="mb-20">
+                <div class="relative">
+                    <div class="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-cyan-500 via-purple-500 to-emerald-500 transform -translate-x-1/2 md:block hidden"></div>
+                    <div class="space-y-16">
+                        <!-- Evento 1 - Triploidia -->
+                        <div class="relative flex flex-col md:flex-row items-center" x-data="{ hovered: false }" @mouseenter="hovered = true" @mouseleave="hovered = false">
+                            <!-- Coluna esquerda (data) -->
+                            <div class="md:block hidden md:w-1/2 md:pr-12 order-1 text-right">
+                                <div class="text-slate-400 mb-2"><span class="font-bold text-white">2025</span></div>
+                                <h3 class="font-display text-xl text-cyan-400">Estrutura Cromossômica</h3>
+                            </div>
+                            
+                            <!-- Ponto central -->
+                            <div class="d:block hidden w-16 h-16 rounded-full bg-cyan-500/20 border-2 border-cyan-400 md:flex md:items-center md:justify-center text-cyan-400 text-2xl order-2 mx-4 shrink-0">
+                                <i class="fas fa-dna"></i>
+                            </div>
+                            
+                            <!-- Coluna direita (conteúdo) -->
+                            <div class="md:w-1/2 md:pl-12 order-3">
+                                <div class="inline-block bg-slate-800/80 border border-cyan-400/30 rounded-xl p-6 transition-all duration-300 text-left" :class="{'scale-105 shadow-lg': hovered}">
+                                    <h3 class="font-display text-xl text-cyan-400 mb-2">Descoberta da Triploidia</h3>
+                                    <p class="text-slate-300 mb-3">Análise da sonda Voyager X revelou organismos com três conjuntos de cromossomos funcionais.</p>
+                                    <div class="bg-slate-800/60 p-3 rounded-lg border border-cyan-400/20">
+                                        <div class="grid grid-cols-3 gap-1 text-xs">
+                                            <div class="bg-cyan-900/20 p-1 text-center">Termo 1-5</div>
+                                            <div class="bg-cyan-900/20 p-1 text-center">Termo 6-10</div>
+                                            <div class="bg-cyan-900/20 p-1 text-center">Termo 11-15</div>
+                                            <div class="col-span-3 bg-cyan-900/30 p-1 text-center font-bold">Termo 13 (Crítico)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Evento 2 - Bases Nitrogenadas -->
+                        <div class="relative flex flex-col md:flex-row items-center" x-data="{ hovered: false }" @mouseenter="hovered = true" @mouseleave="hovered = false">
+                            <!-- Coluna direita (conteúdo) -->
+                            <div class="md:w-1/2 md:pr-12 order-1 text-right">
+                                <div class="inline-block bg-slate-800/80 border border-purple-400/30 rounded-xl p-6 transition-all duration-300 text-right" :class="{'scale-105 shadow-lg': hovered}">
+                                    <h3 class="font-display text-xl text-purple-400 mb-2">Bases Nitrogenadas Exóticas</h3>
+                                    <p class="text-slate-300 mb-3">Cristalografia espacial identificou bases W, K, R, X, Z com pareamento único.</p>
+                                    <div class="bg-slate-800/60 p-3 rounded-lg border border-purple-400/20 inline-block">
+                                        <div class="flex space-x-2 justify-end">
+                                            <span class="bg-purple-900/50 text-purple-300 px-2 py-1 rounded-full text-xs">W > K</span>
+                                            <span class="bg-purple-900/50 text-purple-300 px-2 py-1 rounded-full text-xs">K || R</span>
+                                            <span class="bg-purple-900/50 text-purple-300 px-2 py-1 rounded-full text-xs">X ⊥ Z</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Ponto central -->
+                            <div class="md:block hidden w-16 h-16 rounded-full bg-purple-500/20 border-2 border-purple-400 md:flex md:items-center md:justify-center text-purple-400 text-2xl order-2 mx-4 shrink-0">
+                                <i class="fas fa-atom"></i>
+                            </div>
+                            
+                            <!-- Coluna esquerda (data) -->
+                            <div class="md:block hidden md:w-1/2 md:pl-12 order-3 text-left">
+                                <div class="text-slate-400 mb-2"><span class="font-bold text-white">2027</span></div>
+                                <h3 class="font-display text-xl text-purple-400">Interações Gênicas</h3>
+                            </div>
+                        </div>
+
+                        <!-- Evento 3 - Resistência -->
+                        <div class="relative flex flex-col md:flex-row items-center" x-data="{ hovered: false }" @mouseenter="hovered = true" @mouseleave="hovered = false">
+                            <!-- Coluna esquerda (data) -->
+                            <div class="md:block hidden md:w-1/2 md:pr-12 order-1 text-right">
+                                <div class="text-slate-400 mb-2"><span class="font-bold text-white">2029</span></div>
+                                <h3 class="font-display text-xl text-emerald-400">Modelo Probabilístico</h3>
+                            </div>
+                            
+                            <!-- Ponto central -->
+                            <div class="md:block hidden w-16 h-16 rounded-full bg-emerald-500/20 border-2 border-emerald-400 md:flex md:items-center md:justify-center text-emerald-400 text-2xl order-2 mx-4 shrink-0">
+                                <i class="fas fa-shield-virus"></i>
+                            </div>
+                            
+                            <!-- Coluna direita (conteúdo) -->
+                            <div class="md:w-1/2 md:pl-12 order-3">
+                                <div class="inline-block bg-slate-800/80 border border-emerald-400/30 rounded-xl p-6 transition-all duration-300 text-left" :class="{'scale-105 shadow-lg': hovered}">
+                                    <h3 class="font-display text-xl text-emerald-400 mb-2">Mecanismo de Resistência</h3>
+                                    <p class="text-slate-300 mb-3">Estudos com marcadores fluorescentes revelaram proteção contra bacteriófagos.</p>
+                                    <div class="bg-slate-800/60 p-3 rounded-lg border border-emerald-400/20">
+                                        <code class="text-xs text-emerald-300 font-mono">P(R) = 1 - (0.65)<sup>W</sup> × (0.85)<sup>K</sup></code>
+                                        <p class="text-slate-400 text-xs mt-1">W e K representam cópias genéticas no termo 13</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-20"></div>
+                <div class="text-center mb-12">
+                    <span class="inline-block bg-cyan-900/30 text-cyan-400 text-sm font-medium py-1 px-4 rounded-full mb-4">MÉTODO CIENTÍFICO</span>
+                    <h2 class="font-display text-3xl font-bold text-white mb-4">Processo de Pesquisa Xenobiológica</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-4 mb-12">
+                    <!-- Observação -->
+                    <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-4 transition-all duration-300 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-400/20" 
+                        x-data="{ flipped: false }" @click="flipped = !flipped">
+                        <div class="relative h-40" x-show="!flipped">
+                            <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-transparent rounded-lg flex flex-col items-center justify-center p-4">
+                                <div class="w-12 h-12 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 text-xl mb-2">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <h3 class="font-display text-lg text-white mb-1">Observação</h3>
+                            </div>
+                        </div>
+                        <div class="relative h-40" x-show="flipped" x-cloak>
+                            <div class="absolute inset-0 bg-slate-800 rounded-lg p-4 flex flex-col justify-center">
+                                <p class="text-sm text-cyan-300 text-center">Analisar características das bactérias alienígenas e pesquisar na biblioteca xenobiológica</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hipótese -->
+                    <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-4 transition-all duration-300 hover:border-purple-400 hover:shadow-lg hover:shadow-purple-400/20" 
+                        x-data="{ flipped: false }" @click="flipped = !flipped">
+                        <div class="relative h-40" x-show="!flipped">
+                            <div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent rounded-lg flex flex-col items-center justify-center p-4">
+                                <div class="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-xl mb-2">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <h3 class="font-display text-lg text-white mb-1">Hipótese</h3>
+                            </div>
+                        </div>
+                        <div class="relative h-40" x-show="flipped" x-cloak>
+                            <div class="absolute inset-0 bg-slate-800 rounded-lg p-4 flex flex-col justify-center">
+                                <p class="text-sm text-purple-300 text-center">Formular previsões sobre como os genes alienígenas interagem e se expressam</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Experimento -->
+                    <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-4 transition-all duration-300 hover:border-emerald-400 hover:shadow-lg hover:shadow-emerald-400/20" 
+                        x-data="{ flipped: false }" @click="flipped = !flipped">
+                        <div class="relative h-40" x-show="!flipped">
+                            <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent rounded-lg flex flex-col items-center justify-center p-4">
+                                <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-xl mb-2">
+                                    <i class="fas fa-flask"></i>
+                                </div>
+                                <h3 class="font-display text-lg text-white mb-1">Experimento</h3>
+                            </div>
+                        </div>
+                        <div class="relative h-40" x-show="flipped" x-cloak>
+                            <div class="absolute inset-0 bg-slate-800 rounded-lg p-4 flex flex-col justify-center">
+                                <p class="text-sm text-emerald-300 text-center">Conduzir cruzamentos genéticos controlados na câmara de cultivo</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Análise -->
+                    <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-4 transition-all duration-300 hover:border-blue-400 hover:shadow-lg hover:shadow-blue-400/20" 
+                        x-data="{ flipped: false }" @click="flipped = !flipped">
+                        <div class="relative h-40" x-show="!flipped">
+                            <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent rounded-lg flex flex-col items-center justify-center p-4">
+                                <div class="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 text-xl mb-2">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <h3 class="font-display text-lg text-white mb-1">Análise</h3>
+                            </div>
+                        </div>
+                        <div class="relative h-40" x-show="flipped" x-cloak>
+                            <div class="absolute inset-0 bg-slate-800 rounded-lg p-4 flex flex-col justify-center">
+                                <p class="text-sm text-blue-300 text-center">Aplicar o sequenciador genético e resistômetro para interpretar resultados</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Conclusão -->
+                    <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-4 transition-all duration-300 hover:border-amber-400 hover:shadow-lg hover:shadow-amber-400/20" 
+                        x-data="{ flipped: false }" @click="flipped = !flipped">
+                        <div class="relative h-40" x-show="!flipped">
+                            <div class="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent rounded-lg flex flex-col items-center justify-center p-4">
+                                <div class="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400 text-xl mb-2">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <h3 class="font-display text-lg text-white mb-1">Conclusão</h3>
+                            </div>
+                        </div>
+                        <div class="relative h-40" x-show="flipped" x-cloak>
+                            <div class="absolute inset-0 bg-slate-800 rounded-lg p-4 flex flex-col justify-center">
+                                <p class="text-sm text-amber-300 text-center">Comparar resultados com hipóteses iniciais e tirar conclusões</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Publicação -->
+                    <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-4 transition-all duration-300 hover:border-red-400 hover:shadow-lg hover:shadow-red-400/20" 
+                        x-data="{ flipped: false }" @click="flipped = !flipped">
+                        <div class="relative h-40" x-show="!flipped">
+                            <div class="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent rounded-lg flex flex-col items-center justify-center p-4">
+                                <div class="w-12 h-12 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 text-xl mb-2">
+                                    <i class="fas fa-scroll"></i>
+                                </div>
+                                <h3 class="font-display text-lg text-white mb-1">Publicação</h3>
+                            </div>
+                        </div>
+                        <div class="relative h-40" x-show="flipped" x-cloak>
+                            <div class="absolute inset-0 bg-slate-800 rounded-lg p-4 flex flex-col justify-center">
+                                <p class="text-sm text-red-300 text-center">Documentar descobertas e submeter para revisão pelo conselho científico</p>
                             </div>
                         </div>
                     </div>
@@ -78,55 +432,194 @@
         </div>
     </section>
 
-    <!-- Laboratório Section -->
-    <section id="laboratorio" class="py-4 game-area">
-        <div class="container">
-            <!-- Painel de Controle Principal -->
-            <div class="row mb-4">
-                <div class="col-12">
-                    <div class="card bg-black text-light border border-secondary">
-                        <div class="card-body">
-                            <div class="row g-4">
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="h-100 text-center">
-                                        <i class="fas fa-microscope fa-3x text-success mb-3"></i>
-                                        <h5>Criar Bactéria</h5>
-                                        <div class="d-flex gap-2">
-                                            <button id="criar-bacteria-btn" class="btn btn-sm btn-success w-100">
-                                                <i class="fas fa-plus"></i> Individual
-                                            </button>
-                                            <button id="criar-massa-btn" class="btn btn-sm btn-success w-100">
-                                                <i class="fas fa-layer-group"></i> Múltiplas
-                                            </button>
-                                        </div>
-                                        
+    <section class="py-20 bg-slate-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="inline-block bg-cyan-900/30 text-cyan-400 text-sm font-medium py-1 px-4 rounded-full mb-4">AVALIAÇÕES</span>
+                <h2 class="font-display text-4xl font-bold text-white mb-4">Quem Usou, Aprovou</h2>
+                <p class="text-xl text-slate-400 max-w-3xl mx-auto">Veja o que dizem educadores e nosso professor orientador sobre a experiência Xenobiology.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="feature-card bg-gradient-to-br from-slate-800/50 to-amber-900/20 rounded-xl p-8 border border-amber-400/30 relative">
+                    <div class="absolute -top-3 -right-3 bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full">ORIENTADOR</div>
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-400 mr-4"><i class="fas fa-chalkboard-teacher"></i></div>
+                        <div>
+                            <h4 class="font-bold text-white">Prof. Orientador</h4>
+                            <p class="text-sm text-slate-400">Professor Universitário</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-300 italic mb-6">"O projeto Xenobiology demonstra excelente aplicação dos conceitos de probabilidade e genética de forma criativa. A equipe mostrou dedicação excepcional na construção desta ferramenta educacional inovadora."</p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex text-amber-400">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <span class="text-xs text-amber-300">Avaliação: 5/5</span>
+                    </div>
+                </div>
+                <div class="feature-card bg-slate-800/50 rounded-xl p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-400 mr-4"><i class="fas fa-user-tie"></i></div>
+                        <div>
+                            <h4 class="font-bold text-white">Dra. Elena Voss</h4>
+                            <p class="text-sm text-slate-400">Professora de Genética</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-400 italic">"Transforma conceitos abstratos em experiências tangíveis. Meus alunos finalmente entenderam o Teorema de Bayes!"</p>
+                    <div class="mt-4 flex text-amber-400">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="feature-card bg-slate-800/50 rounded-xl p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full bg-purple-500/10 flex items-center justify-center text-purple-400 mr-4"><i class="fas fa-user-graduate"></i></div>
+                        <div>
+                            <h4 class="font-bold text-white">Prof. Raj Patel</h4>
+                            <p class="text-sm text-slate-400">Matemático Aplicado</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-400 italic">"Abordagem gamificada revolucionária. Alunos extremamente engajados com matemática discreta."</p>
+                    <div class="mt-4 flex text-amber-400">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-12">
+                <button class="btn-secondary text-white font-medium py-3 px-8 rounded-lg inline-flex items-center">
+                    <i class="fas fa-comment-alt mr-2"></i>Deixe Sua Avaliação
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="team" class="py-20 bg-slate-900/50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="inline-block bg-cyan-900/30 text-cyan-400 text-sm font-medium py-1 px-4 rounded-full mb-4">EQUIPA</span>
+                <h2 class="font-display text-4xl font-bold text-white mb-4">Conheça Nossa Equipe Científica</h2>
+                <p class="text-xl text-slate-400 max-w-3xl mx-auto">Os pesquisadores intergalácticos por trás do projeto Xenobiology</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <div class="feature-card bg-slate-800/50 rounded-xl p-6 flex flex-col items-center text-center">
+                    <div class="w-32 h-32 rounded-full border-2 border-pink-400 mb-4 overflow-hidden"><img src="https://github.com/babisobrinho.png" alt="Ana Sobrinho" class="w-full h-full object-cover"></div>
+                    <h3 class="text-xl font-bold text-white mb-1">Dra. Ana Sobrinho</h3>
+                    <p class="text-pink-400 text-sm mb-3">Geneticista Chefe</p>
+                    <div class="flex space-x-3">
+                        <a href="https://github.com/babisobrinho" class="text-slate-400 hover:text-pink-400"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-pink-400"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="feature-card bg-slate-800/50 rounded-xl p-6 flex flex-col items-center text-center">
+                    <div class="w-32 h-32 rounded-full border-2 border-cyan-400 mb-4 overflow-hidden"><img src="https://github.com/JulyDuds.png" alt="Juliana Abreu" class="w-full h-full object-cover"></div>
+                    <h3 class="text-xl font-bold text-white mb-1">Dra. Juliana Abreu</h3>
+                    <p class="text-cyan-400 text-sm mb-3">Bioinformática Sênior</p>
+                    <div class="flex space-x-3">
+                        <a href="https://github.com/JulyDuds" class="text-slate-400 hover:text-cyan-400"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-cyan-400"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="feature-card bg-slate-800/50 rounded-xl p-6 flex flex-col items-center text-center">
+                    <div class="w-32 h-32 rounded-full border-2 border-emerald-400 mb-4 overflow-hidden"><img src="https://github.com/lenicesoaares.png" alt="Lenice Soares" class="w-full h-full object-cover"></div>
+                    <h3 class="text-xl font-bold text-white mb-1">Dra. Lenice Soares</h3>
+                    <p class="text-emerald-400 text-sm mb-3">Especialista em Interações Moleculares</p>
+                    <div class="flex space-x-3">
+                        <a href="https://github.com/lenicesoaares" class="text-slate-400 hover:text-emerald-400"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-emerald-400"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="feature-card bg-slate-800/50 rounded-xl p-6 flex flex-col items-center text-center">
+                    <div class="w-32 h-32 rounded-full border-2 border-amber-400 mb-4 overflow-hidden"><img src="https://github.com/RebecaSantosb.png" alt="Rebeca Santos" class="w-full h-full object-cover"></div>
+                    <h3 class="text-xl font-bold text-white mb-1">Dra. Rebeca Santos</h3>
+                    <p class="text-amber-400 text-sm mb-3">Designer de Experiência Científica</p>
+                    <div class="flex space-x-3">
+                        <a href="https://github.com/RebecaSantosb" class="text-slate-400 hover:text-amber-400"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-amber-400"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="feature-card bg-slate-800/50 rounded-xl p-6 flex flex-col items-center text-center">
+                    <div class="w-32 h-32 rounded-full border-2 border-red-400 mb-4 overflow-hidden"><img src="https://github.com/taysoic.png" alt="Thalyson Santos" class="w-full h-full object-cover"></div>
+                    <h3 class="text-xl font-bold text-white mb-1">Dr. Thalyson Santos</h3>
+                    <p class="text-red-400 text-sm mb-3">Engenheiro de Sistemas Biológicos</p>
+                    <div class="flex space-x-3">
+                        <a href="https://github.com/taysoic" class="text-slate-400 hover:text-red-400"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-red-400"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-slate-800/50 to-purple-900/20 rounded-xl p-6 flex flex-col items-center justify-center text-center border border-purple-400/30">
+                    <div class="w-20 h-20 rounded-full bg-purple-500/10 border-2 border-purple-400 flex items-center justify-center text-purple-400 text-3xl mb-4"><i class="fab fa-github"></i></div>
+                    <h3 class="text-xl font-bold text-white mb-2">Contribua com o Projeto</h3>
+                    <p class="text-slate-300 mb-4">Aceitamos contribuições da comunidade científica.</p>
+                    <a href="#" target="_blank" class="btn-secondary text-white font-medium py-2 px-6 rounded-lg flex items-center"><i class="fab fa-github mr-2"></i>Ver Repositório</a>
+                </div>
+            </div>
+            <div class="bg-gradient-to-br from-slate-900/50 to-cyan-900/20 rounded-xl overflow-hidden border border-slate-700/50">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-0">
+                    <div class="p-8 md:p-10 bg-slate-800/30 backdrop-blur-sm">
+                        <div class="flex items-center mb-6">
+                            <h3 class="font-display text-2xl text-white">O Nosso Propósito Científico</h3>
+                        </div>
+                        <div class="space-y-5">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <div class="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center text-purple-400"><i class="fas fa-atom text-md"></i></div>
+                                </div>
+                                <p class="text-slate-300 ml-3">Desvendar os mistérios da genética alienígena através de simulações realistas e acessíveis</p>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <div class="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400"><i class="fas fa-graduation-cap text-md"></i></div>
+                                </div>
+                                <p class="text-slate-300 ml-3">Democratizar o acesso ao conhecimento genético avançado para estudantes de todos os níveis</p>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <div class="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-400"><i class="fas fa-flask text-md"></i></div>
+                                </div>
+                                <p class="text-slate-300 ml-3">Criar a próxima geração de xenobiólogos através de experimentação prática e segura</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-8 md:p-10 bg-slate-900/50 relative">
+                        <div class="absolute inset-0 overflow-hidden opacity-20">
+                            <div class="absolute top-0 left-0 w-full h-full" style="background-image: radial-gradient(circle at center, #3b82f6 1px, transparent 1px); background-size: 20px 20px;"></div>
+                        </div>
+                        <div class="relative z-10">
+                            <h4 class="font-display text-xl text-cyan-400 mb-6 flex items-center"><i class="fas fa-chart-line mr-3"></i>Em Números</h4>
+                            <div class="space-y-6">
+                                <div x-data="{ count: 0, target: 42 }" x-init="() => { const interval = setInterval(() => { if (count < target) { count++; } else { clearInterval(interval); } }, 50); }">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-sm font-medium text-slate-300">Publicações</span>
+                                        <span class="font-mono text-lg text-cyan-400" x-text="count"></span>
+                                    </div>
+                                    <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                                        <div class="bg-gradient-to-r from-cyan-400 to-purple-500 h-full rounded-full" :style="`width: ${(count/42)*100}%`"></div>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="h-100 text-center">
-                                        <i class="fas fa-virus fa-3x text-danger mb-3"></i>
-                                        <h5>Modo Infecção</h5>
-                                        <button id="modo-infeccao-btn" class="btn btn-sm btn-danger w-100">
-                                            <i class="fas fa-biohazard me-1"></i>Iniciar
-                                        </button>
+                                <div x-data="{ count: 0, target: 58 }" x-init="() => { const interval = setInterval(() => { if (count < target) { count++; } else { clearInterval(interval); } }, 30); }">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-sm font-medium text-slate-300">Anos de Experiência</span>
+                                        <span class="font-mono text-lg text-purple-400" x-text="count"></span>
+                                    </div>
+                                    <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                                        <div class="bg-gradient-to-r from-purple-400 to-pink-500 h-full rounded-full" :style="`width: ${(count/58)*100}%`"></div>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="h-100 text-center">
-                                        <i class="fas fa-database fa-3x text-info mb-3"></i>
-                                        <h5>Banco de Dados</h5>
-                                        <button id="banco-dados-btn" class="btn btn-sm btn-info text-white w-100">
-                                            <i class="fas fa-search me-1"></i>Consultar
-                                        </button>
+                                <div x-data="{ count: 0, target: 19 }" x-init="() => { const interval = setInterval(() => { if (count < target) { count++; } else { clearInterval(interval); } }, 80); }">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-sm font-medium text-slate-300">Prêmios Científicos</span>
+                                        <span class="font-mono text-lg text-emerald-400" x-text="count"></span>
+                                    </div>
+                                    <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                                        <div class="bg-gradient-to-r from-emerald-400 to-cyan-500 h-full rounded-full" :style="`width: ${(count/19)*100}%`"></div>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="h-100 text-center">
-                                        <i class="fas fa-user fa-3x text-warning mb-3"></i>
-                                        <h5>Perfil do Cientista</h5>
-                                        <button id="perfil-btn" class="btn btn-sm btn-warning text-white w-100">
-                                            <i class="fas fa-id-card me-1"></i>Ver Perfil
-                                        </button>
+                                <div x-data="{ count: 0, target: 1247 }" x-init="() => { const interval = setInterval(() => { if (count < target) { count += 5; if (count > target) count = target; } else { clearInterval(interval); } }, 1); }">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-sm font-medium text-slate-300">Pesquisadores Impactados</span>
+                                        <span class="font-mono text-lg text-amber-400" x-text="count.toLocaleString()"></span>
+                                    </div>
+                                    <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                                        <div class="bg-gradient-to-r from-amber-400 to-orange-500 h-full rounded-full" :style="`width: ${(count/1247)*100}%`"></div>
                                     </div>
                                 </div>
                             </div>
@@ -134,313 +627,268 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-gradient-to-r from-cyan-900/50 to-purple-900/50">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="font-display text-4xl font-bold text-white mb-6">Pronto para Explorar a Genética Alienígena?</h2>
+            <p class="text-xl text-slate-300 max-w-3xl mx-auto mb-8">Junte-se ao Instituto Intergaláctico de Ciências Xenobiológicas e comece sua jornada científica hoje mesmo.</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <button @click="showDemoRequest = true" class="btn-primary text-white font-medium py-3 px-8 rounded-lg flex items-center"><i class="fas fa-info-circle mr-2"></i>FAQ</button>
+                <a href="lab.html" class="btn-secondary text-white font-medium py-3 px-8 rounded-lg flex items-center"><i class="fas fa-flask mr-2"></i>Experimentar Agora</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de Primeiro Login / Onboarding -->
+    <div x-show="showOnboarding" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity bg-slate-900/80 backdrop-blur-sm" @click="closeOnboarding()"></div>
             
-            <!-- Área de Trabalho do Laboratório -->
-            <div class="row g-4">
-                <!-- Coluna Esquerda: Câmara de Cultivo e Ferramentas -->
-                <div class="col-lg-8">
-                    <div class="row g-4">
-                        <!-- Terminal de Experimentação -->
-                        <div class="col-12">
-                            <div class="terminal-container p-3 rounded">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h5 class="mb-0">
-                                        <i class="fas fa-terminal text-light me-2"></i>Terminal de Experimentação
-                                    </h5>
-                                    <div>
-                                        <button id="clear-log-btn" class="btn btn-sm btn-outline-secondary me-1" title="Limpar Terminal">
-                                            <i class="fas fa-eraser"></i>
-                                        </button>
-                                        <button id="export-log-btn" class="btn btn-sm btn-outline-info" title="Exportar Log">
-                                            <i class="fas fa-download"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div id="terminal-output" class="terminal-output mb-3"></div>
-                                <div class="terminal-input-container d-flex">
-                                    <span class="terminal-prompt me-2">&gt;</span>
-                                    <input type="text" id="terminal-input" class="form-control terminal-input" placeholder="Digite um comando (ajuda para ver opções)">
-                                </div>
-                            </div>
+            <div class="inline-block w-full max-w-4xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-slate-800 shadow-xl rounded-2xl border border-cyan-400/30">
+                <!-- Cabeçalho do Modal -->
+                <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-700">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 bg-gradient-to-br from-cyan-500/20 to-purple-500/20 rounded-full flex items-center justify-center">
+                            <i class="fas fa-user-astronaut text-cyan-400 text-xl"></i>
                         </div>
-                        <!-- Câmara de Cultivo -->
-                        <div class="col-12">
-                            <div class="lab-container p-3 rounded">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h5 class="mb-0">
-                                        <i class="fas fa-vial text-success me-2"></i>Câmara de Cultivo
-                                    </h5>
-                                    <div>
-                                        <span class="marker-dot bg-success me-1" title="Ambiente Estável"></span>
-                                        <span class="marker-dot bg-info me-1" title="Temperatura Controlada"></span>
-                                        <span class="marker-dot bg-warning" title="Nutrientes"></span>
-                                    </div>
-                                </div>
-                                <div class="culture-chamber p-2 rounded">
-                                    <div id="chamber-viewport" class="chamber-viewport">
-                                        <div class="empty-chamber text-center py-5">
-                                            <i class="fas fa-vial fa-4x text-muted mb-3"></i>
-                                            <p class="text-muted">Câmara de cultivo vazia. Inicie um experimento para começar.</p>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div>
+                            <h3 class="font-display text-2xl text-white">Bem-vindo ao Laboratório!</h3>
+                            <p class="text-slate-400 text-sm">Primeira vez no sistema? Vamos te orientar!</p>
+                        </div>
+                    </div>
+                    <button @click="closeOnboarding()" class="text-slate-400 hover:text-white transition-colors">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Conteúdo do Onboarding -->
+                <div class="space-y-6">
+                    <!-- Passo 1 -->
+                    <div x-show="onboardingStep === 1" x-transition class="space-y-6">
+                        <div class="text-center">
+                            <div class="w-20 h-20 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-dna text-cyan-400 text-3xl"></i>
+                            </div>
+                            <h4 class="font-display text-xl text-cyan-400 mb-2">Instituto Intergaláctico de Xenobiologia</h4>
+                            <p class="text-slate-300 max-w-2xl mx-auto">Você agora faz parte da mais avançada equipe de pesquisa em genética alienígena do universo conhecido. Prepare-se para descobrir os segredos da vida extraterrestre!</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-slate-900/50 rounded-lg p-4 text-center border border-cyan-400/20">
+                                <i class="fas fa-flask text-cyan-400 text-2xl mb-2"></i>
+                                <h5 class="text-white font-medium mb-1">Laboratório Virtual</h5>
+                                <p class="text-slate-400 text-sm">Experimente com organismos alienígenas em ambiente seguro</p>
+                            </div>
+                            <div class="bg-slate-900/50 rounded-lg p-4 text-center border border-purple-400/20">
+                                <i class="fas fa-microscope text-purple-400 text-2xl mb-2"></i>
+                                <h5 class="text-white font-medium mb-1">Ferramentas Avançadas</h5>
+                                <p class="text-slate-400 text-sm">Use equipamentos de última geração para suas pesquisas</p>
+                            </div>
+                            <div class="bg-slate-900/50 rounded-lg p-4 text-center border border-emerald-400/20">
+                                <i class="fas fa-chart-line text-emerald-400 text-2xl mb-2"></i>
+                                <h5 class="text-white font-medium mb-1">Análise de Dados</h5>
+                                <p class="text-slate-400 text-sm">Interprete resultados com algoritmos de IA</p>
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Coluna Direita: Status e Ferramentas -->
-                <div class="col-lg-4">
-                    <div class="row g-4">
-                        <!-- Status da Colônia -->
-                        <div class="col-12">
-                            <div class="status-panel p-3 rounded">
-                                <h5 class="mb-3">
-                                    <i class="fas fa-chart-line text-info me-2"></i>Estado da Colônia
-                                </h5>
-                                <div class="alert alert-secondary py-2 small">
-                                    <small>Nenhuma colônia ativa. Inicie um experimento.</small>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="d-flex justify-content-between mb-1">
-                                        <span class="small">População</span>
-                                        <span class="small" id="populacao-total">0</span>
-                                    </div>
-                                    <div class="progress" style="height: 8px;">
-                                        <div class="progress-bar bg-success" style="width: 0%"></div>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="d-flex justify-content-between mb-1">
-                                        <span class="small">Resistência Média</span>
-                                        <span class="small" id="resistencia-media">0%</span>
-                                    </div>
-                                    <div class="progress" style="height: 8px;">
-                                        <div class="progress-bar bg-warning" style="width: 0%"></div>
-                                    </div>
+
+                    <!-- Passo 2 -->
+                    <div x-show="onboardingStep === 2" x-transition class="space-y-6">
+                        <div class="text-center">
+                            <div class="w-20 h-20 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-atom text-purple-400 text-3xl"></i>
+                            </div>
+                            <h4 class="font-display text-xl text-purple-400 mb-2">Como Funciona o Laboratório</h4>
+                            <p class="text-slate-300 max-w-2xl mx-auto">Nosso laboratório simula condições reais de pesquisa xenobiológica com organismos tri-cromossômicos únicos.</p>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-4 bg-slate-900/30 rounded-lg p-4">
+                                <div class="w-8 h-8 bg-cyan-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-cyan-400 font-bold text-sm">1</span>
                                 </div>
                                 <div>
-                                    <div class="d-flex justify-content-between mb-1">
-                                        <span class="small">Diversidade Genética</span>
-                                        <span class="small" id="diversidade-genetica">Baixa</span>
-                                    </div>
-                                    <div class="progress" style="height: 8px;">
-                                        <div class="progress-bar bg-info" style="width: 0%"></div>
-                                    </div>
+                                    <h5 class="text-white font-medium mb-1">Câmara de Cultivo</h5>
+                                    <p class="text-slate-400 text-sm">Realize cruzamentos genéticos entre diferentes subespécies de bactérias alienígenas. Selecione cromossomos específicos e observe os resultados.</p>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <!-- Ferramentas de Análise -->
-                        <div class="col-12">
-                            <div class="tools-panel p-3 rounded">
-                                <h5 class="mb-3">
-                                    <i class="fas fa-tools text-warning me-2"></i>Ferramentas de Análise
-                                </h5>
-                                <div class="tool-buttons d-grid gap-2">
-                                    <button id="examinar-bacteria-btn" class="btn btn-sm btn-outline-light" disabled>
-                                        <i class="fas fa-microscope me-1"></i>Examinar Bactéria Aleatória
-                                    </button>
-                                    <button id="sequenciar-genoma-btn" class="btn btn-sm btn-outline-light" disabled>
-                                        <i class="fas fa-dna me-1"></i>Sequenciar Genoma Aleatório
-                                    </button>
-                                    <button id="analise-populacional-btn" class="btn btn-sm btn-outline-light" disabled>
-                                        <i class="fas fa-chart-bar me-1"></i>Análise Populacional
-                                    </button>
-                                    <button id="isolar-amostra-btn" class="btn btn-sm btn-outline-light" disabled>
-                                        <i class="fas fa-vial me-1"></i>Isolar Amostra
-                                    </button>
+                            
+                            <div class="flex items-start space-x-4 bg-slate-900/30 rounded-lg p-4">
+                                <div class="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-purple-400 font-bold text-sm">2</span>
+                                </div>
+                                <div>
+                                    <h5 class="text-white font-medium mb-1">Análise Genética</h5>
+                                    <p class="text-slate-400 text-sm">Use o Sequenciador Genético e o Resistômetro para analisar as propriedades dos organismos e calcular probabilidades de resistência.</p>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <!-- Informações Genéticas -->
-                        <div class="col-12">
-                            <div class="info-panel p-3 rounded">
-                                <h5 class="mb-3">
-                                    <i class="fas fa-info-circle text-primary me-2"></i>Informações Genéticas
-                                </h5>
-                                <ul class="nav nav-tabs" id="infoTabs" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link active" id="genes-tab" data-bs-toggle="tab" data-bs-target="#genes-tab-pane" type="button" role="tab">Genes</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="hipoteses-tab" data-bs-toggle="tab" data-bs-target="#hipoteses-tab-pane" type="button" role="tab">Hipóteses</button>
-                                    </li>
-                                </ul>
-                                <div class="tab-content p-3" id="infoTabsContent">
-                                    <div class="tab-pane fade show active" id="genes-tab-pane" role="tabpanel" aria-labelledby="genes-tab" tabindex="0">
-                                        <div class="row mb-3">
-                                            <div class="col-4 text-center">
-                                                <div class="marker-dot bg-danger mx-auto mb-1" style="width: 15px; height: 15px;"></div>
-                                                <div class="gene-label">Gene R</div>
-                                                <div class="small text-muted" id="gene-r-progress">0%</div>
-                                                <div class="progress mt-1" style="height: 5px;">
-                                                    <div class="progress-bar bg-danger" style="width: 0%"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-4 text-center">
-                                                <div class="marker-dot bg-primary mx-auto mb-1" style="width: 15px; height: 15px;"></div>
-                                                <div class="gene-label">Gene K</div>
-                                                <div class="small text-muted" id="gene-k-progress">0%</div>
-                                                <div class="progress mt-1" style="height: 5px;">
-                                                    <div class="progress-bar bg-primary" style="width: 0%"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-4 text-center">
-                                                <div class="marker-dot bg-success mx-auto mb-1" style="width: 15px; height: 15px;"></div>
-                                                <div class="gene-label">Gene W</div>
-                                                <div class="small text-muted" id="gene-w-progress">0%</div>
-                                                <div class="progress mt-1" style="height: 5px;">
-                                                    <div class="progress-bar bg-success" style="width: 0%"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="gene-info small">
-                                            <p><strong>Gene R:</strong> Dominância genética. Tende a prevalecer em cruzamentos.</p>
-                                            <p><strong>Gene K:</strong> Reprodução rápida. Aumenta a taxa de crescimento da colônia.</p>
-                                            <p><strong>Gene W:</strong> Resistência a bacteriófagos. Aumenta a chance de sobrevivência durante infecções.</p>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="hipoteses-tab-pane" role="tabpanel" aria-labelledby="hipoteses-tab" tabindex="0">
-                                        <div id="hipoteses" class="small">
-                                            <p class="text-muted">Nenhuma hipótese formulada ainda. Realize experimentos para gerar hipóteses.</p>
-                                        </div>
-                                    </div>
+                            
+                            <div class="flex items-start space-x-4 bg-slate-900/30 rounded-lg p-4">
+                                <div class="w-8 h-8 bg-emerald-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-emerald-400 font-bold text-sm">3</span>
+                                </div>
+                                <div>
+                                    <h5 class="text-white font-medium mb-1">Descobertas Científicas</h5>
+                                    <p class="text-slate-400 text-sm">Documente suas descobertas, publique artigos científicos e avance sua carreira como xenobiólogo.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Passo 3 -->
+                    <div x-show="onboardingStep === 3" x-transition class="space-y-6">
+                        <div class="text-center">
+                            <div class="w-20 h-20 bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-rocket text-emerald-400 text-3xl"></i>
+                            </div>
+                            <h4 class="font-display text-xl text-emerald-400 mb-2">Pronto para Começar!</h4>
+                            <p class="text-slate-300 max-w-2xl mx-auto">Agora você está preparado para explorar os mistérios da genética alienígena. Sua jornada científica começa aqui!</p>
+                        </div>
+                        
+                        <div class="bg-gradient-to-br from-slate-900/50 to-cyan-900/20 rounded-lg p-6 border border-cyan-400/30">
+                            <h5 class="text-cyan-400 font-medium mb-3 flex items-center">
+                                <i class="fas fa-lightbulb mr-2"></i> Dicas para Começar
+                            </h5>
+                            <ul class="space-y-2 text-slate-300 text-sm">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-emerald-400 mr-2 mt-1 flex-shrink-0"></i>
+                                    <span>Explore a Câmara de Cultivo para entender como funcionam os cruzamentos genéticos</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-emerald-400 mr-2 mt-1 flex-shrink-0"></i>
+                                    <span>Use as ferramentas de análise para investigar as propriedades dos organismos</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-emerald-400 mr-2 mt-1 flex-shrink-0"></i>
+                                    <span>Consulte a Biblioteca Xenobiológica sempre que tiver dúvidas</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-emerald-400 mr-2 mt-1 flex-shrink-0"></i>
+                                    <span>Documente suas descobertas para construir sua reputação científica</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navegação do Onboarding -->
+                <div class="flex justify-between items-center mt-8 pt-6 border-t border-slate-700">
+                    <div class="flex space-x-2">
+                        <template x-for="step in 3" :key="step">
+                            <div class="w-3 h-3 rounded-full" :class="step === onboardingStep ? 'bg-cyan-400' : 'bg-slate-600'"></div>
+                        </template>
+                    </div>
+                    
+                    <div class="flex space-x-3">
+                        <button x-show="onboardingStep > 1" @click="onboardingStep--" class="bg-slate-700 text-white px-4 py-2 rounded-lg hover:bg-slate-600 transition-colors">
+                            <i class="fas fa-arrow-left mr-2"></i> Anterior
+                        </button>
+                        <button x-show="onboardingStep < 3" @click="onboardingStep++" class="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity">
+                            Próximo <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                        <button x-show="onboardingStep === 3" @click="closeOnboarding()" class="bg-gradient-to-r from-emerald-500 to-cyan-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity">
+                            <i class="fas fa-flask mr-2"></i> Começar Pesquisa!
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Footer -->
-    <footer class="py-4 bg-dark">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <p class="small text-white mb-0">&copy; 2025 Xenobiology - Laboratório de Genética Alienígena. Todos os direitos reservados.</p>
+    <footer class="bg-slate-900/80 py-12 border-t border-slate-800">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-dna text-cyan-400 text-2xl"></i>
+                        <span class="font-display text-xl text-white">XENOBIOLOGY</span>
+                    </div>
+                    <p class="text-slate-400">Laboratório Interplanetário de Genética Alienígena - Uma experiência educacional imersiva.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-4">Navegação</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#project" class="text-slate-400 hover:text-cyan-400">Projeto</a></li>
+                        <li><a href="#features" class="text-slate-400 hover:text-cyan-400">Recursos</a></li>
+                        <li><a href="#science" class="text-slate-400 hover:text-cyan-400">Ciência</a></li>
+                        <li><a href="#team" class="text-slate-400 hover:text-cyan-400">Sobre Nós</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-4">Recursos</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-slate-400 hover:text-cyan-400">Documentação</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-cyan-400">Tutoriais</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-cyan-400">Artigos Científicos</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-cyan-400">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-4">Legal</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-slate-400 hover:text-cyan-400">Termos de Uso</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-cyan-400">Política de Privacidade</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-cyan-400">Licenças</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-cyan-400">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-slate-500 text-sm mb-4 md:mb-0">© <span x-text="new Date().getFullYear()"></span> Instituto Intergaláctico de Ciências Xenobiológicas. Todos os direitos reservados.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-slate-500 hover:text-cyan-400 text-sm">Termos</a>
+                    <a href="#" class="text-slate-500 hover:text-cyan-400 text-sm">Privacidade</a>
+                    <a href="#" class="text-slate-500 hover:text-cyan-400 text-sm">Cookies</a>
                 </div>
             </div>
         </div>
     </footer>
-
-    <!-- Editor Genético Modal -->
-    <div class="modal fade" id="editorGeneticoModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content bg-dark text-light border border-success">
-                <div class="modal-header border-bottom border-success">
-                    <h5 class="modal-title">
-                        <i class="fas fa-dna text-success me-2"></i>Editor Genético
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <h6 class="text-center mb-3">Selecione os Genes</h6>
-                            <div class="d-flex justify-content-center gap-3 mb-3">
-                                <div class="gene-slot" data-slot="1" data-gene="?">?</div>
-                                <div class="gene-slot" data-slot="2" data-gene="?">?</div>
-                                <div class="gene-slot" data-slot="3" data-gene="?">?</div>
-                            </div>
-                            <div class="d-flex justify-content-center gap-2 mt-3">
-                                <button class="btn btn-danger gene-btn" data-gene="R">R</button>
-                                <button class="btn btn-primary gene-btn" data-gene="K">K</button>
-                                <button class="btn btn-success gene-btn" data-gene="W">W</button>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="text-center mb-3">Visualização</h6>
-                            <div class="preview-container mb-3"></div>
-                            <p class="gene-description text-center small text-muted">Selecione os genes para ver informações.</p>
-                        </div>
-                    </div>
-                    <div class="gene-info-content p-3 rounded">
-                        <h6 class="mb-3">Informações Genéticas</h6>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="mb-2">
-                                    <div class="small text-muted">Resistência Estimada</div>
-                                    <div id="resistencia-estimada">Desconhecida</div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-2">
-                                    <div class="small text-muted">Dominância</div>
-                                    <div id="dominancia">Desconhecida</div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-2">
-                                    <div class="small text-muted">Raridade</div>
-                                    <div id="raridade">Desconhecida</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer border-top border-success">
-                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" id="criar-bacteria-confirm">Criar Bactéria</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Criação em Massa -->
-    <div class="modal fade" id="criacaoMassaModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content bg-dark text-light border border-info">
-                <div class="modal-header border-bottom border-info">
-                    <h5 class="modal-title">
-                        <i class="fas fa-clone text-info me-2"></i>Criação em Massa
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="quantidade-bacterias" class="form-label">Quantidade de Bactérias</label>
-                        <input type="number" class="form-control bg-black text-light" id="quantidade-bacterias" min="1" max="100" value="10">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Tipo de Criação</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="tipo-criacao" id="aleatorio" value="aleatorio" checked>
-                            <label class="form-check-label" for="aleatorio">
-                                Genes Aleatórios
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="tipo-criacao" id="especifico" value="especifico">
-                            <label class="form-check-label" for="especifico">
-                                Genes Específicos
-                            </label>
-                        </div>
-                    </div>
-                    <div class="mb-3" id="genes-especificos-container" style="display: none;">
-                        <label for="genes-especificos" class="form-label">Genes (ex: RKW, WWW, etc.)</label>
-                        <input type="text" class="form-control bg-black text-light" id="genes-especificos" placeholder="RKW" maxlength="3">
-                        <div class="form-text small">Digite 3 letras usando R, K ou W</div>
-                    </div>
-                    <div class="alert alert-warning small">
-                        <i class="fas fa-exclamation-triangle me-2"></i>Criar muitas bactérias pode afetar o desempenho.
-                    </div>
-                </div>
-                <div class="modal-footer border-top border-info">
-                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-info" id="confirmar-criacao-massa">Criar Bactérias</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Custom JS -->
-    <script src="js/script.js"></script>
+    <script>
+        function appData() {
+            return {
+                showOnboarding: false,
+                onboardingStep: 1,
+                showDemoRequest: false,
+                currentStep: 1,
+                
+                init() {
+                    // Verificar se é primeiro login
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const isFirstLogin = urlParams.get('firstLogin') === 'true' || 
+                                        localStorage.getItem('xenobiology_first_login') === 'true';
+                    
+                    if (isFirstLogin) {
+                        // Mostrar onboarding após um pequeno delay
+                        setTimeout(() => {
+                            this.showOnboarding = true;
+                        }, 1000);
+                        
+                        // Limpar flag de primeiro login da URL
+                        if (urlParams.get('firstLogin')) {
+                            const newUrl = window.location.pathname;
+                            window.history.replaceState({}, document.title, newUrl);
+                        }
+                    }
+                },
+                
+                closeOnboarding() {
+                    this.showOnboarding = false;
+                    this.onboardingStep = 1;
+                    
+                    // Remover flag de primeiro login
+                    localStorage.removeItem('xenobiology_first_login');
+                },
+                
+                scrollToSection(sectionId) {
+                    const element = document.getElementById(sectionId);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 </html>
