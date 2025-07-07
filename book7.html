@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-br" x-data="{ sidebarOpen: false }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O Genoma Binário | Xenobiologia</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .font-display { font-family: 'Orbitron', sans-serif; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        .dna-pattern { background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%233b82f6' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E"); }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-900 dna-pattern">
+    <!-- Navbar -->
+    <nav class="bg-slate-900 border-b border-slate-700 sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="font-['Orbitron'] text-2xl text-cyan-400">XENOBIOLOGY</span>
+                    </div>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="lab.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-flask mr-2"></i>Laboratório
+                    </a>
+                    <a href="library.html" class="text-cyan-400 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-full after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300">
+                        <i class="fas fa-book mr-2"></i>Biblioteca
+                    </a>
+                    <a href="hypothesis.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-lightbulb mr-2"></i>Hipóteses
+                    </a>
+                    <a href="papers.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-scroll mr-2"></i>Publicações
+                    </a>
+                    <a href="progress.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-chart-line mr-2"></i>Progresso
+                    </a>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button @click="sidebarOpen = !sidebarOpen" class="text-slate-300 hover:text-white focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Sidebar -->
+        <div x-show="sidebarOpen" @click.away="sidebarOpen = false" 
+             class="md:hidden fixed inset-0 z-40 bg-slate-900 bg-opacity-90 backdrop-blur-sm">
+            <div class="flex flex-col h-full p-4">
+                <div class="flex justify-end">
+                    <button @click="sidebarOpen = false" class="text-slate-300 hover:text-white p-2">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="flex flex-col space-y-6 mt-8 items-center">
+                    <a href="lab.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-flask mr-2"></i>Laboratório
+                    </a>
+                    <a href="library.html" @click="sidebarOpen = false" class="text-cyan-400 text-xl font-medium">
+                        <i class="fas fa-book mr-2"></i>Biblioteca
+                    </a>
+                    <a href="hypothesis.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-lightbulb mr-2"></i>Hipóteses
+                    </a>
+                    <a href="papers.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-scroll mr-2"></i>Publicações
+                    </a>
+                    <a href="progress.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-chart-line mr-2"></i>Progresso
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex flex-col lg:flex-row gap-2">
+            <!-- Sidebar (Voltar e informações) -->
+            <div class="lg:w-1/4 space-y-6">
+                <!-- Informações do Livro -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900">
+                    <h3 class="text-xl font-bold text-white mb-2">O Genoma Binário</h3>
+                    <p class="text-sm text-slate-400 mb-3">Dra. Elara Vance • 2242</p>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <span class="text-xs bg-slate-700 text-slate-300 px-2 py-1 rounded-full mr-2">ISBN: XB-2242-001</span>
+                            <span class="text-xs bg-slate-700 text-slate-300 px-2 py-1 rounded-full">Páginas: 428</span>
+                        </div>
+                        <div class="flex items-center text-sm text-slate-500 cursor-pointer" id="read-status">
+                            <i class="fas fa-check text-emerald-400 mr-1"></i> Lido
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4 mt-6">
+                        <div>
+                            <h4 class="text-sm font-medium text-cyan-300 mb-1">Categoria</h4>
+                            <p class="text-sm text-slate-300">Genética Computacional</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-sm font-medium text-cyan-300 mb-1">Publicado em</h4>
+                            <p class="text-sm text-slate-300">12 de Agosto, 2242</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-sm font-medium text-cyan-300 mb-1">Editora</h4>
+                            <p class="text-sm text-slate-300">Editora Xenobiológica</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-sm font-medium text-cyan-300 mb-1">Idioma</h4>
+                            <p class="text-sm text-slate-300">Português (Traduzido do Inglês)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Índice -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900">
+                    <h3 class="font-['Orbitron'] text-lg text-cyan-300 mb-4">Índice</h3>
+                    <div class="space-y-2">
+                        <a href="#capitulo1" class="block text-sm text-slate-300 hover:text-cyan-400 pl-4 border-l-2 border-slate-700 hover:border-cyan-400 py-1">1. Fundamentos da Informação Genética Alienígena</a>
+                        <a href="#capitulo2" class="block text-sm text-slate-300 hover:text-cyan-400 pl-4 border-l-2 border-slate-700 hover:border-cyan-400 py-1">2. A Sintaxe da Vida Extraterrestre</a>
+                        <a href="#capitulo3" class="block text-sm text-slate-300 hover:text-cyan-400 pl-4 border-l-2 border-slate-700 hover:border-cyan-400 py-1">3. Decifrando os Códigos: Ferramentas Xenobiológicas</a>
+                        <a href="#capitulo4" class="block text-sm text-slate-300 hover:text-cyan-400 pl-4 border-l-2 border-slate-700 hover:border-cyan-400 py-1">4. A Semântica da Vida: Expressão Gênica Extraterrestre</a>
+                        <a href="#capitulo5" class="block text-sm text-slate-300 hover:text-cyan-400 pl-4 border-l-2 border-slate-700 hover:border-cyan-400 py-1">5. Comunicação Interespécies: O Genoma como Linguagem</a>
+                        <a href="#capitulo6" class="block text-sm text-slate-300 hover:text-cyan-400 pl-4 border-l-2 border-slate-700 hover:border-cyan-400 py-1">6. O Futuro da Xenogenômica</a>
+                    </div>
+                </div>
+
+                <!-- Voltar à Biblioteca -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900">
+                    <a href="library.html" class="btn-primary text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-arrow-left mr-2"></i> Voltar à Biblioteca
+                    </a>
+                </div>
+            </div>
+
+            <!-- Conteúdo do Livro -->
+            <div class="lg:w-3/4 content-section lg:pl-8 lg:pt-0 pt-8">
+                <!-- Capa e Título -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900 mb-6">
+                    <div class="flex flex-col md:flex-row items-center gap-6">
+                        <div class="w-full">
+                            <h1 class="font-['Orbitron'] text-3xl text-cyan-300 mb-2">O Genoma Binário: Decifrando a Linguagem da Vida Extraterrestre</h1>
+                            <p class="text-lg text-slate-300 mb-4">Uma exploração profunda de como a informação genética pode ser codificada em sistemas biológicos alienígenas, indo além do DNA e RNA terrestres.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="text-xs bg-cyan-900/30 text-cyan-400 px-2 py-1 rounded-full">Genética</span>
+                                <span class="text-xs bg-cyan-900/30 text-cyan-400 px-2 py-1 rounded-full">Computacional</span>
+                                <span class="text-xs bg-cyan-900/30 text-cyan-400 px-2 py-1 rounded-full">Alienígena</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conteúdo Textual -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900 space-y-8">
+                    <!-- Capítulo 1 -->
+                    <section id="capitulo1" class="chapter-section">
+                        <h2 class="font-['Orbitron'] text-2xl text-cyan-300 mb-4">1. Fundamentos da Informação Genética Alienígena</h2>
+                        <div class="prose prose-invert max-w-none text-slate-300">
+                            <p>Este capítulo introduz o conceito de informação genética em um contexto extraterrestre. Discute a universalidade da necessidade de armazenamento e transmissão de características hereditárias, mas questiona a universalidade das moléculas e estruturas conhecidas na Terra.</p>
+                            
+                            <p class="mt-4">Explora a ideia de que a informação pode ser codificada de maneiras radicalmente diferentes, como em sistemas binários, ternários ou até mesmo em arranjos espaciais complexos. A xenobiologia, neste contexto, é apresentada como a ciência que busca identificar e interpretar esses sistemas, independentemente de sua forma física.</p>
+                            
+                            <div class="bg-slate-700/50 border-l-4 border-cyan-500 p-4 my-4 rounded-r">
+                                <p class="text-sm italic text-slate-300">"A informação genética não está limitada às quatro bases do DNA terrestre. O universo pode ter desenvolvido linguagens biológicas que desafiam nossa compreensão atual." - Dra. Elara Vance</p>
+                            </div>
+                            
+                            <p>A discussão se aprofunda em como a própria definição de unidade de informação é um bit ou um conjunto de bits, e como essa unidade fundamental pode ser manipulada para criar a complexidade da vida. Exemplos hipotéticos de sistemas genéticos binários são apresentados, com diagramas conceituais que ilustram como a informação poderia ser armazenada e replicada.</p>
+                        </div>
+                    </section>
+                    
+                    <!-- Capítulo 2 -->
+                    <section id="capitulo2" class="chapter-section mt-8">
+                        <h2 class="font-['Orbitron'] text-2xl text-cyan-300 mb-4">2. A Sintaxe da Vida Extraterrestre</h2>
+                        <div class="prose prose-invert max-w-none text-slate-300">
+                            <p>Este capítulo mergulha na estrutura e organização dos genomas binários. Examina como as sequências de informação binária podem formar "genes" e "cromossomos" alienígenas.</p>
+                            
+                            <h3 class="text-xl text-white mt-6 mb-2">2.1. Gramática Genética Alienígena</h3>
+                            <p>A discussão se estende à gramática e à sintaxe dessas linguagens genéticas, explorando como as regras de combinação e interação entre os elementos genéticos determinam as características fenotípicas.</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+                                <div class="bg-slate-700/30 p-4 rounded-lg">
+                                    <h4 class="text-sm font-medium text-cyan-300 mb-1">Sequências Binárias</h4>
+                                    <p class="text-sm">Padrões de 0s e 1s que codificam informações específicas sobre características biológicas.</p>
+                                </div>
+                                <div class="bg-slate-700/30 p-4 rounded-lg">
+                                    <h4 class="text-sm font-medium text-cyan-300 mb-1">Cromossomos Digitais</h4>
+                                    <p class="text-sm">Estruturas organizacionais que agrupam sequências relacionadas em unidades funcionais.</p>
+                                </div>
+                            </div>
+                            
+                            <p>A xenobiologia computacional é introduzida como uma ferramenta essencial para simular e prever o comportamento desses sistemas genéticos complexos, utilizando algoritmos que podem decifrar padrões e identificar as "palavras" e "frases" que compõem o código da vida extraterrestre.</p>
+                        </div>
+                    </section>
+                    
+                    <!-- Capítulo 3 -->
+                    <section id="capitulo3" class="chapter-section mt-8">
+                        <h2 class="font-['Orbitron'] text-2xl text-cyan-300 mb-4">3. Decifrando os Códigos: Ferramentas Xenobiológicas</h2>
+                        <div class="prose prose-invert max-w-none text-slate-300">
+                            <p>Este capítulo foca nas metodologias e tecnologias que a xenobiologia emprega para decifrar genomas alienígenas. Aborda desde a coleta de amostras em ambientes extremos até a análise de dados complexos.</p>
+                            
+                            <div class="overflow-x-auto my-4">
+                                <table class="min-w-full border border-slate-700">
+                                    <thead>
+                                        <tr class="bg-slate-800">
+                                            <th class="px-4 py-2 text-left text-cyan-300 border-b border-slate-700">Ferramenta</th>
+                                            <th class="px-4 py-2 text-left text-cyan-300 border-b border-slate-700">Aplicação</th>
+                                            <th class="px-4 py-2 text-left text-cyan-300 border-b border-slate-700">Eficácia</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="border-b border-slate-700">
+                                            <td class="px-4 py-2">Algoritmos de ML</td>
+                                            <td class="px-4 py-2">Identificação de padrões</td>
+                                            <td class="px-4 py-2">95%</td>
+                                        </tr>
+                                        <tr class="border-b border-slate-700">
+                                            <td class="px-4 py-2">Bioinformática Extraterrestre</td>
+                                            <td class="px-4 py-2">Análise de sequências</td>
+                                            <td class="px-4 py-2">87%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-2">Simulação Quântica</td>
+                                            <td class="px-4 py-2">Modelagem complexa</td>
+                                            <td class="px-4 py-2">92%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <p>A importância da colaboração interdisciplinar entre xenobiólogos, matemáticos, cientistas da computação e linguistas é enfatizada, pois a decifração de um genoma alienígena é um desafio que transcende as fronteiras de uma única disciplina.</p>
+                        </div>
+                    </section>
+                    
+                    <!-- Capítulo 4 -->
+                    <section id="capitulo4" class="chapter-section mt-8">
+                        <h2 class="font-['Orbitron'] text-2xl text-cyan-300 mb-4">4. A Semântica da Vida: Expressão Gênica Extraterrestre</h2>
+                        <div class="prose prose-invert max-w-none text-slate-300">
+                            <p>Este capítulo explora como a informação codificada nos genomas binários se traduz em características biológicas. Analisa os mecanismos de expressão gênica em organismos alienígenas, incluindo a transcrição e a "tradução" de códigos genéticos em estruturas e funções biológicas.</p>
+                            
+                            <div class="bg-slate-900 p-4 rounded-lg my-4 border border-cyan-900">
+                                <h3 class="text-lg text-white mb-2">Figura 4.1: Fluxo de Informação Genética Alienígena</h3>
+                                <img src="imagens/genoma_binario_cap4_diagrama.png" alt="Diagrama mostrando o processo de replicação de DNA alienígena" class="w-full h-auto rounded">
+                                <p class="text-xs text-slate-400 mt-2">Representação esquemática do processo de expressão gênica em sistemas binários.</p>
+                            </div>
+                            
+                            <p>A xenobiologia experimental é apresentada como a área que busca replicar e manipular esses processos em laboratório, utilizando técnicas de engenharia genética adaptadas para sistemas alienígenas.</p>
+                        </div>
+                    </section>
+                    
+                    <!-- Capítulo 5 -->
+                    <section id="capitulo5" class="chapter-section mt-8">
+                        <h2 class="font-['Orbitron'] text-2xl text-cyan-300 mb-4">5. Comunicação Interespécies: O Genoma como Linguagem</h2>
+                        <div class="prose prose-invert max-w-none text-slate-300">
+                            <p>Este capítulo aborda a possibilidade de que o genoma alienígena não seja apenas um manual de instruções para a vida, mas também uma forma de comunicação.</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
+                                <div class="bg-gradient-to-br from-cyan-900/30 to-slate-800 p-4 rounded-lg border border-cyan-900/50">
+                                    <h4 class="text-sm font-medium text-cyan-300 mb-1">Mensagens Genéticas</h4>
+                                    <p class="text-sm">Sequências específicas que podem conter informações intencionais para outras espécies.</p>
+                                </div>
+                                <div class="bg-gradient-to-br from-cyan-900/30 to-slate-800 p-4 rounded-lg border border-cyan-900/50">
+                                    <h4 class="text-sm font-medium text-cyan-300 mb-1">Xenolinguística</h4>
+                                    <p class="text-sm">Campo emergente que busca decifrar mensagens genéticas usando criptografia.</p>
+                                </div>
+                                <div class="bg-gradient-to-br from-cyan-900/30 to-slate-800 p-4 rounded-lg border border-cyan-900/50">
+                                    <h4 class="text-sm font-medium text-cyan-300 mb-1">SETI Genético</h4>
+                                    <p class="text-sm">Busca por inteligência extraterrestre através de códigos genéticos.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Capítulo 6 -->
+                    <section id="capitulo6" class="chapter-section mt-8">
+                        <h2 class="font-['Orbitron'] text-2xl text-cyan-300 mb-4">6. O Futuro da Xenogenômica</h2>
+                        <div class="prose prose-invert max-w-none text-slate-300">
+                            <p>Este capítulo projeta o futuro da xenogenômica, destacando os desafios e as oportunidades que aguardam os pesquisadores. Discute a necessidade de desenvolver novas tecnologias para a sequenciação e análise de genomas alienígenas.</p>
+                            
+                            <p class="mt-4">A ética da engenharia genética extraterrestre é revisitada, com foco nas responsabilidades da humanidade ao interagir com a vida alienígena. A possibilidade de descobrir novas formas de vida baseadas em princípios genéticos radicalmente diferentes dos conhecidos na Terra é explorada.</p>
+                            
+                            <div class="bg-slate-700/50 border-l-4 border-cyan-500 p-4 my-4 rounded-r">
+                                <p class="text-sm italic text-slate-300">"O futuro da xenogenômica não está apenas na descoberta de vida alienígena, mas na compreensão de que a vida pode assumir formas que nossa imaginação ainda não consegue conceber." - Dra. Elara Vance, Epílogo</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                
+                <!-- Referências -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900 mt-8">
+                    <h3 class="font-['Orbitron'] text-xl text-cyan-300 mb-4">Referências</h3>
+                    <div class="space-y-3 text-sm text-slate-300">
+                        <p>1. VANCE, E. et al. "Binary Genetic Systems in Theoretical Xenobiology". <em>Journal of Astrobiology</em>, v.15, n.4, p.112-145, 2241.</p>
+                        <p>2. CHEN, L. "Computational Approaches to Alien Genome Decoding". <em>Xenobiological Computing</em>, v.3, n.2, p.67-89, 2240.</p>
+                        <p>3. RODRIGUEZ, M. "Information Theory and Extraterrestrial Genetics". <em>Cosmic Biology Reviews</em>, v.8, n.1, p.23-56, 2242.</p>
+                        <p>4. NAKAMURA, T. "Quantum Algorithms for Genetic Pattern Recognition". <em>Quantum Xenobiology</em>, v.2, n.3, p.145-178, 2241.</p>
+                        <p>5. WILLIAMS, S. "Ethical Implications of Alien Genetic Engineering". <em>Bioethics Beyond Earth</em>, v.6, n.2, p.89-112, 2242.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-700 py-6 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <p class="text-slate-400 text-sm">&copy; 2025 Xenobiology - Laboratório de Genética Alienígena. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle read status
+            const readStatus = document.getElementById('read-status');
+            const bookId = 'book1'; // ID do livro atual
+            
+            // Verificar status no localStorage
+            const isRead = localStorage.getItem(`book-${bookId}-read`) === 'true';
+            updateReadStatus(isRead);
+            
+            // Alternar status ao clicar
+            readStatus.addEventListener('click', function() {
+                const newStatus = localStorage.getItem(`book-${bookId}-read`) !== 'true';
+                localStorage.setItem(`book-${bookId}-read`, newStatus);
+                updateReadStatus(newStatus);
+            });
+            
+            function updateReadStatus(isRead) {
+                if (isRead) {
+                    readStatus.innerHTML = '<i class="fas fa-check text-emerald-400 mr-1"></i> Lido';
+                } else {
+                    readStatus.innerHTML = '<i class="fas fa-times text-rose-400 mr-1"></i> Não lido';
+                }
+            }
+            
+            // Scroll suave para os capítulos
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 20,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

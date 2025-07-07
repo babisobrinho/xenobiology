@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="pt-br" x-data="{ currentPage: 'biblioteca', sidebarOpen: false }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xenobiologia - Biblioteca Virtual</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .font-display { font-family: 'Orbitron', sans-serif; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        .hero-gradient { background: linear-gradient(135deg, rgba(16,24,39,0.9) 0%, rgba(6,78,118,0.7) 100%); }
+        .dna-pattern { background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%233b82f6' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E"); }
+        .feature-card { transition: all 0.3s ease; border: 1px solid #334155; }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); border-color: #3b82f6; }
+        .btn-primary { background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); transition: all 0.3s ease; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4); }
+        .btn-secondary { background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%); transition: all 0.3s ease; }
+        .btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4); }
+        .section-divider { border-top: 1px solid #1e293b; }
+        .nav-link { position: relative; }
+        .nav-link:after { content: ''; position: absolute; width: 0; height: 2px; bottom: -2px; left: 0; background-color: #3b82f6; transition: width 0.3s ease; }
+        .nav-link:hover:after { width: 100%; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        .terminal-output { font-family: monospace; height: 200px; overflow-y: auto; }
+        .terminal-input { border: 1px solid #334155; color: #e2e8f0; }
+        .marker-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
+        #resultados-section { transition: opacity 0.3s ease, height 0.3s ease; }
+        
+        /* Padronização dos cards - apenas altura mínima */
+        .book-card { 
+            transition: all 0.3s ease; 
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+        .book-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2); }
+        .book-card .card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .book-card .card-footer {
+            margin-top: auto;
+        }
+        
+        .category-tag { transition: all 0.2s ease; }
+        .category-tag:hover { transform: scale(1.05); }
+        .search-highlight { background-color: rgba(255, 255, 0, 0.3); }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-900 dna-pattern">
+    <!-- Navbar -->
+    <nav class="bg-slate-900 border-b border-slate-700 sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="font-['Orbitron'] text-2xl text-cyan-400">XENOBIOLOGY</span>
+                    </div>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="lab.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-flask mr-2"></i>Laboratório
+                    </a>
+                    <a href="library.html" class="text-cyan-400 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-full after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300">
+                        <i class="fas fa-book mr-2"></i>Biblioteca
+                    </a>
+                    <a href="hypothesis.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-lightbulb mr-2"></i>Hipóteses
+                    </a>
+                    <a href="papers.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-scroll mr-2"></i>Publicações
+                    </a>
+                    <a href="progress.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-chart-line mr-2"></i>Progresso
+                    </a>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button @click="sidebarOpen = !sidebarOpen" class="text-slate-300 hover:text-white focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Sidebar -->
+        <div x-show="sidebarOpen" @click.away="sidebarOpen = false" 
+             class="md:hidden fixed inset-0 z-40 bg-slate-900 bg-opacity-90 backdrop-blur-sm">
+            <div class="flex flex-col h-full p-4">
+                <div class="flex justify-end">
+                    <button @click="sidebarOpen = false" class="text-slate-300 hover:text-white p-2">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="flex flex-col space-y-6 mt-8 items-center">
+                    <a href="lab.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-flask mr-2"></i>Laboratório
+                    </a>
+                    <a href="library.html" @click="sidebarOpen = false" class="text-cyan-400 text-xl font-medium">
+                        <i class="fas fa-book mr-2"></i>Biblioteca
+                    </a>
+                    <a href="hypothesis.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-lightbulb mr-2"></i>Hipóteses
+                    </a>
+                    <a href="papers.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-scroll mr-2"></i>Publicações
+                    </a>
+                    <a href="progress.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-chart-line mr-2"></i>Progresso
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Sidebar -->
+            <div class="lg:w-1/4 space-y-6">
+                <!-- Search Box -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900">
+                    <h2 class="font-['Orbitron'] text-xl text-cyan-300 mb-4 flex items-center">
+                        <i class="fas fa-search text-cyan-300 mr-2"></i>
+                        Buscar Conhecimento
+                    </h2>
+                    <div class="relative">
+                        <input type="text" id="search-input" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white pl-10" placeholder="Pesquisar na biblioteca...">
+                        <i class="fas fa-search absolute left-3 top-3 text-slate-400"></i>
+                    </div>
+                </div>
+
+                <!-- Categories -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900">
+                    <h2 class="font-['Orbitron'] text-xl text-cyan-300 mb-4 flex items-center">
+                        <i class="fas fa-tags text-cyan-300 mr-2"></i>
+                        Categorias
+                    </h2>
+                    <div class="space-y-2">
+                        <button class="category-tag w-full text-left px-3 py-2 rounded-lg bg-slate-700 hover:bg-cyan-600 text-slate-300 hover:text-white flex items-center justify-between" data-category="all">
+                            <span>Todas</span>
+                            <span class="bg-slate-600 text-xs px-2 py-1 rounded-full">42</span>
+                        </button>
+                        <button class="category-tag w-full text-left px-3 py-2 rounded-lg bg-slate-700 hover:bg-purple-600 text-slate-300 hover:text-white flex items-center justify-between" data-category="genetics">
+                            <span>Genética Alienígena</span>
+                            <span class="bg-slate-600 text-xs px-2 py-1 rounded-full">15</span>
+                        </button>
+                        <button class="category-tag w-full text-left px-3 py-2 rounded-lg bg-slate-700 hover:bg-emerald-600 text-slate-300 hover:text-white flex items-center justify-between" data-category="biology">
+                            <span>Biologia Extraterrestre</span>
+                            <span class="bg-slate-600 text-xs px-2 py-1 rounded-full">12</span>
+                        </button>
+                        <button class="category-tag w-full text-left px-3 py-2 rounded-lg bg-slate-700 hover:bg-amber-600 text-slate-300 hover:text-white flex items-center justify-between" data-category="mathematics">
+                            <span>Matemática Aplicada</span>
+                            <span class="bg-slate-600 text-xs px-2 py-1 rounded-full">8</span>
+                        </button>
+                        <button class="category-tag w-full text-left px-3 py-2 rounded-lg bg-slate-700 hover:bg-rose-600 text-slate-300 hover:text-white flex items-center justify-between" data-category="experiments">
+                            <span>Protocolos Experimentais</span>
+                            <span class="bg-slate-600 text-xs px-2 py-1 rounded-full">7</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="lg:w-3/4 space-y-6">
+                <!-- Header -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                        <div>
+                            <h1 class="font-['Orbitron'] text-3xl text-cyan-300 mb-2">
+                                <i class="fas fa-book-open mr-2"></i>Biblioteca Xenobiológica
+                            </h1>
+                            <p class="text-slate-400">Acervo completo de conhecimento científico sobre genética alienígena e matemática aplicada</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Books Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="books-container">
+                    <!-- Os cards serão inseridos aqui via JavaScript -->
+                </div>
+
+                <!-- Pagination -->
+                <div class="flex justify-center mt-8" id="pagination-container">
+                    <!-- A paginação será inserida aqui via JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-700 py-6 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <p class="text-slate-400 text-sm">&copy; 2025 Xenobiology - Laboratório de Genética Alienígena. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dados dos livros (mantendo os originais)
+        const allBooks = [
+            // Livros originais
+            {
+                id: 'book1',
+                category: 'genetics',
+                title: 'Genética Triploide Avançada',
+                author: 'Dr. Zeta Orionis',
+                year: '2185',
+                description: 'Estudo completo sobre organismos com três conjuntos de cromossomos e suas implicações evolutivas.',
+                icon: 'fas fa-dna',
+                bgColor: 'bg-cyan-500/10',
+                textColor: 'text-cyan-400',
+                tagBg: 'bg-cyan-900/30',
+                tagText: 'text-cyan-400',
+                categoryLabel: 'Genética'
+            },
+            {
+                id: 'book2',
+                category: 'mathematics',
+                title: 'Probabilidade Condicional',
+                author: 'Prof. Sigma Draconis',
+                year: '2183',
+                description: 'Aplicações do Teorema de Bayes na previsão de expressões genéticas em organismos alienígenas.',
+                icon: 'fas fa-function',
+                bgColor: 'bg-purple-500/10',
+                textColor: 'text-purple-400',
+                tagBg: 'bg-purple-900/30',
+                tagText: 'text-purple-400',
+                categoryLabel: 'Matemática'
+            },
+            {
+                id: 'book3',
+                category: 'biology',
+                title: 'Evolução Extraterrestre',
+                author: 'Dra. Andromeda Kepler',
+                year: '2186',
+                description: 'Padrões evolutivos em ecossistemas alienígenas e pressões seletivas únicas.',
+                icon: 'fas fa-atom',
+                bgColor: 'bg-emerald-500/10',
+                textColor: 'text-emerald-400',
+                tagBg: 'bg-emerald-900/30',
+                tagText: 'text-emerald-400',
+                categoryLabel: 'Biologia'
+            },
+            {
+                id: 'book4',
+                category: 'experiments',
+                title: 'Protocolos de Laboratório',
+                author: 'Instituto Xenobiológico',
+                year: '2187',
+                description: 'Manual completo de procedimentos para manipulação segura de organismos alienígenas.',
+                icon: 'fas fa-flask',
+                bgColor: 'bg-amber-500/10',
+                textColor: 'text-amber-400',
+                tagBg: 'bg-amber-900/30',
+                tagText: 'text-amber-400',
+                categoryLabel: 'Protocolos'
+            },
+            {
+                id: 'book5',
+                category: 'genetics',
+                title: 'Genes WKR: Dominância e Expressão',
+                author: 'Dr. Vega Centauri',
+                year: '2184',
+                description: 'Análise detalhada dos genes W, K e R e seus padrões de dominância em organismos Γ-7.',
+                icon: 'fas fa-dna',
+                bgColor: 'bg-rose-500/10',
+                textColor: 'text-rose-400',
+                tagBg: 'bg-rose-900/30',
+                tagText: 'text-rose-400',
+                categoryLabel: 'Genética'
+            },
+            {
+                id: 'book6',
+                category: 'biology',
+                title: 'Ecologia Alienígena',
+                author: 'Dra. Lyra Polaris',
+                year: '2188',
+                description: 'Estudo de ecossistemas em planetas com condições extremas e suas formas de vida adaptadas.',
+                icon: 'fas fa-leaf',
+                bgColor: 'bg-blue-500/10',
+                textColor: 'text-blue-400',
+                tagBg: 'bg-blue-900/30',
+                tagText: 'text-blue-400',
+                categoryLabel: 'Biologia'
+            },
+            // Novos livros de xenobiologia
+            {
+                id: 'book7',
+                category: 'biology',
+                title: 'O Genoma Binário: Decifrando a Linguagem da Vida Extraterrestre',
+                author: 'Dra. Elara Vance',
+                year: '2242',
+                description: 'Uma exploração profunda de como a informação genética pode ser codificada em sistemas biológicos alienígenas, indo além do DNA e RNA terrestres.',
+                icon: 'fas fa-dna',
+                bgColor: 'bg-cyan-500/10',
+                textColor: 'text-cyan-400',
+                tagBg: 'bg-cyan-900/30',
+                tagText: 'text-cyan-400',
+                categoryLabel: 'Biologia'
+            },
+            {
+                id: 'book8',
+                category: 'mathematics',
+                title: 'Conjuntos Cósmicos: A Ecologia das Formas de Vida Extraterrestres',
+                author: 'Dr. Kaelen Thorne',
+                year: '2250',
+                description: 'Este livro explora a complexidade das interações ecológicas em ecossistemas alienígenas, utilizando a teoria dos conjuntos para modelar as relações.',
+                icon: 'fas fa-function',
+                bgColor: 'bg-purple-500/10',
+                textColor: 'text-purple-400',
+                tagBg: 'bg-purple-900/30',
+                tagText: 'text-purple-400',
+                categoryLabel: 'Matemática'
+            },
+            {
+                id: 'book9',
+                category: 'mathematics',
+                title: 'Lógica Evolutiva: Padrões de Adaptação em Mundos Distantes',
+                author: 'Prof. Orion Maxwell',
+                year: '2260',
+                description: 'Este livro aplica os princípios da lógica formal e da teoria da argumentação para analisar os processos evolutivos em ecossistemas alienígenas.',
+                icon: 'fas fa-brain',
+                bgColor: 'bg-purple-500/10',
+                textColor: 'text-purple-400',
+                tagBg: 'bg-purple-900/30',
+                tagText: 'text-purple-400',
+                categoryLabel: 'Matemática'
+            },
+            {
+                id: 'book10',
+                category: 'biology',
+                title: 'Cores de Outro Mundo: A Biologia da Percepção e Sinalização Alienígena',
+                author: 'Dra. Lyra Vance',
+                year: '2275',
+                description: 'Este livro explora a biologia das cores em organismos extraterrestres, analisando como a percepção visual e a sinalização cromática se adaptam.',
+                icon: 'fas fa-palette',
+                bgColor: 'bg-rose-500/10',
+                textColor: 'text-rose-400',
+                tagBg: 'bg-rose-900/30',
+                tagText: 'text-rose-400',
+                categoryLabel: 'Biologia'
+            },
+            {
+                id: 'book11',
+                category: 'biology',
+                title: 'Cronologia da Vida Cósmica: Uma História Evolutiva Extraterrestre',
+                author: 'Dr. Alistair Finch',
+                year: '2288',
+                description: 'Este livro reconstrói a linha do tempo da evolução da vida em diferentes planetas, desde as primeiras formas de vida unicelulares.',
+                icon: 'fas fa-hourglass-half',
+                bgColor: 'bg-blue-500/10',
+                textColor: 'text-blue-400',
+                tagBg: 'bg-blue-900/30',
+                tagText: 'text-blue-400',
+                categoryLabel: 'Biologia'
+            },
+            {
+                id: 'book12',
+                category: 'biology',
+                title: 'Hierarquias Híbridas: Organização Social em Espécies Alienígenas',
+                author: 'Dra. Seraphina Reed',
+                year: '2295',
+                description: 'Este livro investiga as estruturas sociais e hierárquicas de espécies alienígenas, analisando como a xenobiologia pode aplicar modelos de organização.',
+                icon: 'fas fa-users',
+                bgColor: 'bg-amber-500/10',
+                textColor: 'text-amber-400',
+                tagBg: 'bg-amber-900/30',
+                tagText: 'text-amber-400',
+                categoryLabel: 'Biologia'
+            },
+            {
+                id: 'book13',
+                category: 'biology',
+                title: 'O Terceiro Cromossoma: Genética de Espécies Híbridas Extraterrestres',
+                author: 'Dr. Elias Thorne',
+                year: '2305',
+                description: 'Este livro investiga a genética de espécies híbridas resultantes do cruzamento entre diferentes formas de vida alienígenas.',
+                icon: 'fas fa-dna',
+                bgColor: 'bg-cyan-500/10',
+                textColor: 'text-cyan-400',
+                tagBg: 'bg-cyan-900/30',
+                tagText: 'text-cyan-400',
+                categoryLabel: 'Biologia'
+            },
+            {
+                id: 'book14',
+                category: 'biology',
+                title: 'Subespécies de Xeno: Variação e Adaptação em Populações Alienígenas',
+                author: 'Dra. Vivian Holloway',
+                year: '2318',
+                description: 'Este livro examina a formação de subespécies em populações alienígenas, analisando os fatores genéticos, ambientais e comportamentais.',
+                icon: 'fas fa-microscope',
+                bgColor: 'bg-emerald-500/10',
+                textColor: 'text-emerald-400',
+                tagBg: 'bg-emerald-900/30',
+                tagText: 'text-emerald-400',
+                categoryLabel: 'Biologia'
+            },
+            {
+                id: 'book15',
+                category: 'biology',
+                title: 'Ameaça Bacteriófaga: Virologia Extraterrestre e a Guerra Biológica Cósmica',
+                author: 'Dr. Aris Thorne',
+                year: '2325',
+                description: 'Este livro explora a virologia de organismos extraterrestres, com foco em bacteriófagos alienígenas e seu papel na evolução.',
+                icon: 'fas fa-virus',
+                bgColor: 'bg-emerald-500/10',
+                textColor: 'text-emerald-400',
+                tagBg: 'bg-emerald-900/30',
+                tagText: 'text-emerald-400',
+                categoryLabel: 'Biologia'
+            },
+            {
+                id: 'book16',
+                category: 'biology',
+                title: 'O Enigma da Reprodução Xeno: Ciclos de Vida e Estratégias de Propagação',
+                author: 'Dra. Anya Sharma',
+                year: '2330',
+                description: 'Este livro investiga a diversidade de estratégias reprodutivas em espécies alienígenas, desde a reprodução assexuada até ciclos de vida complexos.',
+                icon: 'fas fa-venus-mars',
+                bgColor: 'bg-purple-500/10',
+                textColor: 'text-purple-400',
+                tagBg: 'bg-purple-900/30',
+                tagText: 'text-purple-400',
+                categoryLabel: 'Biologia'
+            }
+        ];
+
+        // Configurações de paginação
+        const ITEMS_PER_PAGE = 9;
+        let currentPage = 1;
+        let filteredBooks = [...allBooks];
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            renderBooks();
+            renderPagination();
+            setupEventListeners();
+            loadReadStatus();
+        });
+
+        function setupEventListeners() {
+            // Filtros de categoria
+            document.querySelectorAll('.category-tag').forEach(button => {
+                button.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    filterByCategory(category);
+                    updateCategoryButtons(this);
+                });
+            });
+            
+            // Busca
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                applyFilters('all', searchTerm);
+            });
+        }
+
+        function filterByCategory(category) {
+            currentPage = 1;
+            applyFilters(category);
+        }
+
+        function applyFilters(category = 'all', searchTerm = '') {
+            filteredBooks = allBooks.filter(book => {
+                const matchesCategory = category === 'all' || book.category === category;
+                const matchesSearch = !searchTerm || 
+                                     book.title.toLowerCase().includes(searchTerm) || 
+                                     book.author.toLowerCase().includes(searchTerm);
+                return matchesCategory && matchesSearch;
+            });
+            
+            currentPage = 1;
+            renderBooks();
+            renderPagination();
+        }
+
+        function updateCategoryButtons(activeButton) {
+            document.querySelectorAll('.category-tag').forEach(btn => {
+                btn.classList.remove('bg-cyan-600', 'bg-purple-600', 'bg-emerald-600', 'bg-amber-600', 'bg-rose-600');
+                btn.classList.add('bg-slate-700');
+            });
+            
+            const category = activeButton.getAttribute('data-category');
+            activeButton.classList.remove('bg-slate-700');
+            
+            if (category === 'all') activeButton.classList.add('bg-cyan-600');
+            else if (category === 'genetics') activeButton.classList.add('bg-purple-600');
+            else if (category === 'biology') activeButton.classList.add('bg-emerald-600');
+            else if (category === 'mathematics') activeButton.classList.add('bg-amber-600');
+            else if (category === 'experiments') activeButton.classList.add('bg-rose-600');
+        }
+
+        function renderBooks() {
+            const container = document.getElementById('books-container');
+            const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+            const endIndex = startIndex + ITEMS_PER_PAGE;
+            const booksToShow = filteredBooks.slice(startIndex, endIndex);
+
+            if (booksToShow.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-8">
+                        <i class="fas fa-book-open text-5xl text-slate-600 mb-4"></i>
+                        <h3 class="text-xl text-slate-400 mb-2">Nenhum documento encontrado</h3>
+                        <p class="text-slate-500">Tente ajustar sua busca ou selecionar outra categoria</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = booksToShow.map(book => createBookCard(book)).join('');
+            
+            // Reativar event listeners para status de leitura
+            setupReadStatusListeners();
+        }
+
+        function createBookCard(book) {
+            return `
+                <div class="book-card bg-slate-800 rounded-xl p-6 border border-slate-700" data-category="${book.category}" data-title="${book.title}" data-author="${book.author}" data-year="${book.year}" data-id="${book.id}">
+                    <div class="card-content">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="${book.bgColor} ${book.textColor} w-12 h-12 rounded-lg flex items-center justify-center">
+                                <i class="${book.icon} text-xl"></i>
+                            </div>
+                            <span class="text-xs ${book.tagBg} ${book.tagText} px-2 py-1 rounded-full">${book.categoryLabel}</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-1">${book.title}</h3>
+                        <p class="text-sm text-slate-400 mb-3">${book.author} • ${book.year}</p>
+                        <p class="text-sm text-slate-300 mb-4">${book.description}</p>
+                        <div class="card-footer flex justify-between items-center">
+                            <div class="flex items-center text-sm text-slate-500 cursor-pointer read-status" data-book-id="${book.id}">
+                                <i class="fas fa-times text-rose-400 mr-1"></i> Não lido
+                            </div>
+                            <a href="${book.id}.html" class="text-cyan-400 hover:text-cyan-300 text-sm font-medium flex items-center">
+                                Ler <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderPagination() {
+            const container = document.getElementById('pagination-container');
+            const totalPages = Math.ceil(filteredBooks.length / ITEMS_PER_PAGE);
+            
+            if (totalPages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let paginationHTML = '<nav class="flex items-center space-x-2">';
+            
+            // Botão anterior
+            paginationHTML += `
+                <button class="w-10 h-10 flex items-center justify-center rounded-lg bg-slate-800 text-slate-400 hover:bg-cyan-600 hover:text-white ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}" 
+                        onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            `;
+            
+            // Números das páginas
+            for (let i = 1; i <= totalPages; i++) {
+                const isActive = i === currentPage;
+                paginationHTML += `
+                    <button class="w-10 h-10 flex items-center justify-center rounded-lg ${isActive ? 'bg-cyan-600 text-white' : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white'}" 
+                            onclick="changePage(${i})">${i}</button>
+                `;
+            }
+            
+            // Botão próximo
+            paginationHTML += `
+                <button class="w-10 h-10 flex items-center justify-center rounded-lg bg-slate-800 text-slate-400 hover:bg-cyan-600 hover:text-white ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" 
+                        onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            `;
+            
+            paginationHTML += '</nav>';
+            container.innerHTML = paginationHTML;
+        }
+
+        function changePage(page) {
+            const totalPages = Math.ceil(filteredBooks.length / ITEMS_PER_PAGE);
+            if (page < 1 || page > totalPages) return;
+            
+            currentPage = page;
+            renderBooks();
+            renderPagination();
+            
+            // Scroll para o topo da lista de livros
+            document.getElementById('books-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function setupReadStatusListeners() {
+            document.querySelectorAll('.read-status').forEach(element => {
+                element.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const bookId = this.getAttribute('data-book-id');
+                    const currentStatus = localStorage.getItem(`book-${bookId}-read`) === 'true';
+                    const newStatus = !currentStatus;
+                    
+                    localStorage.setItem(`book-${bookId}-read`, newStatus);
+                    updateReadStatusElement(this, newStatus);
+                });
+            });
+        }
+
+        function loadReadStatus() {
+            document.querySelectorAll('.read-status').forEach(element => {
+                const bookId = element.getAttribute('data-book-id');
+                const isRead = localStorage.getItem(`book-${bookId}-read`) === 'true';
+                updateReadStatusElement(element, isRead);
+            });
+        }
+
+        function updateReadStatusElement(element, isRead) {
+            if (isRead) {
+                element.innerHTML = '<i class="fas fa-check text-emerald-400 mr-1"></i> Lido';
+            } else {
+                element.innerHTML = '<i class="fas fa-times text-rose-400 mr-1"></i> Não lido';
+            }
+        }
+    </script>
+</body>
+</html>

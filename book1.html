@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-br" x-data="{ sidebarOpen: false }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genética Triploide Avançada | Xenobiologia</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .font-display { font-family: 'Orbitron', sans-serif; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        .dna-pattern { background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%233b82f6' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E"); }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-900 dna-pattern">
+    <!-- Navbar -->
+    <nav class="bg-slate-900 border-b border-slate-700 sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="font-['Orbitron'] text-2xl text-cyan-400">XENOBIOLOGY</span>
+                    </div>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="lab.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-flask mr-2"></i>Laboratório
+                    </a>
+                    <a href="library.html" class="text-cyan-400 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-full after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300">
+                        <i class="fas fa-book mr-2"></i>Biblioteca
+                    </a>
+                    <a href="hypothesis.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-lightbulb mr-2"></i>Hipóteses
+                    </a>
+                    <a href="papers.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-scroll mr-2"></i>Publicações
+                    </a>
+                    <a href="progress.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-chart-line mr-2"></i>Progresso
+                    </a>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button @click="sidebarOpen = !sidebarOpen" class="text-slate-300 hover:text-white focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Sidebar -->
+        <div x-show="sidebarOpen" @click.away="sidebarOpen = false" 
+             class="md:hidden fixed inset-0 z-40 bg-slate-900 bg-opacity-90 backdrop-blur-sm">
+            <div class="flex flex-col h-full p-4">
+                <div class="flex justify-end">
+                    <button @click="sidebarOpen = false" class="text-slate-300 hover:text-white p-2">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="flex flex-col space-y-6 mt-8 items-center">
+                    <a href="lab.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-flask mr-2"></i>Laboratório
+                    </a>
+                    <a href="library.html" @click="sidebarOpen = false" class="text-cyan-400 text-xl font-medium">
+                        <i class="fas fa-book mr-2"></i>Biblioteca
+                    </a>
+                    <a href="hypothesis.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-lightbulb mr-2"></i>Hipóteses
+                    </a>
+                    <a href="papers.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-scroll mr-2"></i>Publicações
+                    </a>
+                    <a href="progress.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-chart-line mr-2"></i>Progresso
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex flex-col lg:flex-row gap-2">
+            <!-- Sidebar (Voltar e informações) -->
+            <div class="lg:w-1/4 space-y-6">
+                <!-- Informações do Livro -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900">
+                    <h3 class="text-xl font-bold text-white mb-2">Genética Triploide Avançada</h3>
+                    <p class="text-sm text-slate-400 mb-3">Dr. Zeta Orionis • 2185</p>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <span class="text-xs bg-slate-700 text-slate-300 px-2 py-1 rounded-full mr-2">ISBN: XB-2185-001</span>
+                            <span class="text-xs bg-slate-700 text-slate-300 px-2 py-1 rounded-full">Páginas: 342</span>
+                        </div>
+                        <div class="flex items-center text-sm text-slate-500 cursor-pointer" id="read-status">
+                            <i class="fas fa-check text-emerald-400 mr-1"></i> Lido
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4 mt-6">
+                        <div>
+                            <h4 class="text-sm font-medium text-cyan-300 mb-1">Categoria</h4>
+                            <p class="text-sm text-slate-300">Genética Alienígena</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-sm font-medium text-cyan-300 mb-1">Publicado em</h4>
+                            <p class="text-sm text-slate-300">15 de Março, 2185</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-sm font-medium text-cyan-300 mb-1">Editora</h4>
+                            <p class="text-sm text-slate-300">Editora Xenobiológica</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-sm font-medium text-cyan-300 mb-1">Idioma</h4>
+                            <p class="text-sm text-slate-300">Português (Traduzido do Orionês)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Índice -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900">
+                    <h3 class="font-['Orbitron'] text-lg text-cyan-300 mb-4">Índice</h3>
+                    <div class="space-y-2">
+                        <a href="#capitulo1" class="block text-sm text-slate-300 hover:text-cyan-400 pl-4 border-l-2 border-slate-700 hover:border-cyan-400 py-1">1. Introdução à Triploidia</a>
+                        <a href="#capitulo2" class="block text-sm text-slate-300 hover:text-cyan-400 pl-4 border-l-2 border-slate-700 hover:border-cyan-400 py-1">2. Casos de Estudo</a>
+                        <a href="#capitulo3" class="block text-sm text-slate-300 hover:text-cyan-400 pl-4 border-l-2 border-slate-700 hover:border-cyan-400 py-1">3. Mecanismos de Divisão Celular</a>
+                        <a href="#capitulo4" class="block text-sm text-slate-300 hover:text-cyan-400 pl-4 border-l-2 border-slate-700 hover:border-cyan-400 py-1">4. Implicações Evolutivas</a>
+                        <a href="#capitulo5" class="block text-sm text-slate-300 hover:text-cyan-400 pl-4 border-l-2 border-slate-700 hover:border-cyan-400 py-1">5. Aplicações Práticas</a>
+                        <a href="#conclusao" class="block text-sm text-slate-300 hover:text-cyan-400 pl-4 border-l-2 border-slate-700 hover:border-cyan-400 py-1">Conclusão</a>
+                    </div>
+                </div>
+
+                <!-- Voltar à Biblioteca -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900">
+                    <a href="library.html" class="btn-primary text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-arrow-left mr-2"></i> Voltar à Biblioteca
+                    </a>
+                </div>
+            </div>
+
+            <!-- Conteúdo do Livro -->
+            <div class="lg:w-3/4 content-section lg:pl-8 lg:pt-0 pt-8">
+                <!-- Capa e Título -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900 mb-6">
+                    <div class="flex flex-col md:flex-row items-center gap-6">
+                        <div class="w-full">
+                            <h1 class="font-['Orbitron'] text-3xl text-cyan-300 mb-2">Genética Triploide Avançada</h1>
+                            <p class="text-lg text-slate-300 mb-4">Estudo completo sobre organismos com três conjuntos de cromossomos e suas implicações evolutivas.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="text-xs bg-cyan-900/30 text-cyan-400 px-2 py-1 rounded-full">Ciência</span>
+                                <span class="text-xs bg-cyan-900/30 text-cyan-400 px-2 py-1 rounded-full">Genética</span>
+                                <span class="text-xs bg-cyan-900/30 text-cyan-400 px-2 py-1 rounded-full">Alienígena</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conteúdo Textual -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900 space-y-8">
+                    <!-- Capítulo 1 -->
+                    <section id="capitulo1" class="chapter-section">
+                        <h2 class="font-['Orbitron'] text-2xl text-cyan-300 mb-4">1. Introdução à Triploidia</h2>
+                        <div class="prose prose-invert max-w-none text-slate-300">
+                            <p>A triploidia, condição genética caracterizada pela presença de três conjuntos completos de cromossomos, representa um dos fenômenos mais fascinantes da genética alienígena. Enquanto na Terra a triploidia é rara e frequentemente letal, em organismos do sistema de Orion, essa condição não apenas é viável como também confere vantagens adaptativas significativas.</p>
+                            
+                            <p class="mt-4">Este capítulo introduz os conceitos fundamentais da triploidia em organismos extraterrestres, contrastando com o que conhecemos da biologia terrestre. Abordaremos:</p>
+                            
+                            <ul class="list-disc pl-6 mt-2 space-y-1">
+                                <li>Definições básicas de ploidia e suas variações</li>
+                                <li>Casos conhecidos de triploidia no universo</li>
+                                <li>Métodos de identificação de organismos triploides</li>
+                                <li>Implicações teóricas da triploidia</li>
+                            </ul>
+                            
+                            <div class="bg-slate-700/50 border-l-4 border-cyan-500 p-4 my-4 rounded-r">
+                                <p class="text-sm italic text-slate-300">"A triploidia em organismos de Orion-7 não é uma anomalia, mas sim a norma biológica - um salto quântico em nossa compreensão da genética." - Dr. Zeta Orionis</p>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Capítulo 2 -->
+                    <section id="capitulo2" class="chapter-section mt-8">
+                        <h2 class="font-['Orbitron'] text-2xl text-cyan-300 mb-4">2. Casos de Estudo</h2>
+                        <div class="prose prose-invert max-w-none text-slate-300">
+                            <p>Neste capítulo, examinamos em detalhes cinco espécies triploides do sistema estelar de Orion, cada uma representando adaptações únicas a seus ambientes específicos.</p>
+                            
+                            <h3 class="text-xl text-white mt-6 mb-2">2.1. O Caso dos Krellianos</h3>
+                            <p>Os Krellianos de Orion-7b desenvolveram um sistema de compensação de dose genética que permite a expressão equilibrada de genes em três conjuntos cromossômicos. Sua biologia reprodutiva envolve:</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+                                <div class="bg-slate-700/30 p-4 rounded-lg">
+                                    <h4 class="text-sm font-medium text-cyan-300 mb-1">Sistema Reprodutivo</h4>
+                                    <p class="text-sm">Fusão de três gametas haploides (3n), com mecanismos únicos de pareamento cromossômico durante a meiose.</p>
+                                </div>
+                                <div class="bg-slate-700/30 p-4 rounded-lg">
+                                    <h4 class="text-sm font-medium text-cyan-300 mb-1">Vantagens Adaptativas</h4>
+                                    <p class="text-sm">Maior diversidade genética e resistência a mutações deletérias devido à redundância genética.</p>
+                                </div>
+                            </div>
+                            
+                            <h3 class="text-xl text-white mt-6 mb-2">2.2. Os Draconianos de Zeta</h3>
+                            <p>Uma espécie que alterna entre estados diploides e triploides em diferentes fases de seu ciclo de vida, demonstrando plasticidade genômica sem precedentes.</p>
+                        </div>
+                    </section>
+                    
+                    <!-- Capítulo 3 -->
+                    <section id="capitulo3" class="chapter-section mt-8">
+                        <h2 class="font-['Orbitron'] text-2xl text-cyan-300 mb-4">3. Mecanismos de Divisão Celular</h2>
+                        <div class="prose prose-invert max-w-none text-slate-300">
+                            <p>A divisão celular em organismos triploides desafia todos os paradigmas estabelecidos pela biologia terrestre. Este capítulo descreve os processos únicos observados:</p>
+                            
+                            <div class="overflow-x-auto my-4">
+                                <table class="min-w-full border border-slate-700">
+                                    <thead>
+                                        <tr class="bg-slate-800">
+                                            <th class="px-4 py-2 text-left text-cyan-300 border-b border-slate-700">Processo</th>
+                                            <th class="px-4 py-2 text-left text-cyan-300 border-b border-slate-700">Organismo</th>
+                                            <th class="px-4 py-2 text-left text-cyan-300 border-b border-slate-700">Características</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="border-b border-slate-700">
+                                            <td class="px-4 py-2">Meiose Triploide</td>
+                                            <td class="px-4 py-2">Krellianos</td>
+                                            <td class="px-4 py-2">Formação de trivalentes cromossômicos</td>
+                                        </tr>
+                                        <tr class="border-b border-slate-700">
+                                            <td class="px-4 py-2">Mitose Asimétrica</td>
+                                            <td class="px-4 py-2">Draconianos</td>
+                                            <td class="px-4 py-2">Distribuição desigual de cromossomos</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-2">Poliploidização</td>
+                                            <td class="px-4 py-2">Xenomorphos</td>
+                                            <td class="px-4 py-2">Conversão reversível 2n↔3n</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <p class="mt-4">Os mecanismos moleculares por trás desses processos incluem proteínas motoras especializadas e sistemas de checkpoint modificados, que serão detalhados no capítulo 5.</p>
+                        </div>
+                    </section>
+                    
+                    <!-- Capítulo 4 -->
+                    <section id="capitulo4" class="chapter-section mt-8">
+                        <h2 class="font-['Orbitron'] text-2xl text-cyan-300 mb-4">4. Implicações Evolutivas</h2>
+                        <div class="prose prose-invert max-w-none text-slate-300">
+                            <p>A triploidia alienígena oferece novas perspectivas sobre os caminhos da evolução biológica em condições extraterrestres. Entre as descobertas mais significativas:</p>
+                            
+                            <ol class="list-decimal pl-6 mt-2 space-y-2">
+                                <li class="pl-2">Taxas aceleradas de especiação devido à maior variabilidade genética</li>
+                                <li class="pl-2">Resistência a extinções em pequenas populações</li>
+                                <li class="pl-2">Novos modelos de herança genética não-mendeliana</li>
+                            </ol>
+                            
+                            <div class="bg-slate-900 p-4 rounded-lg my-4 border border-cyan-900">
+                                <h3 class="text-lg text-white mb-2">Figura 4.1: Árvore Filogenética Triploide</h3>
+                                <div class="bg-slate-800 h-48 rounded flex items-center justify-center text-slate-500">
+                                    [Diagrama de árvore filogenética mostrando relações entre espécies triploides]
+                                </div>
+                                <p class="text-xs text-slate-400 mt-2">Comparação entre linhagens diploides (azul) e triploides (verde) no sistema de Orion.</p>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Capítulo 5 -->
+                    <section id="capitulo5" class="chapter-section mt-8">
+                        <h2 class="font-['Orbitron'] text-2xl text-cyan-300 mb-4">5. Aplicações Práticas</h2>
+                        <div class="prose prose-invert max-w-none text-slate-300">
+                            <p>O estudo da triploidia alienígena tem aplicações revolucionárias em diversas áreas:</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
+                                <div class="bg-gradient-to-br from-cyan-900/30 to-slate-800 p-4 rounded-lg border border-cyan-900/50">
+                                    <h4 class="text-sm font-medium text-cyan-300 mb-1">Medicina</h4>
+                                    <p class="text-sm">Terapias genéticas baseadas em redundância triploide para doenças degenerativas.</p>
+                                </div>
+                                <div class="bg-gradient-to-br from-cyan-900/30 to-slate-800 p-4 rounded-lg border border-cyan-900/50">
+                                    <h4 class="text-sm font-medium text-cyan-300 mb-1">Agricultura</h4>
+                                    <p class="text-sm">Desenvolvimento de cultivos mais robustos através de poliploidização controlada.</p>
+                                </div>
+                                <div class="bg-gradient-to-br from-cyan-900/30 to-slate-800 p-4 rounded-lg border border-cyan-900/50">
+                                    <h4 class="text-sm font-medium text-cyan-300 mb-1">Bioengenharia</h4>
+                                    <p class="text-sm">Organismos sintéticos com genomas triploides para produção industrial.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Conclusão -->
+                    <section id="conclusao" class="chapter-section mt-8">
+                        <h2 class="font-['Orbitron'] text-2xl text-cyan-300 mb-4">Conclusão</h2>
+                        <div class="prose prose-invert max-w-none text-slate-300">
+                            <p>A genética triploide alienígena representa um novo paradigma na biologia, desafiando nossos conceitos fundamentais sobre herança genética e evolução. Os organismos estudados neste trabalho demonstram que a vida pode seguir caminhos radicalmente diferentes em outros mundos, abrindo novas fronteiras para a pesquisa xenobiológica.</p>
+                            
+                            <p class="mt-4">As descobertas aqui apresentadas têm implicações não apenas para o estudo de vida extraterrestre, mas também para o entendimento de possibilidades biológicas que podem ser aplicadas em contextos terrestres, desde a medicina até a bioengenharia.</p>
+                            
+                            <div class="bg-slate-700/50 border-l-4 border-cyan-500 p-4 my-4 rounded-r">
+                                <p class="text-sm italic text-slate-300">"A triploidia não é o limite - nossos estudos preliminares já indicam a existência de organismos tetraploides e pentaploides em outros sistemas estelares. A diversidade genética do universo parece ser limitada apenas pela nossa capacidade de explorá-la." - Dr. Zeta Orionis, Epílogo</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                
+                <!-- Referências -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900 mt-8">
+                    <h3 class="font-['Orbitron'] text-xl text-cyan-300 mb-4">Referências</h3>
+                    <div class="space-y-3 text-sm text-slate-300">
+                        <p>1. ORIONIS, Z. et al. "Triploid Mechanisms in Alien Genetics". <em>Journal of Xenobiology</em>, v.12, n.3, p.45-78, 2184.</p>
+                        <p>2. KEPLER, A. "Evolutionary Pathways of Polyploid Organisms". <em>Astrobiology Reviews</em>, v.8, n.2, p.112-145, 2183.</p>
+                        <p>3. CENTAURI, V. "WKR Genes and Their Role in Triploid Dominance". <em>Genetics Beyond Earth</em>, v.5, n.1, p.33-67, 2185.</p>
+                        <p>4. DRACONIS, S. "Mathematical Models of Triploid Inheritance". <em>Interstellar Science</em>, v.15, n.4, p.201-230, 2182.</p>
+                        <p>5. POLARIS, L. "Ecological Impacts of Polyploidy in Extreme Environments". <em>Exoplanet Ecology</em>, v.7, n.3, p.89-104, 2186.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-700 py-6 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <p class="text-slate-400 text-sm">&copy; 2025 Xenobiology - Laboratório de Genética Alienígena. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle read status
+            const readStatus = document.getElementById('read-status');
+            const bookId = 'book1'; // ID do livro atual
+            
+            // Verificar status no localStorage
+            const isRead = localStorage.getItem(`book-${bookId}-read`) === 'true';
+            updateReadStatus(isRead);
+            
+            // Alternar status ao clicar
+            readStatus.addEventListener('click', function() {
+                const newStatus = localStorage.getItem(`book-${bookId}-read`) !== 'true';
+                localStorage.setItem(`book-${bookId}-read`, newStatus);
+                updateReadStatus(newStatus);
+            });
+            
+            function updateReadStatus(isRead) {
+                if (isRead) {
+                    readStatus.innerHTML = '<i class="fas fa-check text-emerald-400 mr-1"></i> Lido';
+                } else {
+                    readStatus.innerHTML = '<i class="fas fa-times text-rose-400 mr-1"></i> Não lido';
+                }
+            }
+            
+            // Scroll suave para os capítulos
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 20,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.chapter-section').forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-br" x-data="{ sidebarOpen: false }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O Terceiro Cromossoma | Xenobiologia</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .font-display { font-family: 'Orbitron', sans-serif; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        .dna-pattern { background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%233b82f6' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E"); }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-900 dna-pattern">
+    <!-- Navbar -->
+    <nav class="bg-slate-900 border-b border-slate-700 sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="font-['Orbitron'] text-2xl text-cyan-400">XENOBIOLOGY</span>
+                    </div>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="lab.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-flask mr-2"></i>Laboratório
+                    </a>
+                    <a href="library.html" class="text-cyan-400 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-full after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300">
+                        <i class="fas fa-book mr-2"></i>Biblioteca
+                    </a>
+                    <a href="hypothesis.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-lightbulb mr-2"></i>Hipóteses
+                    </a>
+                    <a href="papers.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-scroll mr-2"></i>Publicações
+                    </a>
+                    <a href="progress.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-chart-line mr-2"></i>Progresso
+                    </a>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button @click="sidebarOpen = !sidebarOpen" class="text-slate-300 hover:text-white focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Sidebar -->
+        <div x-show="sidebarOpen" @click.away="sidebarOpen = false" 
+             class="md:hidden fixed inset-0 z-40 bg-slate-900 bg-opacity-90 backdrop-blur-sm">
+            <div class="flex flex-col h-full p-4">
+                <div class="flex justify-end">
+                    <button @click="sidebarOpen = false" class="text-slate-300 hover:text-white p-2">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="flex flex-col space-y-6 mt-8 items-center">
+                    <a href="lab.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-flask mr-2"></i>Laboratório
+                    </a>
+                    <a href="library.html" @click="sidebarOpen = false" class="text-cyan-400 text-xl font-medium">
+                        <i class="fas fa-book mr-2"></i>Biblioteca
+                    </a>
+                    <a href="hypothesis.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-lightbulb mr-2"></i>Hipóteses
+                    </a>
+                    <a href="papers.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-scroll mr-2"></i>Publicações
+                    </a>
+                    <a href="progress.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-chart-line mr-2"></i>Progresso
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex flex-col lg:flex-row gap-2">
+            <!-- Sidebar (Voltar e informações) -->
+            <div class="lg:w-1/4 space-y-6">
+                <!-- Informações do Livro -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900">
+                    <h3 class="text-xl font-bold text-white mb-2">O Terceiro Cromossoma</h3>
+                    <p class="text-sm text-slate-400 mb-3">Dr. Elias Thorne • 2305</p>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <span class="text-xs bg-slate-700 text-slate-300 px-2 py-1 rounded-full mr-2">ISBN: XB-2305-007</span>
+                            <span class="text-xs bg-slate-700 text-slate-300 px-2 py-1 rounded-full">Páginas: 467</span>
+                        </div>
+                        <div class="flex items-center text-sm text-slate-500 cursor-pointer" id="read-status">
+                            <i class="fas fa-check text-emerald-400 mr-1"></i> Lido
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4 mt-6">
+                        <div>
+                            <h4 class="text-sm font-medium text-cyan-300 mb-1">Categoria</h4>
+                            <p class="text-sm text-slate-300">Genética Híbrida</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-sm font-medium text-cyan-300 mb-1">Publicado em</h4>
+                            <p class="text-sm text-slate-300">29 de Outubro, 2305</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-sm font-medium text-cyan-300 mb-1">Editora</h4>
+                            <p class="text-sm text-slate-300">Editora Xenobiológica</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-sm font-medium text-cyan-300 mb-1">Idioma</h4>
+                            <p class="text-sm text-slate-300">Português (Traduzido do Inglês)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Índice -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900">
+                    <h3 class="font-['Orbitron'] text-lg text-cyan-300 mb-4">Índice</h3>
+                    <div class="space-y-2">
+                        <a href="#capitulo1" class="block text-sm text-slate-300 hover:text-cyan-400 pl-4 border-l-2 border-slate-700 hover:border-cyan-400 py-1">1. Introdução à Hibridização Extraterrestre</a>
+                        <a href="#capitulo2" class="block text-sm text-slate-300 hover:text-cyan-400 pl-4 border-l-2 border-slate-700 hover:border-cyan-400 py-1">2. Dominância e Recessividade: A Expressão Gênica Híbrida</a>
+                        <a href="#capitulo3" class="block text-sm text-slate-300 hover:text-cyan-400 pl-4 border-l-2 border-slate-700 hover:border-cyan-400 py-1">3. Reprodução e Segregação: A Herança Genética Híbrida</a>
+                        <a href="#capitulo4" class="block text-sm text-slate-300 hover:text-cyan-400 pl-4 border-l-2 border-slate-700 hover:border-cyan-400 py-1">4. Mutação e Evolução: A Adaptação de Híbridos Extraterrestres</a>
+                        <a href="#capitulo5" class="block text-sm text-slate-300 hover:text-cyan-400 pl-4 border-l-2 border-slate-700 hover:border-cyan-400 py-1">5. Casos de Estudo: Híbridos Notáveis do Cosmos</a>
+                        <a href="#capitulo6" class="block text-sm text-slate-300 hover:text-cyan-400 pl-4 border-l-2 border-slate-700 hover:border-cyan-400 py-1">6. Engenharia Genética Híbrida: O Futuro da Xenogenética</a>
+                    </div>
+                </div>
+
+                <!-- Voltar à Biblioteca -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900">
+                    <a href="library.html" class="btn-primary text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-arrow-left mr-2"></i> Voltar à Biblioteca
+                    </a>
+                </div>
+            </div>
+
+            <!-- Conteúdo do Livro -->
+            <div class="lg:w-3/4 content-section lg:pl-8 lg:pt-0 pt-8">
+                <!-- Capa e Título -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900 mb-6">
+                    <div class="flex flex-col md:flex-row items-center gap-6">
+                        <div class="w-full">
+                            <h1 class="font-['Orbitron'] text-3xl text-cyan-300 mb-2">O Terceiro Cromossoma: Genética de Espécies Híbridas Extraterrestres</h1>
+                            <p class="text-lg text-slate-300 mb-4">Este livro investiga a genética de espécies híbridas resultantes do cruzamento entre diferentes formas de vida alienígenas. A xenobiologia explora os mecanismos de herança, dominância e recombinação em genomas complexos.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="text-xs bg-cyan-900/30 text-cyan-400 px-2 py-1 rounded-full">Híbridos</span>
+                                <span class="text-xs bg-cyan-900/30 text-cyan-400 px-2 py-1 rounded-full">Genética</span>
+                                <span class="text-xs bg-cyan-900/30 text-cyan-400 px-2 py-1 rounded-full">Alienígena</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conteúdo Textual -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900 space-y-8">
+                    <!-- Capítulo 1 -->
+                    <section id="capitulo1" class="chapter-section">
+                        <h2 class="font-['Orbitron'] text-2xl text-cyan-300 mb-4">1. Introdução à Hibridização Extraterrestre</h2>
+                        <div class="prose prose-invert max-w-none text-slate-300">
+                            <p>Este capítulo apresenta os fundamentos da hibridização em ambientes extraterrestres. Define o que constitui um "híbrido" em um contexto alienígena, seja ele resultante do cruzamento entre espécies diferentes, ou da fusão de material genético de origens distintas.</p>
+                            
+                            <p class="mt-4">Explora a diversidade de híbridos em organismos alienígenas, desde aqueles com características intermediárias até aqueles com características completamente novas.</p>
+                            
+                            <div class="bg-slate-700/50 border-l-4 border-cyan-500 p-4 my-4 rounded-r">
+                                <p class="text-sm italic text-slate-300">"A hibridização alienígena não segue as regras terrestres. Aqui, o terceiro cromossoma pode carregar informações que desafiam nossa compreensão da herança genética." - Dr. Elias Thorne</p>
+                            </div>
+                            
+                            <p>A xenobiologia da hibridização é apresentada como a disciplina que busca identificar e modelar os processos de hibridização em diferentes espécies.</p>
+                        </div>
+                    </section>
+                    
+                    <!-- Capítulo 2 -->
+                    <section id="capitulo2" class="chapter-section mt-8">
+                        <h2 class="font-['Orbitron'] text-2xl text-cyan-300 mb-4">2. Dominância e Recessividade: A Expressão Gênica Híbrida</h2>
+                        <div class="prose prose-invert max-w-none text-slate-300">
+                            <p>Este capítulo aprofunda a discussão sobre a dominância e recessividade em híbridos alienígenas. Discute como os alelos de diferentes espécies podem interagir para determinar as características fenotípicas.</p>
+                            
+                            <h3 class="text-xl text-white mt-6 mb-2">2.1. Padrões de Dominância Exóticos</h3>
+                            <p>Explora a ideia de "epistasia" em um contexto extraterrestre, onde a expressão de um gene pode ser mascarada ou modificada por outro gene.</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+                                <div class="bg-slate-700/30 p-4 rounded-lg">
+                                    <h4 class="text-sm font-medium text-cyan-300 mb-1">Dominância Temporal</h4>
+                                    <p class="text-sm">Alelos que se expressam em diferentes fases do ciclo de vida do organismo.</p>
+                                </div>
+                                <div class="bg-slate-700/30 p-4 rounded-lg">
+                                    <h4 class="text-sm font-medium text-cyan-300 mb-1">Codominância Tripla</h4>
+                                    <p class="text-sm">Expressão simultânea de três alelos diferentes em híbridos complexos.</p>
+                                </div>
+                            </div>
+                            
+                            <p>A xenobiologia da expressão gênica é apresentada como a área que busca identificar e classificar as estratégias de expressão gênica em diferentes espécies.</p>
+                        </div>
+                    </section>
+                    
+                    <!-- Capítulo 3 -->
+                    <section id="capitulo3" class="chapter-section mt-8">
+                        <h2 class="font-['Orbitron'] text-2xl text-cyan-300 mb-4">3. Reprodução e Segregação: A Herança Genética Híbrida</h2>
+                        <div class="prose prose-invert max-w-none text-slate-300">
+                            <p>Este capítulo analisa a reprodução e segregação em híbridos alienígenas. Discute como os cromossomos de diferentes espécies podem se segregar durante a meiose.</p>
+                            
+                            <div class="overflow-x-auto my-4">
+                                <table class="min-w-full border border-slate-700">
+                                    <thead>
+                                        <tr class="bg-slate-800">
+                                            <th class="px-4 py-2 text-left text-cyan-300 border-b border-slate-700">Tipo de Segregação</th>
+                                            <th class="px-4 py-2 text-left text-cyan-300 border-b border-slate-700">Padrão Cromossômico</th>
+                                            <th class="px-4 py-2 text-left text-cyan-300 border-b border-slate-700">Viabilidade (%)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="border-b border-slate-700">
+                                            <td class="px-4 py-2">Segregação Normal</td>
+                                            <td class="px-4 py-2">2n → n + n</td>
+                                            <td class="px-4 py-2">95%</td>
+                                        </tr>
+                                        <tr class="border-b border-slate-700">
+                                            <td class="px-4 py-2">Segregação Tripla</td>
+                                            <td class="px-4 py-2">3n → n + n + n</td>
+                                            <td class="px-4 py-2">78%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-2">Não-disjunção</td>
+                                            <td class="px-4 py-2">2n → 2n + 0</td>
+                                            <td class="px-4 py-2">23%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <p>Explora a ideia de "aneuploidia" em um contexto extraterrestre, onde os híbridos podem ter um número anormal de cromossomos.</p>
+                        </div>
+                    </section>
+                    
+                    <!-- Capítulo 4 -->
+                    <section id="capitulo4" class="chapter-section mt-8">
+                        <h2 class="font-['Orbitron'] text-2xl text-cyan-300 mb-4">4. Mutação e Evolução: A Adaptação de Híbridos Extraterrestres</h2>
+                        <div class="prose prose-invert max-w-none text-slate-300">
+                            <p>Este capítulo explora a mutação e evolução em híbridos alienígenas. Discute como as mutações podem surgir em genomas híbridos, e como a seleção natural pode atuar sobre essas mutações.</p>
+                            
+                            <div class="bg-slate-900 p-4 rounded-lg my-4 border border-cyan-900">
+                                <h3 class="text-lg text-white mb-2">Figura 4.1: Evolução de Híbridos Alienígenas</h3>
+                                <img src="imagens/terceiro_cromossoma_cap4_diagrama.png" alt="Diagrama mostrando a evolução de híbridos ao longo de gerações, com destaque para o terceiro cromossoma" class="w-full h-auto rounded">
+                                <p class="text-xs text-slate-400 mt-2">Representação da especiação híbrida em três gerações consecutivas.</p>
+                            </div>
+                            
+                            <p>Explora a ideia de "especiação híbrida" em um contexto extraterrestre, onde os híbridos podem formar novas espécies que são reprodutivamente isoladas de seus pais.</p>
+                        </div>
+                    </section>
+                    
+                    <!-- Capítulo 5 -->
+                    <section id="capitulo5" class="chapter-section mt-8">
+                        <h2 class="font-['Orbitron'] text-2xl text-cyan-300 mb-4">5. Casos de Estudo: Híbridos Notáveis do Cosmos</h2>
+                        <div class="prose prose-invert max-w-none text-slate-300">
+                            <p>Este capítulo apresenta casos de estudo de híbridos notáveis do cosmos. Discute exemplos de espécies híbridas que foram descobertas em diferentes planetas.</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
+                                <div class="bg-gradient-to-br from-cyan-900/30 to-slate-800 p-4 rounded-lg border border-cyan-900/50">
+                                    <h4 class="text-sm font-medium text-cyan-300 mb-1">Híbrido Kepler-442b</h4>
+                                    <p class="text-sm">Fusão entre espécies aquáticas e terrestres, resultando em anfíbios avançados.</p>
+                                </div>
+                                <div class="bg-gradient-to-br from-cyan-900/30 to-slate-800 p-4 rounded-lg border border-cyan-900/50">
+                                    <h4 class="text-sm font-medium text-cyan-300 mb-1">Híbrido Proxima-c</h4>
+                                    <p class="text-sm">Combinação de metabolismo fotossintético e quimiossintético em um único organismo.</p>
+                                </div>
+                                <div class="bg-gradient-to-br from-cyan-900/30 to-slate-800 p-4 rounded-lg border border-cyan-900/50">
+                                    <h4 class="text-sm font-medium text-cyan-300 mb-1">Híbrido TRAPPIST-1e</h4>
+                                    <p class="text-sm">Espécie com capacidades telepáticas resultante de hibridização neural.</p>
+                                </div>
+                            </div>
+                            
+                            <p>Explora a ideia de "vantagem híbrida" em um contexto extraterrestre, onde os híbridos podem ter características superiores às de seus pais.</p>
+                        </div>
+                    </section>
+                    
+                    <!-- Capítulo 6 -->
+                    <section id="capitulo6" class="chapter-section mt-8">
+                        <h2 class="font-['Orbitron'] text-2xl text-cyan-300 mb-4">6. Engenharia Genética Híbrida: O Futuro da Xenogenética</h2>
+                        <div class="prose prose-invert max-w-none text-slate-300">
+                            <p>Este capítulo projeta o futuro da engenharia genética híbrida em xenobiologia, destacando os desafios e as oportunidades que aguardam os pesquisadores.</p>
+                            
+                            <p class="mt-4">Discute a necessidade de desenvolver novas tecnologias para a manipulação de genomas híbridos em organismos alienígenas, e a importância de programas de colaboração internacional.</p>
+                            
+                            <div class="bg-slate-700/50 border-l-4 border-cyan-500 p-4 my-4 rounded-r">
+                                <p class="text-sm italic text-slate-300">"O terceiro cromossoma representa mais do que material genético adicional - é a chave para compreender como a vida pode transcender as barreiras entre espécies e criar algo verdadeiramente novo." - Dr. Elias Thorne, Conclusão</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                
+                <!-- Referências -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-cyan-900 mt-8">
+                    <h3 class="font-['Orbitron'] text-xl text-cyan-300 mb-4">Referências</h3>
+                    <div class="space-y-3 text-sm text-slate-300">
+                        <p>1. THORNE, E. et al. "Hybrid Genetics in Extraterrestrial Species". <em>Xenohybridization</em>, v.13, n.2, p.78-112, 2304.</p>
+                        <p>2. GARCIA, M. "Dominance Patterns in Alien Hybrids". <em>Hybrid Genetics</em>, v.8, n.4, p.145-178, 2303.</p>
+                        <p>3. CHEN, W. "Chromosomal Segregation in Interspecies Crosses". <em>Cosmic Genetics</em>, v.15, n.1, p.23-56, 2305.</p>
+                        <p>4. RODRIGUEZ, L. "Hybrid Speciation Beyond Earth". <em>Evolutionary Xenobiology</em>, v.9, n.3, p.189-223, 2304.</p>
+                        <p>5. PATEL, S. "Genetic Engineering of Alien Hybrids". <em>Xenogenetic Engineering</em>, v.6, n.2, p.67-89, 2305.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-700 py-6 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <p class="text-slate-400 text-sm">&copy; 2025 Xenobiology - Laboratório de Genética Alienígena. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle read status
+            const readStatus = document.getElementById('read-status');
+            const bookId = 'book7'; // ID do livro atual
+            
+            // Verificar status no localStorage
+            const isRead = localStorage.getItem(`book-${bookId}-read`) === 'true';
+            updateReadStatus(isRead);
+            
+            // Alternar status ao clicar
+            readStatus.addEventListener('click', function() {
+                const newStatus = localStorage.getItem(`book-${bookId}-read`) !== 'true';
+                localStorage.setItem(`book-${bookId}-read`, newStatus);
+                updateReadStatus(newStatus);
+            });
+            
+            function updateReadStatus(isRead) {
+                if (isRead) {
+                    readStatus.innerHTML = '<i class="fas fa-check text-emerald-400 mr-1"></i> Lido';
+                } else {
+                    readStatus.innerHTML = '<i class="fas fa-times text-rose-400 mr-1"></i> Não lido';
+                }
+            }
+            
+            // Scroll suave para os capítulos
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 20,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
