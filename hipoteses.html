@@ -128,7 +128,7 @@
                     </button>
                 </div>
                 <div class="flex flex-col space-y-6 mt-8 items-center">
-                    <a href="lab_reorganizado(3).html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                    <a href="lab.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
                         <i class="fas fa-flask mr-2"></i>Laboratório
                     </a>
                     <a href="library.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
@@ -171,19 +171,19 @@
         <!-- Estatísticas Rápidas -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
             <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 text-center">
-                <div class="text-3xl font-bold text-cyan-400 mb-2" id="total-hipoteses">3</div>
+                <div class="text-3xl font-bold text-cyan-400 mb-2" id="total-hipoteses">0</div>
                 <div class="text-slate-400">Total de Hipóteses</div>
             </div>
             <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 text-center">
-                <div class="text-3xl font-bold text-emerald-400 mb-2" id="hipoteses-confirmadas">1</div>
+                <div class="text-3xl font-bold text-emerald-400 mb-2" id="hipoteses-confirmadas">0</div>
                 <div class="text-slate-400">Confirmadas</div>
             </div>
             <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 text-center">
-                <div class="text-3xl font-bold text-blue-400 mb-2" id="hipoteses-em-teste">1</div>
+                <div class="text-3xl font-bold text-blue-400 mb-2" id="hipoteses-em-teste">0</div>
                 <div class="text-slate-400">Em Teste</div>
             </div>
             <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 text-center">
-                <div class="text-3xl font-bold text-rose-400 mb-2" id="hipoteses-refutadas">1</div>
+                <div class="text-3xl font-bold text-rose-400 mb-2" id="hipoteses-refutadas">0</div>
                 <div class="text-slate-400">Refutadas</div>
             </div>
         </div>
@@ -333,6 +333,61 @@
         </div>
     </div>
 
+    <!-- Modal Reportar Teste -->
+    <div id="modalReportarTeste" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+        <div class="bg-slate-800 rounded-xl p-8 w-full max-w-2xl border border-purple-500">
+            <div class="flex justify-between items-center mb-6 border-b border-slate-700 pb-4">
+                <h3 class="font-['Orbitron'] text-2xl text-purple-300">
+                    <i class="fas fa-clipboard-check mr-2"></i>Resultados do Teste
+                </h3>
+                <button onclick="fecharModalReportarTeste()" class="text-slate-400 hover:text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="formReportarTeste" class="space-y-6">
+                <input type="hidden" id="report-hipotese-id">
+                <input type="hidden" id="resultado-teste">
+                
+                <div>
+                    <h4 class="text-lg font-medium text-white mb-2" id="report-titulo-hipotese"></h4>
+                    <p class="text-slate-300 mb-4" id="report-descricao-hipotese"></p>
+                </div>
+                
+                <div>
+                    <label class="block text-slate-400 mb-2 font-medium">Resultado do Teste</label>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <button type="button" onclick="selecionarResultado('confirmada')" class="bg-emerald-600 hover:bg-emerald-500 text-white py-3 px-4 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-check mr-2"></i>Hipótese Confirmada
+                        </button>
+                        <button type="button" onclick="selecionarResultado('refutada')" class="bg-rose-600 hover:bg-rose-500 text-white py-3 px-4 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-times mr-2"></i>Hipótese Refutada
+                        </button>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-slate-400 mb-2 font-medium">Evidências Coletadas</label>
+                    <textarea id="report-evidencias" class="form-textarea w-full" placeholder="Descreva as evidências coletadas durante o teste..." required></textarea>
+                </div>
+                
+                <div>
+                    <label class="block text-slate-400 mb-2 font-medium">Conclusão</label>
+                    <textarea id="report-conclusao" class="form-textarea w-full" placeholder="Descreva sua conclusão sobre a validade da hipótese..." required></textarea>
+                </div>
+                
+                <div class="flex justify-end space-x-4 pt-4">
+                    <button type="button" onclick="fecharModalReportarTeste()" class="bg-slate-700 hover:bg-slate-600 text-white px-6 py-3 rounded-lg">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn-primary text-white px-6 py-3 rounded-lg">
+                        <i class="fas fa-save mr-2"></i>Salvar Resultados
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="bg-slate-900 border-t border-slate-700 py-6 mt-8">
         <div class="container mx-auto px-4">
@@ -343,57 +398,148 @@
     </footer>
 
     <script>
-        // Estado global das hipóteses
-        const hipotesesState = {
-            hipoteses: [
-                {
-                    id: 1,
-                    titulo: "Gene W confere resistência a bacteriófagos",
-                    descricao: "Bactérias com maior quantidade de genes W demonstram resistência significativamente maior a ataques de bacteriófagos, sugerindo que este gene codifica proteínas de defesa.",
-                    baseExperimental: "Observações em múltiplos experimentos de resistência mostraram correlação positiva entre presença de genes W e sobrevivência.",
-                    genesRelacionados: ["W"],
-                    status: "confirmada",
-                    prioridade: "alta",
-                    dataFormulacao: "2025-01-15",
-                    ultimaAtualizacao: "2025-01-20",
-                    notasTeste: "Testes confirmaram a hipótese com 95% de confiança.",
-                    resultados: "Bactérias WWW mostraram 95% de resistência, WW 75%, W 35%, e sem W apenas 5%.",
-                    experimentosPropostos: "Análise molecular das proteínas codificadas pelo gene W."
-                },
-                {
-                    id: 2,
-                    titulo: "Gene K influencia taxa de reprodução",
-                    descricao: "O gene K parece estar relacionado com a velocidade de divisão celular e crescimento populacional das bactérias.",
-                    baseExperimental: "Análises populacionais mostraram que colônias com mais genes K crescem mais rapidamente.",
-                    genesRelacionados: ["K"],
-                    status: "em-teste",
-                    prioridade: "media",
-                    dataFormulacao: "2025-01-18",
-                    ultimaAtualizacao: "2025-01-18",
-                    notasTeste: "Experimentos em andamento para medir taxa de divisão celular.",
-                    resultados: "",
-                    experimentosPropostos: "Monitoramento temporal de crescimento populacional com diferentes combinações de genes K."
-                },
-                {
-                    id: 3,
-                    titulo: "Gene R determina cor da bactéria",
-                    descricao: "O gene R parece estar relacionado com a produção de pigmentos que conferem coloração avermelhada às bactérias.",
-                    baseExperimental: "Observações visuais consistentes mostraram correlação entre presença de genes R e coloração.",
-                    genesRelacionados: ["R"],
-                    status: "refutada",
-                    prioridade: "baixa",
-                    dataFormulacao: "2025-01-10",
-                    ultimaAtualizacao: "2025-01-22",
-                    notasTeste: "Análise espectroscópica não confirmou relação direta.",
-                    resultados: "A cor é determinada por múltiplos fatores, não apenas o gene R.",
-                    experimentosPropostos: "Análise genômica completa para identificar genes de pigmentação."
-                }
-            ],
-            proximoId: 4
+        // Hipóteses pré-definidas
+        const PREDEFINED_HYPOTHESES = {
+            'H1': {
+                id: 1001,
+                titulo: "Gene W é crucial para resistência a bacteriófagos",
+                descricao: "Bactérias com genes W mostram resistência significativamente maior a ataques de bacteriófagos.",
+                baseExperimental: "Dados de testes de resistência mostram correlação direta entre genes W e sobrevivência",
+                genesRelacionados: ["W"],
+                prioridade: "alta",
+                experimentosPropostos: "Testar resistência em bactérias com combinações variadas de genes W"
+            },
+            'H2': {
+                id: 1002,
+                titulo: "Gene K acelera a taxa de reprodução",
+                descricao: "Bactérias com genes K se reproduzem 50% mais rápido que outras variantes.",
+                baseExperimental: "Observações de crescimento populacional em diferentes linhagens",
+                genesRelacionados: ["K"],
+                prioridade: "media",
+                experimentosPropostos: "Medir tempo de divisão celular em bactérias com diferentes combinações de genes K"
+            },
+            'H3': {
+                id: 1003,
+                titulo: "Gene R determina pigmentação vermelha",
+                descricao: "A presença do gene R está diretamente relacionada à produção de pigmentos vermelhos.",
+                baseExperimental: "Correlação observada entre presença de genes R e coloração das colônias",
+                genesRelacionados: ["R"],
+                prioridade: "baixa",
+                experimentosPropostos: "Análise espectroscópica de pigmentos em bactérias com diferentes genes R"
+            }
         };
+
+        // Funções para manipulação do localStorage
+        function salvarHipotesesNoLocalStorage() {
+            localStorage.setItem('hipotesesState', JSON.stringify(hipotesesState));
+        }
+
+        function carregarHipotesesDoLocalStorage() {
+            const dadosSalvos = localStorage.getItem('hipotesesState');
+            if (dadosSalvos) {
+                return JSON.parse(dadosSalvos);
+            }
+            return null;
+        }
+
+        // Estado global das hipóteses
+        let hipotesesState = {
+            hipoteses: [],
+            proximoId: 1
+        };
+
+        // Carregar hipóteses desbloqueadas
+        function carregarHipotesesDesbloqueadas() {
+            const unlocked = JSON.parse(localStorage.getItem('unlockedHypotheses')) || [];
+            const hoje = new Date().toISOString().split('T')[0];
+            
+            unlocked.forEach(codigo => {
+                const hipotese = PREDEFINED_HYPOTHESES[codigo];
+                
+                // Verificar se já foi adicionada
+                const existe = hipotesesState.hipoteses.some(h => h.id === hipotese.id);
+                
+                if (!existe) {
+                    hipotesesState.hipoteses.push({
+                        ...hipotese,
+                        status: "pendente",
+                        dataFormulacao: hoje,
+                        ultimaAtualizacao: hoje,
+                        notasTeste: "",
+                        resultados: ""
+                    });
+                    
+                    // Atualizar próximo ID se necessário
+                    if (hipotese.id >= hipotesesState.proximoId) {
+                        hipotesesState.proximoId = hipotese.id + 1;
+                    }
+                }
+            });
+            
+            salvarHipotesesNoLocalStorage();
+        }
 
         // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
+            // Tentar carregar dados do localStorage
+            const dadosCarregados = carregarHipotesesDoLocalStorage();
+            
+            if (dadosCarregados) {
+                hipotesesState = dadosCarregados;
+            } else {
+                // Dados iniciais padrão se não houver localStorage
+                hipotesesState = {
+                    hipoteses: [
+                        {
+                            id: 1,
+                            titulo: "Gene W confere resistência a bacteriófagos",
+                            descricao: "Bactérias com maior quantidade de genes W demonstram resistência significativamente maior a ataques de bacteriófagos, sugerindo que este gene codifica proteínas de defesa.",
+                            baseExperimental: "Observações em múltiplos experimentos de resistência mostraram correlação positiva entre presença de genes W e sobrevivência.",
+                            genesRelacionados: ["W"],
+                            status: "confirmada",
+                            prioridade: "alta",
+                            dataFormulacao: "2025-01-15",
+                            ultimaAtualizacao: "2025-01-20",
+                            notasTeste: "Testes confirmaram a hipótese com 95% de confiança.",
+                            resultados: "Bactérias WWW mostraram 95% de resistência, WW 75%, W 35%, e sem W apenas 5%.",
+                            experimentosPropostos: "Análise molecular das proteínas codificadas pelo gene W."
+                        },
+                        {
+                            id: 2,
+                            titulo: "Gene K influencia taxa de reprodução",
+                            descricao: "O gene K parece estar relacionado com a velocidade de divisão celular e crescimento populacional das bactérias.",
+                            baseExperimental: "Análises populacionais mostraram que colônias com mais genes K crescem mais rapidamente.",
+                            genesRelacionados: ["K"],
+                            status: "em-teste",
+                            prioridade: "media",
+                            dataFormulacao: "2025-01-18",
+                            ultimaAtualizacao: "2025-01-18",
+                            notasTeste: "Experimentos em andamento para medir taxa de divisão celular.",
+                            resultados: "",
+                            experimentosPropostos: "Monitoramento temporal de crescimento populacional com diferentes combinações de genes K."
+                        },
+                        {
+                            id: 3,
+                            titulo: "Gene R determina cor da bactéria",
+                            descricao: "O gene R parece estar relacionado com a produção de pigmentos que conferem coloração avermelhada às bactérias.",
+                            baseExperimental: "Observações visuais consistentes mostraram correlação entre presença de genes R e coloração.",
+                            genesRelacionados: ["R"],
+                            status: "refutada",
+                            prioridade: "baixa",
+                            dataFormulacao: "2025-01-10",
+                            ultimaAtualizacao: "2025-01-22",
+                            notasTeste: "Análise espectroscópica não confirmou relação direta.",
+                            resultados: "A cor é determinada por múltiplos fatores, não apenas o gene R.",
+                            experimentosPropostos: "Análise genômica completa para identificar genes de pigmentação."
+                        }
+                    ],
+                    proximoId: 4
+                };
+            }
+            
+            // Carregar hipóteses desbloqueadas
+            carregarHipotesesDesbloqueadas();
+            
             carregarHipoteses();
             atualizarEstatisticas();
             
@@ -411,6 +557,14 @@
             document.getElementById('filtro-status').addEventListener('change', function() {
                 filtrarHipoteses();
             });
+            
+            document.getElementById('formReportarTeste').addEventListener('submit', function(e) {
+                e.preventDefault();
+                salvarResultadoTeste();
+            });
+            
+            // Verificar se há teste para reportar
+            verificarTesteParaReportar();
         });
 
         function carregarHipoteses() {
@@ -492,6 +646,12 @@
                         <p class="text-sm text-slate-300">${hipotese.resultados}</p>
                     </div>
                 ` : ''}
+                
+                <div class="mt-4">
+                    <button onclick="testarHipotese(${hipotese.id})" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg text-sm">
+                        <i class="fas fa-vial mr-2"></i>Testar Hipótese
+                    </button>
+                </div>
             `;
             
             return card;
@@ -547,6 +707,9 @@
             atualizarEstatisticas();
             fecharModalNovaHipotese();
             
+            // Salvar no localStorage
+            salvarHipotesesNoLocalStorage();
+            
             // Mostrar notificação de sucesso
             mostrarNotificacao('Hipótese criada com sucesso!', 'success');
         }
@@ -581,6 +744,9 @@
                 atualizarEstatisticas();
                 fecharModalEditarHipotese();
                 
+                // Salvar no localStorage
+                salvarHipotesesNoLocalStorage();
+                
                 mostrarNotificacao('Hipótese atualizada com sucesso!', 'success');
             }
         }
@@ -592,6 +758,10 @@
                     hipotesesState.hipoteses.splice(index, 1);
                     carregarHipoteses();
                     atualizarEstatisticas();
+                    
+                    // Salvar no localStorage
+                    salvarHipotesesNoLocalStorage();
+                    
                     mostrarNotificacao('Hipótese excluída com sucesso!', 'info');
                 }
             }
@@ -624,6 +794,60 @@
             });
             
             carregarHipoteses();
+            
+            // Salvar no localStorage
+            salvarHipotesesNoLocalStorage();
+        }
+
+        function testarHipotese(id) {
+            const hipotese = hipotesesState.hipoteses.find(h => h.id === id);
+            if (hipotese) {
+                localStorage.setItem('currentHypothesis', JSON.stringify(hipotese));
+                window.location.href = "lab.html";
+            }
+        }
+
+        function verificarTesteParaReportar() {
+            const hipotese = JSON.parse(localStorage.getItem('hypothesisToReport'));
+            
+            if (hipotese) {
+                localStorage.removeItem('hypothesisToReport');
+                document.getElementById('report-hipotese-id').value = hipotese.id;
+                document.getElementById('report-titulo-hipotese').textContent = hipotese.titulo;
+                document.getElementById('report-descricao-hipotese').textContent = hipotese.descricao;
+                document.getElementById('modalReportarTeste').classList.remove('hidden');
+            }
+        }
+
+        function selecionarResultado(resultado) {
+            document.querySelectorAll('#formReportarTeste button').forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-offset-2', 'ring-purple-500');
+            });
+            event.currentTarget.classList.add('ring-2', 'ring-offset-2', 'ring-purple-500');
+            document.getElementById('resultado-teste').value = resultado;
+        }
+
+        function fecharModalReportarTeste() {
+            document.getElementById('modalReportarTeste').classList.add('hidden');
+        }
+
+        function salvarResultadoTeste() {
+            const id = parseInt(document.getElementById('report-hipotese-id').value);
+            const hipotese = hipotesesState.hipoteses.find(h => h.id === id);
+            
+            if (hipotese) {
+                hipotese.status = document.getElementById('resultado-teste').value;
+                hipotese.notasTeste = document.getElementById('report-evidencias').value;
+                hipotese.resultados = document.getElementById('report-conclusao').value;
+                hipotese.ultimaAtualizacao = new Date().toISOString().split('T')[0];
+                
+                salvarHipotesesNoLocalStorage();
+                carregarHipoteses();
+                atualizarEstatisticas();
+                fecharModalReportarTeste();
+                
+                mostrarNotificacao('Resultados do teste salvos com sucesso!', 'success');
+            }
         }
 
         function mostrarNotificacao(mensagem, tipo) {
@@ -654,4 +878,3 @@
     </script>
 </body>
 </html>
-
