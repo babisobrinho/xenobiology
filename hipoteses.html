@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="pt-br" x-data="{ currentPage: 'hipoteses', sidebarOpen: false }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xenobiologia - Formulação de Hipóteses</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .font-display { font-family: 'Orbitron', sans-serif; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        .hero-gradient { background: linear-gradient(135deg, rgba(16,24,39,0.9) 0%, rgba(6,78,118,0.7) 100%); }
+        .dna-pattern { background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%233b82f6' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E"); }
+        .feature-card { transition: all 0.3s ease; border: 1px solid #334155; }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); border-color: #3b82f6; }
+        .btn-primary { background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); transition: all 0.3s ease; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4); }
+        .btn-secondary { background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%); transition: all 0.3s ease; }
+        .btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4); }
+        .nav-link { position: relative; }
+        .nav-link:after { content: ''; position: absolute; width: 0; height: 2px; bottom: -2px; left: 0; background-color: #3b82f6; transition: width 0.3s ease; }
+        .nav-link:hover:after { width: 100%; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        .hypothesis-card { 
+            transition: all 0.3s ease; 
+            border: 1px solid #334155; 
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+        }
+        .hypothesis-card:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.2); 
+            border-color: #3b82f6; 
+        }
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .status-em-teste { background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+        .status-confirmada { background-color: rgba(34, 197, 94, 0.2); color: #4ade80; }
+        .status-refutada { background-color: rgba(239, 68, 68, 0.2); color: #f87171; }
+        .status-pendente { background-color: rgba(156, 163, 175, 0.2); color: #9ca3af; }
+        .form-input {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            color: #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .form-textarea {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            color: #e2e8f0;
+            resize: vertical;
+            min-height: 120px;
+            transition: all 0.3s ease;
+        }
+        .form-textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-900" style="background-image: url('data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' viewBox=\'0 0 100 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z\' fill=\'%233b82f6\' fill-opacity=\'0.1\' fill-rule=\'evenodd\'%3E%3C/svg%3E');">
+    <!-- Navbar -->
+    <nav class="bg-slate-900 border-b border-slate-700 sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="font-['Orbitron'] text-2xl text-cyan-400">XENOBIOLOGY</span>
+                    </div>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="lab.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-flask mr-2"></i>Laboratório
+                    </a>
+                    <a href="library.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-book mr-2"></i>Biblioteca
+                    </a>
+                    <a href="hipoteses.html" class="text-cyan-400 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-full after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300">
+                        <i class="fas fa-lightbulb mr-2"></i>Hipóteses
+                    </a>
+                    <a href="papers.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-scroll mr-2"></i>Publicações
+                    </a>
+                    <a href="progress.html" class="text-slate-300 font-medium relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full">
+                        <i class="fas fa-chart-line mr-2"></i>Progresso
+                    </a>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button @click="sidebarOpen = !sidebarOpen" class="text-slate-300 hover:text-white focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Sidebar -->
+        <div x-show="sidebarOpen" @click.away="sidebarOpen = false" 
+             class="md:hidden fixed inset-0 z-40 bg-slate-900 bg-opacity-90 backdrop-blur-sm">
+            <div class="flex flex-col h-full p-4">
+                <div class="flex justify-end">
+                    <button @click="sidebarOpen = false" class="text-slate-300 hover:text-white p-2">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="flex flex-col space-y-6 mt-8 items-center">
+                    <a href="lab_reorganizado(3).html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-flask mr-2"></i>Laboratório
+                    </a>
+                    <a href="library.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-book mr-2"></i>Biblioteca
+                    </a>
+                    <a href="hipoteses.html" @click="sidebarOpen = false" class="text-cyan-400 text-xl font-medium">
+                        <i class="fas fa-lightbulb mr-2"></i>Hipóteses
+                    </a>
+                    <a href="papers.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-scroll mr-2"></i>Publicações
+                    </a>
+                    <a href="progress.html" @click="sidebarOpen = false" class="text-slate-300 text-xl font-medium">
+                        <i class="fas fa-chart-line mr-2"></i>Progresso
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-gradient py-16">
+        <div class="container mx-auto px-4 text-center">
+            <div class="animate-float mb-8">
+                <i class="fas fa-lightbulb text-6xl text-cyan-400 mb-4"></i>
+            </div>
+            <h1 class="font-['Orbitron'] text-5xl md:text-6xl font-bold text-white mb-6">
+                Formulação de Hipóteses
+            </h1>
+            <p class="text-xl text-slate-300 max-w-3xl mx-auto mb-8">
+                Baseado nos dados coletados em seus experimentos, formule hipóteses científicas sobre o comportamento genético das bactérias xenobiológicas.
+            </p>
+            <button onclick="abrirModalNovaHipotese()" class="btn-primary text-white font-bold py-4 px-8 rounded-lg text-lg">
+                <i class="fas fa-plus mr-2"></i>Nova Hipótese
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-12">
+        <!-- Estatísticas Rápidas -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+            <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 text-center">
+                <div class="text-3xl font-bold text-cyan-400 mb-2" id="total-hipoteses">3</div>
+                <div class="text-slate-400">Total de Hipóteses</div>
+            </div>
+            <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 text-center">
+                <div class="text-3xl font-bold text-emerald-400 mb-2" id="hipoteses-confirmadas">1</div>
+                <div class="text-slate-400">Confirmadas</div>
+            </div>
+            <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 text-center">
+                <div class="text-3xl font-bold text-blue-400 mb-2" id="hipoteses-em-teste">1</div>
+                <div class="text-slate-400">Em Teste</div>
+            </div>
+            <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 text-center">
+                <div class="text-3xl font-bold text-rose-400 mb-2" id="hipoteses-refutadas">1</div>
+                <div class="text-slate-400">Refutadas</div>
+            </div>
+        </div>
+
+        <!-- Lista de Hipóteses -->
+        <div class="mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="font-['Orbitron'] text-3xl text-cyan-300">Suas Hipóteses</h2>
+                <div class="flex space-x-4">
+                    <select id="filtro-status" class="form-input">
+                        <option value="">Todos os Status</option>
+                        <option value="em-teste">Em Teste</option>
+                        <option value="confirmada">Confirmada</option>
+                        <option value="refutada">Refutada</option>
+                        <option value="pendente">Pendente</option>
+                    </select>
+                    <button onclick="ordenarHipoteses()" class="btn-secondary text-white px-4 py-2 rounded-lg">
+                        <i class="fas fa-sort mr-2"></i>Ordenar
+                    </button>
+                </div>
+            </div>
+
+            <div id="lista-hipoteses" class="space-y-6">
+                <!-- Hipóteses serão inseridas aqui via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nova Hipótese -->
+    <div id="modalNovaHipotese" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+        <div class="bg-slate-800 rounded-xl p-8 w-full max-w-2xl border border-cyan-500 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6 border-b border-slate-700 pb-4">
+                <h3 class="font-['Orbitron'] text-2xl text-cyan-300">
+                    <i class="fas fa-lightbulb mr-2"></i>Nova Hipótese Científica
+                </h3>
+                <button onclick="fecharModalNovaHipotese()" class="text-slate-400 hover:text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="formNovaHipotese" class="space-y-6">
+                <div>
+                    <label class="block text-slate-400 mb-2 font-medium">Título da Hipótese</label>
+                    <input type="text" id="titulo-hipotese" class="form-input w-full" placeholder="Ex: Gene W confere resistência a bacteriófagos" required>
+                </div>
+                
+                <div>
+                    <label class="block text-slate-400 mb-2 font-medium">Descrição Detalhada</label>
+                    <textarea id="descricao-hipotese" class="form-textarea w-full" placeholder="Descreva sua hipótese em detalhes, incluindo o mecanismo proposto e as evidências observadas..." required></textarea>
+                </div>
+                
+                <div>
+                    <label class="block text-slate-400 mb-2 font-medium">Base Experimental</label>
+                    <textarea id="base-experimental" class="form-textarea w-full" placeholder="Descreva os experimentos e observações que levaram a esta hipótese..." required></textarea>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-slate-400 mb-2 font-medium">Genes Relacionados</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" name="genes" value="R" class="mr-2">
+                                <span class="text-rose-400">Gene R</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="genes" value="K" class="mr-2">
+                                <span class="text-blue-400">Gene K</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="genes" value="W" class="mr-2">
+                                <span class="text-emerald-400">Gene W</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-slate-400 mb-2 font-medium">Prioridade</label>
+                        <select id="prioridade-hipotese" class="form-input w-full">
+                            <option value="baixa">Baixa</option>
+                            <option value="media" selected>Média</option>
+                            <option value="alta">Alta</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-slate-400 mb-2 font-medium">Experimentos Propostos para Teste</label>
+                    <textarea id="experimentos-propostos" class="form-textarea w-full" placeholder="Descreva os experimentos que poderiam confirmar ou refutar esta hipótese..."></textarea>
+                </div>
+                
+                <div class="flex justify-end space-x-4 pt-4">
+                    <button type="button" onclick="fecharModalNovaHipotese()" class="bg-slate-700 hover:bg-slate-600 text-white px-6 py-3 rounded-lg">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn-primary text-white px-6 py-3 rounded-lg">
+                        <i class="fas fa-save mr-2"></i>Salvar Hipótese
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Editar Hipótese -->
+    <div id="modalEditarHipotese" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+        <div class="bg-slate-800 rounded-xl p-8 w-full max-w-2xl border border-cyan-500 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6 border-b border-slate-700 pb-4">
+                <h3 class="font-['Orbitron'] text-2xl text-cyan-300">
+                    <i class="fas fa-edit mr-2"></i>Editar Hipótese
+                </h3>
+                <button onclick="fecharModalEditarHipotese()" class="text-slate-400 hover:text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="formEditarHipotese" class="space-y-6">
+                <input type="hidden" id="edit-hipotese-id">
+                
+                <div>
+                    <label class="block text-slate-400 mb-2 font-medium">Status</label>
+                    <select id="edit-status-hipotese" class="form-input w-full">
+                        <option value="pendente">Pendente</option>
+                        <option value="em-teste">Em Teste</option>
+                        <option value="confirmada">Confirmada</option>
+                        <option value="refutada">Refutada</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-slate-400 mb-2 font-medium">Notas de Teste</label>
+                    <textarea id="edit-notas-teste" class="form-textarea w-full" placeholder="Adicione observações sobre os testes realizados..."></textarea>
+                </div>
+                
+                <div>
+                    <label class="block text-slate-400 mb-2 font-medium">Resultados</label>
+                    <textarea id="edit-resultados" class="form-textarea w-full" placeholder="Descreva os resultados obtidos nos experimentos..."></textarea>
+                </div>
+                
+                <div class="flex justify-end space-x-4 pt-4">
+                    <button type="button" onclick="fecharModalEditarHipotese()" class="bg-slate-700 hover:bg-slate-600 text-white px-6 py-3 rounded-lg">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn-primary text-white px-6 py-3 rounded-lg">
+                        <i class="fas fa-save mr-2"></i>Atualizar Hipótese
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-700 py-6 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <p class="text-slate-400 text-sm">&copy; 2025 Xenobiology - Laboratório de Genética Alienígena. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Estado global das hipóteses
+        const hipotesesState = {
+            hipoteses: [
+                {
+                    id: 1,
+                    titulo: "Gene W confere resistência a bacteriófagos",
+                    descricao: "Bactérias com maior quantidade de genes W demonstram resistência significativamente maior a ataques de bacteriófagos, sugerindo que este gene codifica proteínas de defesa.",
+                    baseExperimental: "Observações em múltiplos experimentos de resistência mostraram correlação positiva entre presença de genes W e sobrevivência.",
+                    genesRelacionados: ["W"],
+                    status: "confirmada",
+                    prioridade: "alta",
+                    dataFormulacao: "2025-01-15",
+                    ultimaAtualizacao: "2025-01-20",
+                    notasTeste: "Testes confirmaram a hipótese com 95% de confiança.",
+                    resultados: "Bactérias WWW mostraram 95% de resistência, WW 75%, W 35%, e sem W apenas 5%.",
+                    experimentosPropostos: "Análise molecular das proteínas codificadas pelo gene W."
+                },
+                {
+                    id: 2,
+                    titulo: "Gene K influencia taxa de reprodução",
+                    descricao: "O gene K parece estar relacionado com a velocidade de divisão celular e crescimento populacional das bactérias.",
+                    baseExperimental: "Análises populacionais mostraram que colônias com mais genes K crescem mais rapidamente.",
+                    genesRelacionados: ["K"],
+                    status: "em-teste",
+                    prioridade: "media",
+                    dataFormulacao: "2025-01-18",
+                    ultimaAtualizacao: "2025-01-18",
+                    notasTeste: "Experimentos em andamento para medir taxa de divisão celular.",
+                    resultados: "",
+                    experimentosPropostos: "Monitoramento temporal de crescimento populacional com diferentes combinações de genes K."
+                },
+                {
+                    id: 3,
+                    titulo: "Gene R determina cor da bactéria",
+                    descricao: "O gene R parece estar relacionado com a produção de pigmentos que conferem coloração avermelhada às bactérias.",
+                    baseExperimental: "Observações visuais consistentes mostraram correlação entre presença de genes R e coloração.",
+                    genesRelacionados: ["R"],
+                    status: "refutada",
+                    prioridade: "baixa",
+                    dataFormulacao: "2025-01-10",
+                    ultimaAtualizacao: "2025-01-22",
+                    notasTeste: "Análise espectroscópica não confirmou relação direta.",
+                    resultados: "A cor é determinada por múltiplos fatores, não apenas o gene R.",
+                    experimentosPropostos: "Análise genômica completa para identificar genes de pigmentação."
+                }
+            ],
+            proximoId: 4
+        };
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarHipoteses();
+            atualizarEstatisticas();
+            
+            // Event listeners
+            document.getElementById('formNovaHipotese').addEventListener('submit', function(e) {
+                e.preventDefault();
+                salvarNovaHipotese();
+            });
+            
+            document.getElementById('formEditarHipotese').addEventListener('submit', function(e) {
+                e.preventDefault();
+                atualizarHipotese();
+            });
+            
+            document.getElementById('filtro-status').addEventListener('change', function() {
+                filtrarHipoteses();
+            });
+        });
+
+        function carregarHipoteses() {
+            const container = document.getElementById('lista-hipoteses');
+            container.innerHTML = '';
+            
+            hipotesesState.hipoteses.forEach(hipotese => {
+                const card = criarCardHipotese(hipotese);
+                container.appendChild(card);
+            });
+        }
+
+        function criarCardHipotese(hipotese) {
+            const card = document.createElement('div');
+            card.className = 'hypothesis-card rounded-xl p-6';
+            
+            const statusClass = `status-${hipotese.status}`;
+            const statusText = {
+                'pendente': 'Pendente',
+                'em-teste': 'Em Teste',
+                'confirmada': 'Confirmada',
+                'refutada': 'Refutada'
+            };
+            
+            const prioridadeIcon = {
+                'baixa': 'fas fa-arrow-down text-slate-400',
+                'media': 'fas fa-minus text-amber-400',
+                'alta': 'fas fa-arrow-up text-rose-400'
+            };
+            
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex-1">
+                        <div class="flex items-center mb-2">
+                            <h3 class="text-xl font-semibold text-white mr-3">${hipotese.titulo}</h3>
+                            <span class="status-badge ${statusClass}">${statusText[hipotese.status]}</span>
+                        </div>
+                        <div class="flex items-center text-sm text-slate-400 mb-3">
+                            <i class="${prioridadeIcon[hipotese.prioridade]} mr-2"></i>
+                            <span class="mr-4">Prioridade ${hipotese.prioridade}</span>
+                            <i class="fas fa-calendar mr-2"></i>
+                            <span>Formulada em ${new Date(hipotese.dataFormulacao).toLocaleDateString('pt-BR')}</span>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="editarHipotese(${hipotese.id})" class="text-cyan-400 hover:text-cyan-300 p-2">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="excluirHipotese(${hipotese.id})" class="text-rose-400 hover:text-rose-300 p-2">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <p class="text-slate-300 mb-4">${hipotese.descricao}</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <h4 class="text-sm font-medium text-slate-400 mb-2">Genes Relacionados</h4>
+                        <div class="flex space-x-2">
+                            ${hipotese.genesRelacionados.map(gene => `
+                                <span class="px-2 py-1 rounded text-xs font-medium ${
+                                    gene === 'R' ? 'bg-rose-500/20 text-rose-400' :
+                                    gene === 'K' ? 'bg-blue-500/20 text-blue-400' :
+                                    'bg-emerald-500/20 text-emerald-400'
+                                }">Gene ${gene}</span>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-medium text-slate-400 mb-2">Base Experimental</h4>
+                        <p class="text-sm text-slate-300">${hipotese.baseExperimental.substring(0, 100)}...</p>
+                    </div>
+                </div>
+                
+                ${hipotese.resultados ? `
+                    <div class="bg-slate-700/50 rounded-lg p-4 mt-4">
+                        <h4 class="text-sm font-medium text-slate-400 mb-2">Resultados</h4>
+                        <p class="text-sm text-slate-300">${hipotese.resultados}</p>
+                    </div>
+                ` : ''}
+            `;
+            
+            return card;
+        }
+
+        function atualizarEstatisticas() {
+            const stats = {
+                total: hipotesesState.hipoteses.length,
+                confirmadas: hipotesesState.hipoteses.filter(h => h.status === 'confirmada').length,
+                emTeste: hipotesesState.hipoteses.filter(h => h.status === 'em-teste').length,
+                refutadas: hipotesesState.hipoteses.filter(h => h.status === 'refutada').length
+            };
+            
+            document.getElementById('total-hipoteses').textContent = stats.total;
+            document.getElementById('hipoteses-confirmadas').textContent = stats.confirmadas;
+            document.getElementById('hipoteses-em-teste').textContent = stats.emTeste;
+            document.getElementById('hipoteses-refutadas').textContent = stats.refutadas;
+        }
+
+        function abrirModalNovaHipotese() {
+            document.getElementById('modalNovaHipotese').classList.remove('hidden');
+        }
+
+        function fecharModalNovaHipotese() {
+            document.getElementById('modalNovaHipotese').classList.add('hidden');
+            document.getElementById('formNovaHipotese').reset();
+        }
+
+        function salvarNovaHipotese() {
+            const form = document.getElementById('formNovaHipotese');
+            const formData = new FormData(form);
+            
+            const genesRelacionados = [];
+            formData.getAll('genes').forEach(gene => genesRelacionados.push(gene));
+            
+            const novaHipotese = {
+                id: hipotesesState.proximoId++,
+                titulo: formData.get('titulo-hipotese') || document.getElementById('titulo-hipotese').value,
+                descricao: formData.get('descricao-hipotese') || document.getElementById('descricao-hipotese').value,
+                baseExperimental: formData.get('base-experimental') || document.getElementById('base-experimental').value,
+                genesRelacionados: genesRelacionados,
+                status: 'pendente',
+                prioridade: formData.get('prioridade-hipotese') || document.getElementById('prioridade-hipotese').value,
+                dataFormulacao: new Date().toISOString().split('T')[0],
+                ultimaAtualizacao: new Date().toISOString().split('T')[0],
+                notasTeste: '',
+                resultados: '',
+                experimentosPropostos: formData.get('experimentos-propostos') || document.getElementById('experimentos-propostos').value
+            };
+            
+            hipotesesState.hipoteses.push(novaHipotese);
+            carregarHipoteses();
+            atualizarEstatisticas();
+            fecharModalNovaHipotese();
+            
+            // Mostrar notificação de sucesso
+            mostrarNotificacao('Hipótese criada com sucesso!', 'success');
+        }
+
+        function editarHipotese(id) {
+            const hipotese = hipotesesState.hipoteses.find(h => h.id === id);
+            if (!hipotese) return;
+            
+            document.getElementById('edit-hipotese-id').value = id;
+            document.getElementById('edit-status-hipotese').value = hipotese.status;
+            document.getElementById('edit-notas-teste').value = hipotese.notasTeste;
+            document.getElementById('edit-resultados').value = hipotese.resultados;
+            
+            document.getElementById('modalEditarHipotese').classList.remove('hidden');
+        }
+
+        function fecharModalEditarHipotese() {
+            document.getElementById('modalEditarHipotese').classList.add('hidden');
+        }
+
+        function atualizarHipotese() {
+            const id = parseInt(document.getElementById('edit-hipotese-id').value);
+            const hipotese = hipotesesState.hipoteses.find(h => h.id === id);
+            
+            if (hipotese) {
+                hipotese.status = document.getElementById('edit-status-hipotese').value;
+                hipotese.notasTeste = document.getElementById('edit-notas-teste').value;
+                hipotese.resultados = document.getElementById('edit-resultados').value;
+                hipotese.ultimaAtualizacao = new Date().toISOString().split('T')[0];
+                
+                carregarHipoteses();
+                atualizarEstatisticas();
+                fecharModalEditarHipotese();
+                
+                mostrarNotificacao('Hipótese atualizada com sucesso!', 'success');
+            }
+        }
+
+        function excluirHipotese(id) {
+            if (confirm('Tem certeza que deseja excluir esta hipótese?')) {
+                const index = hipotesesState.hipoteses.findIndex(h => h.id === id);
+                if (index !== -1) {
+                    hipotesesState.hipoteses.splice(index, 1);
+                    carregarHipoteses();
+                    atualizarEstatisticas();
+                    mostrarNotificacao('Hipótese excluída com sucesso!', 'info');
+                }
+            }
+        }
+
+        function filtrarHipoteses() {
+            const filtro = document.getElementById('filtro-status').value;
+            const cards = document.querySelectorAll('.hypothesis-card');
+            
+            cards.forEach(card => {
+                if (!filtro) {
+                    card.style.display = 'block';
+                } else {
+                    const statusBadge = card.querySelector('.status-badge');
+                    const hasStatus = statusBadge.classList.contains(`status-${filtro}`);
+                    card.style.display = hasStatus ? 'block' : 'none';
+                }
+            });
+        }
+
+        function ordenarHipoteses() {
+            hipotesesState.hipoteses.sort((a, b) => {
+                // Ordenar por prioridade (alta, media, baixa) e depois por data
+                const prioridadeOrder = { 'alta': 3, 'media': 2, 'baixa': 1 };
+                const prioridadeDiff = prioridadeOrder[b.prioridade] - prioridadeOrder[a.prioridade];
+                
+                if (prioridadeDiff !== 0) return prioridadeDiff;
+                
+                return new Date(b.ultimaAtualizacao) - new Date(a.ultimaAtualizacao);
+            });
+            
+            carregarHipoteses();
+        }
+
+        function mostrarNotificacao(mensagem, tipo) {
+            // Criar elemento de notificação
+            const notificacao = document.createElement('div');
+            notificacao.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transition-all duration-300 ${
+                tipo === 'success' ? 'bg-emerald-600' : 
+                tipo === 'error' ? 'bg-rose-600' : 'bg-blue-600'
+            } text-white`;
+            notificacao.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-${tipo === 'success' ? 'check' : tipo === 'error' ? 'exclamation' : 'info'} mr-2"></i>
+                    <span>${mensagem}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notificacao);
+            
+            // Remover após 3 segundos
+            setTimeout(() => {
+                notificacao.style.opacity = '0';
+                notificacao.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notificacao);
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
+
